@@ -9,5 +9,5 @@ Route::middleware(['global', 'web'])->group(function () {
     Route::get('/auth/login', [AuthController::class, 'index']);
     Route::post('/auth/login', [AuthController::class, 'login']);
     Route::get('/auth/logout', [AuthController::class, 'logout']);
-    Route::get('/', [HomeController::class, 'index'])->name('dashboard-analytics');
+    Route::get('/', [HomeController::class, 'index'])->name('beranda');
 });
