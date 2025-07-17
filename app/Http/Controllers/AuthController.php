@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\authentications;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use DB;
 
-class LoginBasic extends Controller
+class AuthController extends Controller
 {
   public function index()
   {
@@ -45,5 +45,11 @@ class LoginBasic extends Controller
 
       session()->put('data', $user);
       return redirect('/');
+  }
+
+  public function logout()
+  {
+    session()->flush();
+    return redirect('/auth/login');
   }
 }

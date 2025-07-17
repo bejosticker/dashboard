@@ -62,7 +62,7 @@ $navbarDetached = ($navbarDetached ?? '');
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="javascript:void(0);">
+                <a class="dropdown-item" href="/auth/logout">
                   <i class="bx bx-power-off bx-md me-3"></i><span>Log Out</span>
                 </a>
               </li>

@@ -1,17 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\dashboard;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class Analytics extends Controller
+class HomeController extends Controller
 {
   public function index()
   {
-    if (!\Session::get('data')) {
-      return redirect('/auth/login');
-    }
     return view('content.dashboard.dashboards-analytics');
   }
 }
