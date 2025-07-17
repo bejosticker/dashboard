@@ -4,11 +4,19 @@ namespace App\Http\Controllers\authentications;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use DB;
 
 class LoginBasic extends Controller
 {
   public function index()
   {
+    $user = DB::table('users')->first();
+    if (!$user) {
+      DB::table('users')
+        ->insert([
+          
+        ]);
+    }
     return view('content.authentications.auth-login-basic');
   }
 

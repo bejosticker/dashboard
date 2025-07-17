@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\GlobalMiddleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\dashboard\Analytics;
 use App\Http\Controllers\layouts\WithoutMenu;
@@ -44,8 +45,8 @@ use App\Http\Controllers\form_layouts\VerticalForm;
 use App\Http\Controllers\form_layouts\HorizontalForm;
 use App\Http\Controllers\tables\Basic as TablesBasic;
 
-Route::middleware('web')->group(function () {
-    // Main Page Route
+Route::middleware(['global', 'web'])->group(function () {
+    Route::get('/auth/login', [LoginBasic::class, 'index'])->name('auth-login-basic');
     Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
 });
 
@@ -64,7 +65,6 @@ Route::get('/pages/misc-error', [MiscError::class, 'index'])->name('pages-misc-e
 Route::get('/pages/misc-under-maintenance', [MiscUnderMaintenance::class, 'index'])->name('pages-misc-under-maintenance');
 
 // authentication
-Route::get('/auth/login', [LoginBasic::class, 'index'])->name('auth-login-basic');
 Route::get('/auth/register-basic', [RegisterBasic::class, 'index'])->name('auth-register-basic');
 Route::get('/auth/forgot-password-basic', [ForgotPasswordBasic::class, 'index'])->name('auth-reset-password-basic');
 
