@@ -4,10 +4,57 @@ use App\Http\Middleware\GlobalMiddleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GajiController;
+use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\KulakController;
+use App\Http\Controllers\PengeluaranController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\TokoController;
+use App\Http\Controllers\UserController;
 
 Route::middleware(['global', 'web'])->group(function () {
-    Route::get('/auth/login', [AuthController::class, 'index']);
-    Route::post('/auth/login', [AuthController::class, 'login']);
-    Route::get('/auth/logout', [AuthController::class, 'logout']);
+    Route::prefix('auth')->group(function () {
+        Route::get('/login', [AuthController::class, 'index']);
+        Route::post('/login', [AuthController::class, 'login']);
+        Route::get('/logout', [AuthController::class, 'logout']);
+    });
     Route::get('/', [HomeController::class, 'index'])->name('beranda');
+
+    Route::prefix('suppliers')->group(function () {
+        Route::get('/', [SupplierController::class, 'index'])->name('suppliers');
+    });
+
+    Route::prefix('products')->group(function () {
+        Route::get('/', [ProductController::class, 'index'])->name('products');
+    });
+
+    Route::prefix('toko')->group(function () {
+        Route::get('/', [TokoController::class, 'index'])->name('toko');
+    });
+
+    Route::prefix('karyawan')->group(function () {
+        Route::get('/', [KaryawanController::class, 'index'])->name('karyawan');
+    });
+
+    Route::prefix('gaji')->group(function () {
+        Route::get('/', [GajiController::class, 'index'])->name('gaji');
+    });
+
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('users');
+    });
+
+    Route::prefix('reports')->group(function () {
+        Route::get('/', [ReportController::class, 'index'])->name('reports');
+    });
+
+    Route::prefix('kulak')->group(function () {
+        Route::get('/', [KulakController::class, 'index'])->name('kulak');
+    });
+
+    Route::prefix('pengeluaran')->group(function () {
+        Route::get('/', [PengeluaranController::class, 'index'])->name('pengeluaran');
+    });
 });

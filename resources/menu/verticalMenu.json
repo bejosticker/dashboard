@@ -11,91 +11,80 @@
       "menuHeader": "Manajemen & Data"
     },
     {
-      "url": "",
+      "url": "suppliers",
       "name": "Supplier",
       "icon": "menu-icon tf-icons bx bx-intersect",
-      "slug": "app-email",
-      "target": "_blank"
+      "slug": "suppliers"
     },
     {
-      "url": "",
+      "url": "products",
       "name": "Produk",
       "icon": "menu-icon tf-icons bx bx-box",
-      "slug": "app-email",
-      "target": "_blank",
+      "slug": "products",
       "badge": [
         "danger",
         "5"
       ]
     },
     {
-      "url": "",
+      "url": "toko",
       "name": "Toko",
       "icon": "menu-icon tf-icons bx bx-home-circle",
-      "slug": "app-chat",
-      "target": "_blank"
+      "slug": "toko"
     },
     {
-      "url": "",
+      "url": "karyawan",
       "name": "Karyawan",
       "icon": "menu-icon tf-icons bx bx-male-female",
-      "slug": "app-calendar",
-      "target": "_blank"
+      "slug": "karyawan"
     },
     {
-      "url": "",
+      "url": "gaji",
       "name": "Gaji",
       "icon": "menu-icon tf-icons bx bx-money",
-      "slug": "app-kanban",
-      "target": "_blank"
+      "slug": "gaji"
     },
     {
-      "url": "",
+      "url": "users",
       "name": "Pengguna",
       "icon": "menu-icon tf-icons bx bx-group",
-      "slug": "app-kanban",
-      "target": "_blank"
+      "slug": "users"
     },
     {
       "menuHeader": "Laporan & Kulak"
     },
     {
-      "url": "",
+      "url": "reports",
       "name": "laporan Cetak",
       "icon": "menu-icon tf-icons bx bx-line-chart-down",
-      "slug": "app-calendar",
-      "target": "_blank"
+      "slug": "reports"
     },
     {
-      "url": "",
+      "url": "reports",
       "name": "Laporan Keuangan",
       "icon": "menu-icon tf-icons bx bx-line-chart",
-      "slug": "app-kanban",
-      "target": "_blank"
+      "slug": "reports"
     },
     {
-      "url": "",
+      "url": "reports",
       "name": "Laporan Toko",
       "icon": "menu-icon tf-icons bx bx-bar-chart-alt-2",
-      "slug": "app-kanban",
-      "target": "_blank"
+      "slug": "reports"
     },
     {
-      "url": "",
+      "url": "kulak",
       "name": "Kulak",
       "icon": "menu-icon tf-icons bx bx-cart-download",
-      "slug": "app-kanban",
-      "target": "_blank"
+      "slug": "kulak"
     },
     {
       "menuHeader": "Lainnya"
     },
     {
-      "url": "",
+      "url": "pengeluaran",
       "name": "Pengeluaran Lainnya",
       "icon": "menu-icon tf-icons bx bx-upload",
-      "slug": "app-kanban",
-      "target": "_blank"
+      "slug": "pengeluaran"
     }
   ]
 }
