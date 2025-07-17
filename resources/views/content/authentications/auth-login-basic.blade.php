@@ -26,10 +26,11 @@
           <h4 class="mb-1">Welcome to {{config('variables.templateName')}}! 👋</h4>
           <p class="mb-6">Silakan login</p>
 
-          <form id="formAuthentication" class="mb-6" action="{{url('/')}}" method="GET">
+          <form id="formAuthentication" class="mb-6" action="" method="POST">
+            @csrf
             <div class="mb-6">
               <label for="email" class="form-label">Username</label>
-              <input type="text" class="form-control" id="email" name="email-username" placeholder="Masukkan username anda" autofocus>
+              <input type="text" class="form-control" id="email" name="username" placeholder="Masukkan username anda" autofocus>
             </div>
             <div class="mb-6 form-password-toggle">
               <label class="form-label" for="password">Password</label>
