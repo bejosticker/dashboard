@@ -4,8 +4,7 @@
       "url": "/",
       "name": "Beranda",
       "icon": "menu-icon tf-icons bx bx-home-smile",
-      "slug": "beranda",
-      "target": "_blank"
+      "slug": "beranda"
     },
     {
       "menuHeader": "Manajemen & Data"
