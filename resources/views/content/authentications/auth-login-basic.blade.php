@@ -27,6 +27,12 @@
           <p class="mb-6">Silakan login</p>
 
           <form id="formAuthentication" class="mb-6" action="" method="POST">
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                  {{session('error')}}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             @csrf
             <div class="mb-6">
               <label for="email" class="form-label">Username</label>
