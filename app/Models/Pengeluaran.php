@@ -10,6 +10,11 @@ class Pengeluaran extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name', 'description', 'date', 'amount', 'created_at', 'updated_at'
+        'name', 'toko_id', 'description', 'date', 'amount', 'created_at', 'updated_at'
     ];
+
+    public function toko()
+    {
+        return $this->belongsTo(Toko::class, 'toko_id', 'id');
+    }
 }

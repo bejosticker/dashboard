@@ -79,5 +79,8 @@ Route::middleware(['global', 'web'])->group(function () {
 
     Route::prefix('pengeluaran')->group(function () {
         Route::get('/', [PengeluaranController::class, 'index'])->name('pengeluaran');
+        Route::post('/', [PengeluaranController::class, 'store']);
+        Route::post('/update/{id}', [PengeluaranController::class, 'update']);
+        Route::get('/delete/{id}', [PengeluaranController::class, 'destroy']);
     });
 });

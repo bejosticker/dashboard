@@ -40,6 +40,9 @@ use Carbon\Carbon;
                 @endforelse
             </tbody>
         </table>
+        <div style="padding:2rem;">
+            {{ $gajis->links('vendor.pagination.bootstrap-5') }}
+        </div>
     </div>
 </div>
 @foreach ($gajis as $gaji)

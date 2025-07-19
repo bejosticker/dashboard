@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('pengeluaran', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('toko_id')->nullable()->constrained('toko')->nullOnDelete()->nullOnUpdate();
             $table->string('name');
             $table->string('description')->nullable();
             $table->date('date');

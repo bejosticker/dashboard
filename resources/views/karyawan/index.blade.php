@@ -56,6 +56,9 @@ use Carbon\Carbon;
                 @endforelse
             </tbody>
         </table>
+        <div style="padding:2rem;">
+            {{ $karyawans->links('vendor.pagination.bootstrap-5') }}
+        </div>
     </div>
 </div>
 @foreach ($karyawans as $karyawan)
