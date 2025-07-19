@@ -26,6 +26,8 @@ Route::middleware(['global', 'web'])->group(function () {
     Route::prefix('suppliers')->group(function () {
         Route::get('/', [SupplierController::class, 'index'])->name('suppliers');
         Route::post('/', [SupplierController::class, 'store']);
+        Route::post('/update/{id}', [SupplierController::class, 'update']);
+        Route::get('/delete/{id}', [SupplierController::class, 'destroy']);
     });
 
     Route::prefix('metode-pembayaran')->group(function () {

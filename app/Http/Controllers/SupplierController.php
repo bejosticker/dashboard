@@ -23,4 +23,22 @@ class SupplierController extends Controller
 
         return redirect()->back()->with('success', 'Supplier berhasil disimpan.');
     }
+
+    public function update(Request $request, $id)
+    {
+        Supplier::where('id', $id)->update([
+            'name' => $request->name,
+            'description' => $request->description
+        ]);
+
+        return redirect()->back()->with('success', 'Supplier berhasil disimpan.');
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        $supplier = Supplier::where('id', $id)->first();
+        Supplier::where('id', $id)->delete();
+
+        return redirect()->back()->with('success', 'Supplier '.$supplier->name.' berhasil dihapus.');
+    }
 }
