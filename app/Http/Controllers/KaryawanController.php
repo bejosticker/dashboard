@@ -7,9 +7,12 @@ use App\Models\Karyawan;
 
 class KaryawanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $karyawans = Karyawan::orderBy('name', 'asc')->paginate(10);
+        $search = $request->get('search') ?? '';
+        $karyawans = Karyawan::where('name', 'like', "%{$search}%")
+            ->orderBy('name', 'asc')
+            ->paginate(10);
         $tokos = Toko::orderBy('name', 'asc')->get();
         return view('karyawan.index', compact('karyawans', 'tokos'));
     }

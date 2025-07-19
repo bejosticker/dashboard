@@ -7,6 +7,20 @@ use Carbon\Carbon;
 
 @section('content')
 @include('layouts/sections/message')
+<div class="card p-4 mb-4">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <form action="" method="GET">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" value="{{ $_GET['search'] ?? '' }}" placeholder="Cari karyawan..." aria-describedby="button-addon2">
+                    <button class="btn btn-primary" type="submit" id="button-addon2">Cari</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="card">
     <div class="table-responsive text-nowrap">
         <table class="table">
@@ -30,7 +44,6 @@ use Carbon\Carbon;
                         <td>{{$karyawan->year}}</td>
                         <td>{{formatRupiah($karyawan->gaji)}}</td>
                         <td>{{$karyawan->toko?->name ?? '-'}}</td>
-                        <td>{{Carbon::parse($karyawan->created_at)->locale('id')->translatedFormat('d F Y')}}</td>
                         <td>
                             <button class="btn btn-success btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#editkaryawan{{ $karyawan->id }}"><span class="menu-icon tf-icons bx bx-edit"></span> Ubah</button>
                             <button class="btn btn-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#deletekaryawan{{ $karyawan->id }}"><span class="menu-icon tf-icons bx bx-trash"></span> Hapus</button>

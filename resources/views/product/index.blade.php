@@ -4,7 +4,7 @@
 
 @section('content')
 @include('layouts/sections/message')
-<div class="card p-4 mb-2">
+<div class="card p-4 mb-4">
     <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-4"></div>
