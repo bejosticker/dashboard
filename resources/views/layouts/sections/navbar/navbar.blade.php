@@ -35,7 +35,7 @@ $navbarDetached = ($navbarDetached ?? '');
 
       <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <div class="navbar-nav align-items-center">
-          <h4 class="mb-0">Bejosticker</h4>
+          <h4 class="mb-0">@yield('title')</h4>
         </div>
         <ul class="navbar-nav flex-row align-items-center ms-auto">
           <!-- User -->
@@ -55,8 +55,8 @@ $navbarDetached = ($navbarDetached ?? '');
                       </div>
                     </div>
                     <div class="flex-grow-1">
-                      <h6 class="mb-0">John Doe</h6>
-                      <small class="text-muted">Admin</small>
+                      <h6 class="mb-0">{{session('data')->name}}</h6>
+                      <small class="text-muted">{{session('data')->level == 1 ? 'Super Admin' : 'Admin'}}</small>
                     </div>
                   </div>
                 </a>

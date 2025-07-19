@@ -13,6 +13,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TokoController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\MetodePembayaranController;
 
 Route::middleware(['global', 'web'])->group(function () {
     Route::prefix('auth')->group(function () {
@@ -24,6 +25,10 @@ Route::middleware(['global', 'web'])->group(function () {
 
     Route::prefix('suppliers')->group(function () {
         Route::get('/', [SupplierController::class, 'index'])->name('suppliers');
+    });
+
+    Route::prefix('metode-pembayaran')->group(function () {
+        Route::get('/', [MetodePembayaranController::class, 'index'])->name('metode-pembayaran');
     });
 
     Route::prefix('products')->group(function () {

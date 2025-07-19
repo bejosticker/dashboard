@@ -26,6 +26,12 @@
       ]
     },
     {
+      "url": "metode-pembayaran",
+      "name": "Metode Pembayaran",
+      "icon": "menu-icon tf-icons bx bx-credit-card",
+      "slug": "metode-pembayaran"
+    },
+    {
       "url": "toko",
       "name": "Toko",
       "icon": "menu-icon tf-icons bx bx-home-circle",
