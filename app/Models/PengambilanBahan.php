@@ -10,6 +10,16 @@ class PengambilanBahan extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name', 'image', 'created_at', 'updated_at'
+        'toko_id', 'product_id', 'price', 'quantity', 'total', 'date', 'created_at', 'updated_at'
     ];
+
+    public function toko()
+    {
+        return $this->belongsTo(Toko::class, 'toko_id', 'id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
 }
