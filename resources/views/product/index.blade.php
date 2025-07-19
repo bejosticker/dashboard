@@ -4,6 +4,20 @@
 
 @section('content')
 @include('layouts/sections/message')
+<div class="card p-4 mb-2">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <form action="" method="GET">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" value="{{ $_GET['search'] ?? '' }}" placeholder="Cari produk..." aria-describedby="button-addon2">
+                    <button class="btn btn-primary" type="submit" id="button-addon2">Cari</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="card">
     <div class="table-responsive text-nowrap">
         <table class="table">
@@ -24,7 +38,7 @@
             <tbody class="table-border-bottom-0">
                 @forelse ($products as $product)
                     <tr>
-                        <td>{{$loop->iteration + (request('page', 1) * 10)}}</td>
+                        <td>{{$loop->iteration + ((request('page', 1) - 1) * 10)}}</td>
                         <td>
                             <div class="rounded" style="width: 64px; height: 64px; border-radius: 8px; overflow: hidden;">
                                 <img src="/assets/img/products/{{ $product->image }}"  class="w-100 h-100"/>

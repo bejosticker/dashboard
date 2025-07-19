@@ -7,11 +7,14 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::orderByRaw('stock_cm < minimum_stock_cm DESC')
+        $search = $request->get('search') ?? '';
+        $products = Product::where('name', 'like', "%{$search}%")
+            ->orderByRaw('stock_cm < minimum_stock_cm DESC')
             ->orderBy('name', 'asc')
             ->paginate(10);
+
         return view('product.index', compact('products'));
     }
 
