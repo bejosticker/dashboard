@@ -12,4 +12,9 @@ class Karyawan extends Model
     protected $fillable = [
         'name', 'month', 'year', 'gaji', 'toko_id', 'created_at', 'updated_at'
     ];
+
+    public function toko()
+    {
+        return $this->belongsTo(Toko::class, 'toko_id', 'id');
+    }
 }

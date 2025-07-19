@@ -53,6 +53,9 @@ Route::middleware(['global', 'web'])->group(function () {
 
     Route::prefix('karyawan')->group(function () {
         Route::get('/', [KaryawanController::class, 'index'])->name('karyawan');
+        Route::post('/', [KaryawanController::class, 'store']);
+        Route::post('/update/{id}', [KaryawanController::class, 'update']);
+        Route::get('/delete/{id}', [KaryawanController::class, 'destroy']);
     });
 
     Route::prefix('gaji')->group(function () {
