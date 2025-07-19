@@ -10,7 +10,7 @@ class GajiItem extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'gaji_id', 'karyawan_id', 'created_at', 'updated_at'
+        'gaji_id', 'karyawan_id', 'amount', 'created_at', 'updated_at'
     ];
 
     public function karyawan()

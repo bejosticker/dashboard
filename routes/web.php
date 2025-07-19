@@ -60,6 +60,9 @@ Route::middleware(['global', 'web'])->group(function () {
 
     Route::prefix('gaji')->group(function () {
         Route::get('/', [GajiController::class, 'index'])->name('gaji');
+        Route::post('/', [GajiController::class, 'store']);
+        Route::get('/detail/{id}', [GajiController::class, 'detail']);
+        Route::get('/delete/{id}', [GajiController::class, 'destroy']);
     });
 
     Route::prefix('users')->group(function () {

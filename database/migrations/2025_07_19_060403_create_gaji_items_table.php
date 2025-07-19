@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('gaji_id')->nullable()->constrained('gaji')->nullOnDelete()->nullOnUpdate();
             $table->foreignId('karyawan_id')->nullable()->constrained('karyawan')->nullOnDelete()->nullOnUpdate();
+            $table->integer('amount');
             $table->timestamps();
         });
     }
