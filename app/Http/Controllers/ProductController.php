@@ -11,7 +11,7 @@ class ProductController extends Controller
     {
         $search = $request->get('search') ?? '';
         $products = Product::where('name', 'like', "%{$search}%")
-            ->orderByRaw('stock_cm < minimum_stock_cm DESC')
+            ->orderByRaw('stock_cm < minimum_stock_cm asc')
             ->orderBy('name', 'asc')
             ->paginate(10);
 
@@ -42,7 +42,6 @@ class ProductController extends Controller
                 'price_ecer_roll' => $request->input('price_ecer_roll'),
                 'price_ecer' => $request->input('price_ecer'),
                 'price_kulak' => $request->input('price_kulak'),
-                'stock_cm' => $request->input('stock_cm'),
                 'per_roll_cm' => $request->input('per_roll_cm'),
                 'minimum_stock_cm' => $request->input('minimum_stock_cm')
             ]);
@@ -80,7 +79,6 @@ class ProductController extends Controller
                 'price_ecer_roll' => $request->input('price_ecer_roll'),
                 'price_ecer' => $request->input('price_ecer'),
                 'price_kulak' => $request->input('price_kulak'),
-                'stock_cm' => $request->input('stock_cm'),
                 'per_roll_cm' => $request->input('per_roll_cm'),
                 'minimum_stock_cm' => $request->input('minimum_stock_cm')
             ]);
