@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Middleware\GlobalMiddleware;
+use App\Http\Controllers\PengambilanBahanController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
@@ -75,6 +75,10 @@ Route::middleware(['global', 'web'])->group(function () {
 
     Route::prefix('kulak')->group(function () {
         Route::get('/', [KulakController::class, 'index'])->name('kulak');
+    });
+
+    Route::prefix('pengambilan-bahan')->group(function () {
+        Route::get('/', [PengambilanBahanController::class, 'index'])->name('pengambilan-bahan');
     });
 
     Route::prefix('pengeluaran')->group(function () {

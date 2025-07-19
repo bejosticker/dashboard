@@ -53,7 +53,7 @@
       "slug": "users"
     },
     {
-      "menuHeader": "Laporan & Kulak"
+      "menuHeader": "Laporan & Stok"
     },
     {
       "url": "reports",
@@ -75,9 +75,15 @@
     },
     {
       "url": "kulak",
-      "name": "Kulak",
+      "name": "Pembelian Bahan",
       "icon": "menu-icon tf-icons bx bx-cart-download",
       "slug": "kulak"
+    },
+    {
+      "url": "pengambilan-bahan",
+      "name": "Pengambilan Bahan",
+      "icon": "menu-icon tf-icons bx bx-cart-alt",
+      "slug": "pengambilan-bahan"
     },
     {
       "menuHeader": "Lainnya"

@@ -10,7 +10,7 @@ class Kulak extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'supplier_id', 'total', 'created_at', 'updated_at'
+        'supplier_id', 'total', 'date', 'created_at', 'updated_at'
     ];
 
     public function items()
