@@ -32,6 +32,9 @@ Route::middleware(['global', 'web'])->group(function () {
 
     Route::prefix('metode-pembayaran')->group(function () {
         Route::get('/', [MetodePembayaranController::class, 'index'])->name('metode-pembayaran');
+        Route::post('/', [MetodePembayaranController::class, 'store']);
+        Route::post('/update/{id}', [MetodePembayaranController::class, 'update']);
+        Route::get('/delete/{id}', [MetodePembayaranController::class, 'destroy']);
     });
 
     Route::prefix('products')->group(function () {

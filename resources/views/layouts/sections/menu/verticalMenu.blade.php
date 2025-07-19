@@ -57,9 +57,9 @@
             <i class="{{ $menu->icon }}"></i>
           @endisset
           <div>{{ isset($menu->name) ? __($menu->name) : '' }}</div>
-          @isset($menu->badge)
-            <div class="badge rounded-pill bg-{{ $menu->badge[0] }} text-uppercase ms-auto">{{ $menu->badge[1] }}</div>
-          @endisset
+          @if(isset($menu->badge) && $menu->name == 'Produk')
+            <div class="badge rounded-pill bg-danger text-uppercase ms-auto">{{ $need_to_kulak_products }}</div>
+          @endif
         </a>
 
         {{-- submenu --}}

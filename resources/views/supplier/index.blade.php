@@ -91,15 +91,13 @@ use Carbon\Carbon;
                 <h5 class="modal-title" id="exampleModalLabel1">Hapus Supplier</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/suppliers/update/{{ $supplier->id }}" method="POST">
-                <div class="modal-body">
-                    <p>Apakah anda yakin menghapus supplier {{ $supplier->name }}?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Batal</button>
-                    <a href="/suppliers/delete/{{ $supplier->id }}" class="btn btn-primary">Hapus</a>
-                </div>
-            </form>
+            <div class="modal-body">
+                <p>Apakah anda yakin menghapus supplier {{ $supplier->name }}?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Batal</button>
+                <a href="/suppliers/delete/{{ $supplier->id }}" class="btn btn-primary">Hapus</a>
+            </div>
         </div>
     </div>
 </div>

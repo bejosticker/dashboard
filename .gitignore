@@ -7,6 +7,14 @@
 !/public/assets/img/products/default.png
 !/public/assets/img/products/.gitkeep
 
+/public/assets/img/karyawan/*
+!/public/assets/img/karyawan/default.jpg
+!/public/assets/img/karyawan/.gitkeep
+
+/public/assets/img/payment-methods/*
+!/public/assets/img/payment-methods/default.jpg
+!/public/assets/img/payment-methods/.gitkeep
+
 .env
 .env.backup
 .env.production

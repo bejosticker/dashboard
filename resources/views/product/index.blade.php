@@ -1,6 +1,3 @@
-@php
-use Carbon\Carbon;
-@endphp
 @extends('layouts/contentNavbarLayout')
 
 @section('title', 'Produk')
@@ -156,7 +153,7 @@ use Carbon\Carbon;
     </div>
 </div>
 @endforeach
-<button type="button" style="bottom: 3rem; right: 2rem;" class="btn position-fixed btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#createproduct"><span class="menu-icon tf-icons bx bx-plus-circle"></span> Tambah product</button>
+<button type="button" style="bottom: 3rem; right: 2rem;" class="btn position-fixed btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#createproduct"><span class="menu-icon tf-icons bx bx-plus-circle"></span> Tambah Produk</button>
 <div class="modal fade" id="createproduct" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
