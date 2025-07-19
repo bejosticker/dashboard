@@ -9,7 +9,9 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::orderBy('name', 'asc')->paginate(10);
+        $products = Product::orderByRaw('stock_cm < minimum_stock_cm DESC')
+            ->orderBy('name', 'asc')
+            ->paginate(10);
         return view('product.index', compact('products'));
     }
 
