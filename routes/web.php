@@ -46,6 +46,9 @@ Route::middleware(['global', 'web'])->group(function () {
 
     Route::prefix('toko')->group(function () {
         Route::get('/', [TokoController::class, 'index'])->name('toko');
+        Route::post('/', [TokoController::class, 'store']);
+        Route::post('/update/{id}', [TokoController::class, 'update']);
+        Route::get('/delete/{id}', [TokoController::class, 'destroy']);
     });
 
     Route::prefix('karyawan')->group(function () {

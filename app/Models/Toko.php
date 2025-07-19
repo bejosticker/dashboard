@@ -10,6 +10,6 @@ class Toko extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name', 'description', 'created_at', 'updated_at'
+        'name', 'description', 'type', 'created_at', 'updated_at'
     ];
 }
