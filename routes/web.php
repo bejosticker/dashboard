@@ -36,6 +36,9 @@ Route::middleware(['global', 'web'])->group(function () {
 
     Route::prefix('products')->group(function () {
         Route::get('/', [ProductController::class, 'index'])->name('products');
+        Route::post('/', [ProductController::class, 'store']);
+        Route::post('/update/{id}', [ProductController::class, 'update']);
+        Route::get('/delete/{id}', [ProductController::class, 'destroy']);
     });
 
     Route::prefix('toko')->group(function () {

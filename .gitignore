@@ -3,6 +3,9 @@
 
 /storage/*.key
 /vendor
+/public/assets/img/products/*
+!/public/assets/img/products/default.png
+!/public/assets/img/products/.gitkeep
 
 .env
 .env.backup
