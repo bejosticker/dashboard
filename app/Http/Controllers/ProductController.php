@@ -9,9 +9,6 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $product = Product::find(4);
-        $newProduct = $product->replicate();
-        $newProduct->save();
         $products = Product::orderBy('name', 'asc')->paginate(10);
         return view('product.index', compact('products'));
     }
