@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('payment_method_id')->nullable()->constrained('payment_methods')->nullOnDelete()->nullOnUpdate();
             $table->string('customer');
             $table->date('date');
             $table->string('price_type');

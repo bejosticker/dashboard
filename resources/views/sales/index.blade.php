@@ -31,6 +31,7 @@
                     <th>Total Nominal</th>
                     <th>Total Produk</th>
                     <th>Jenis Harga</th>
+                    <th>Metode Pembayaran</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -43,6 +44,7 @@
                         <td>{{formatRupiah($sale->total)}}</td>
                         <td>{{count($sale->items)}} Produk</td>
                         <td>{{ convertPriceType($sale->price_type) }}</td>
+                        <td>{{ $sale->paymentMethod?->name ?? '-' }}</td>
                         <td>
                             <button class="btn btn-success btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#detailsale{{ $sale->id }}"><span class="menu-icon tf-icons bx bx-info-circle"></span> Rincian</button>
                             <button class="btn btn-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#deletesale{{ $sale->id }}"><span class="menu-icon tf-icons bx bx-trash"></span> Hapus</button>

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\PaymentMethod;
 use App\Models\Sale;
 use App\Models\SaleItems;
 use Livewire\Component;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Log;
 class SalesForm extends Component
 {
     public $products = [];
+    public $paymentMethods = [];
     public $items = [];
     public $prices = ['price_agent', 'price_grosir', 'price_ecer_roll', 'price_ecer'];
     public $customer = '';
@@ -21,11 +23,14 @@ class SalesForm extends Component
     public $discount = 0;
     public $date = '';
     public $price_type = '';
+    public $payment_method_id = '';
 
     public function mount()
     {
         $this->products = Product::orderBy('name', 'asc')->get()->toArray();
+        $this->paymentMethods = PaymentMethod::orderBy('name', 'asc')->get()->toArray();
         $this->customer = '';
+        $this->payment_method_id = '';
         $this->date = '';
         $this->discount = 0;
         $this->calculateTotal();
@@ -91,12 +96,14 @@ class SalesForm extends Component
             'customer' => 'nullable',
             'price_type' => 'required',
             'date' => 'required',
+            'payment_method_id' => 'required',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.jumlah' => 'required|numeric|min:1',
             'items.*.harga' => 'required|numeric|min:0',
         ]);
 
         $sale = Sale::create([
+            'payment_method_id' => $this->payment_method_id,
             'customer' => $this->customer ?? '-',
             'price_type' => $this->price_type,
             'discount' => $this->discount,

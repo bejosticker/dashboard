@@ -10,7 +10,7 @@ class SalesController extends Controller
 {
     public function index()
     {
-        $sales = Sale::with(['items.product'])
+        $sales = Sale::with(['items.product', 'paymentMethod'])
             ->withCount('items')
             ->withSum('items', 'subtotal')
             ->orderBy('id', 'desc')
