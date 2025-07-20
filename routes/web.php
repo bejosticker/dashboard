@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PengambilanBahanController;
+use App\Http\Controllers\SalesController;
 use App\Http\Controllers\TokoIncomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -22,83 +23,88 @@ Route::middleware(['global', 'web'])->group(function () {
         Route::post('/login', [AuthController::class, 'login']);
         Route::get('/logout', [AuthController::class, 'logout']);
     });
-    Route::get('/', [HomeController::class, 'index'])->name('beranda');
+    Route::get('/', [HomeController::class, 'index']);
 
     Route::prefix('suppliers')->group(function () {
-        Route::get('/', [SupplierController::class, 'index'])->name('suppliers');
+        Route::get('/', [SupplierController::class, 'index']);
         Route::post('/', [SupplierController::class, 'store']);
         Route::post('/update/{id}', [SupplierController::class, 'update']);
         Route::get('/delete/{id}', [SupplierController::class, 'destroy']);
     });
 
     Route::prefix('metode-pembayaran')->group(function () {
-        Route::get('/', [MetodePembayaranController::class, 'index'])->name('metode-pembayaran');
+        Route::get('/', [MetodePembayaranController::class, 'index']);
         Route::post('/', [MetodePembayaranController::class, 'store']);
         Route::post('/update/{id}', [MetodePembayaranController::class, 'update']);
         Route::get('/delete/{id}', [MetodePembayaranController::class, 'destroy']);
     });
 
     Route::prefix('products')->group(function () {
-        Route::get('/', [ProductController::class, 'index'])->name('products');
+        Route::get('/', [ProductController::class, 'index']);
         Route::post('/', [ProductController::class, 'store']);
         Route::post('/update/{id}', [ProductController::class, 'update']);
         Route::get('/delete/{id}', [ProductController::class, 'destroy']);
     });
 
     Route::prefix('toko')->group(function () {
-        Route::get('/', [TokoController::class, 'index'])->name('toko');
+        Route::get('/', [TokoController::class, 'index']);
         Route::post('/', [TokoController::class, 'store']);
         Route::post('/update/{id}', [TokoController::class, 'update']);
         Route::get('/delete/{id}', [TokoController::class, 'destroy']);
     });
 
     Route::prefix('karyawan')->group(function () {
-        Route::get('/', [KaryawanController::class, 'index'])->name('karyawan');
+        Route::get('/', [KaryawanController::class, 'index']);
         Route::post('/', [KaryawanController::class, 'store']);
         Route::post('/update/{id}', [KaryawanController::class, 'update']);
         Route::get('/delete/{id}', [KaryawanController::class, 'destroy']);
     });
 
     Route::prefix('gaji')->group(function () {
-        Route::get('/', [GajiController::class, 'index'])->name('gaji');
+        Route::get('/', [GajiController::class, 'index']);
         Route::post('/', [GajiController::class, 'store']);
         Route::get('/detail/{id}', [GajiController::class, 'detail']);
         Route::get('/delete/{id}', [GajiController::class, 'destroy']);
     });
 
     Route::prefix('users')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->name('users');
+        Route::get('/', [UserController::class, 'index']);
+    });
+
+    Route::prefix('sales')->group(function () {
+        Route::get('/', [SalesController::class, 'index']);
+        Route::get('/delete/{id}', [SalesController::class, 'destroy']);
     });
 
     Route::prefix('reports')->group(function () {
-        Route::get('/', [ReportController::class, 'index'])->name('reports');
+        Route::get('/', [ReportController::class, 'index']);
     });
 
     Route::prefix('kulak')->group(function () {
-        Route::get('/', [KulakController::class, 'index'])->name('kulak');
+        Route::get('/', [KulakController::class, 'index']);
     });
 
     Route::prefix('pengambilan-bahan')->group(function () {
-        Route::get('/', [PengambilanBahanController::class, 'index'])->name('pengambilan-bahan');
+        Route::get('/', [PengambilanBahanController::class, 'index']);
         Route::post('/', [PengambilanBahanController::class, 'store']);
         Route::get('/delete/{id}', [PengambilanBahanController::class, 'destroy']);
     });
 
     Route::prefix('pengambilan-bahan')->group(function () {
-        Route::get('/', [PengambilanBahanController::class, 'index'])->name('pengambilan-bahan');
+        Route::get('/', [PengambilanBahanController::class, 'index']);
         Route::post('/', [PengambilanBahanController::class, 'store']);
         Route::get('/delete/{id}', [PengambilanBahanController::class, 'destroy']);
     });
 
     Route::prefix('toko-income')->group(function () {
-        Route::get('/', [TokoIncomeController::class, 'index'])->name('pengeluaran');
+        Route::get('/', [TokoIncomeController::class, 'index']);
         Route::post('/', [TokoIncomeController::class, 'store']);
         Route::post('/update/{id}', [TokoIncomeController::class, 'update']);
         Route::get('/delete/{id}', [TokoIncomeController::class, 'destroy']);
     });
 
     Route::prefix('pengeluaran')->group(function () {
-        Route::get('/', [PengeluaranController::class, 'index'])->name('pengeluaran');
+        Route::get('/', [PengeluaranController::class, 'index']);
         Route::post('/', [PengeluaranController::class, 'store']);
         Route::post('/update/{id}', [PengeluaranController::class, 'update']);
         Route::get('/delete/{id}', [PengeluaranController::class, 'destroy']);

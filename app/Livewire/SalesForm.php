@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Models\Sale;
+use App\Models\SaleItems;
 use Livewire\Component;
 use App\Models\Product;
 use App\Models\Supplier;
@@ -9,27 +11,29 @@ use App\Models\Kulak;
 use App\Models\KulakItem;
 use Illuminate\Support\Facades\Log;
 
-class KulakForm extends Component
+class SalesForm extends Component
 {
     public $products = [];
     public $items = [];
-    public $suppliers = [];
-    public $supplierId = '';
+    public $prices = ['price_agent', 'price_grosir', 'price_ecer_roll', 'price_ecer'];
+    public $customer = '';
     public $total = 0;
+    public $discount = 0;
     public $date = '';
+    public $price_type = '';
 
     public function mount()
     {
-        $this->products = Product::select('id', 'name', 'price_agent as harga')->get()->toArray();
-        $this->suppliers = Supplier::select('id', 'name')->get()->toArray();
-        $this->supplierId = '';
+        $this->products = Product::orderBy('name', 'asc')->get()->toArray();
+        $this->customer = '';
         $this->date = '';
+        $this->discount = 0;
         $this->calculateTotal();
     }
 
     public function addItem()
     {
-        $this->items[] = ['product_id' => '', 'jumlah' => 1, 'harga' => 0, 'subtotal' => 0];
+        $this->items[] = ['product_id' => '', 'jumlah' => 0, 'harga' => 0, 'subtotal' => 0];
         $this->calculateTotal();
     }
 
@@ -60,36 +64,42 @@ class KulakForm extends Component
 
             if ($field === 'product_id') {
                 $product = collect($this->products)->firstWhere('id', $this->items[$index]['product_id']);
-                $this->items[$index]['harga'] = $product['harga'] ?? 0;
+                $this->items[$index]['harga'] = $product[$this->price_type] ?? 0;
             }
 
             $jumlah = (float)($this->items[$index]['jumlah'] ?? 0);
             $harga = (float)($this->items[$index]['harga'] ?? 0);
 
-            $this->items[$index]['subtotal'] = $jumlah * $harga;
+            $productData = Product::where('id', $this->items[$index]['product_id'])->first();
+            $this->items[$index]['subtotal'] = ceil($jumlah / $productData->per_roll_cm * $harga);
             $this->calculateTotal();
+        }
+
+        if ($propertyName == 'price_type') {
+            $this->items = [];
         }
     }
 
     public function calculateTotal()
     {
-        $this->total = collect($this->items)->sum('subtotal');
+        $this->total = collect($this->items)->sum('subtotal') - $this->discount;
     }
 
     public function save()
     {
-        $total = collect($this->items)->sum('subtotal');
-
         $this->validate([
-            'supplierId' => 'required|exists:suppliers,id',
+            'customer' => 'nullable',
+            'price_type' => 'required',
             'date' => 'required',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.jumlah' => 'required|numeric|min:1',
             'items.*.harga' => 'required|numeric|min:0',
         ]);
 
-        $kulak = Kulak::create([
-            'supplier_id' => $this->supplierId,
+        $sale = Sale::create([
+            'customer' => $this->customer ?? '-',
+            'price_type' => $this->price_type,
+            'discount' => $this->discount,
             'total' => $this->total,
             'date' => $this->date
         ]);
@@ -97,16 +107,15 @@ class KulakForm extends Component
         foreach ($this->items as $item) {
             $product = Product::where('id', $item['product_id'])->first();
 
-            KulakItem::create([
-                'kulak_id' => $kulak->id,
+            SaleItems::create([
+                'sale_id' => $sale->id,
                 'product_id' => $item['product_id'],
                 'price' => $item['harga'],
-                'rolls' => $item['jumlah'],
-                'per_roll_cm' => $product->per_roll_cm,
+                'quantity' => $item['jumlah'],
                 'subtotal' => $item['subtotal'],
             ]);
 
-            $product->stock_cm = ($product->stock_cm ?? 0) + ($item['jumlah'] * $product->per_roll_cm);
+            $product->stock_cm = ($product->stock_cm ?? 0) - $item['jumlah'];
             $product->save();
         }
 
@@ -119,13 +128,14 @@ class KulakForm extends Component
     public function resetForm()
     {
         $this->items = [];
-        $this->supplierId = '';
+        $this->customer = '';
         $this->date = '';
+        $this->price_type = '';
         $this->total = 0;
     }
 
     public function render()
     {
-        return view('livewire.kulak-form');
+        return view('livewire.sales-form');
     }
 }

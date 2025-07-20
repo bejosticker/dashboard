@@ -53,7 +53,13 @@
       "slug": "users"
     },
     {
-      "menuHeader": "Laporan & Stok"
+      "menuHeader": "Laporan, Penjualan & Stok"
+    },
+    {
+      "url": "sales",
+      "name": "Penjualan",
+      "icon": "menu-icon tf-icons bx bx-cart-add",
+      "slug": "sales"
     },
     {
       "url": "reports",
