@@ -106,10 +106,15 @@ class KulakForm extends Component
                 'per_roll_cm' => $product->per_roll_cm,
                 'subtotal' => $item['subtotal'],
             ]);
+
+            $product->stock_cm = ($product->stock_cm ?? 0) + ($item['jumlah'] * $product->per_roll_cm);
+            $product->save();
         }
 
         session()->flash('success', 'Data berhasil disimpan!');
         $this->resetForm();
+        sleep(1);
+        return redirect(request()->header('Referer'));
     }
 
     public function resetForm()

@@ -9,7 +9,7 @@ class KulakController extends Controller
 {
     public function index()
     {
-        $kulaks = Kulak::with('items.product')
+        $kulaks = Kulak::with(['items.product', 'supplier'])
             ->withCount('items')
             ->withSum('items', 'subtotal')
             ->orderBy('id', 'desc')

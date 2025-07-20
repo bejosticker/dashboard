@@ -10,7 +10,7 @@ class KulakItem extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'product_id', 'price', 'rolls', 'per_roll_cm', 'subtotal', 'created_at', 'updated_at'
+        'product_id', 'kulak_id', 'price', 'rolls', 'per_roll_cm', 'subtotal', 'created_at', 'updated_at'
     ];
 
     public function product()

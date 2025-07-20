@@ -1,5 +1,4 @@
 @php
-    use Carbon\Carbon;
     $items = $gaji->items->toArray();
     $half = ceil(count($items) / 2);
     $left = array_slice($items, 0, $half);
