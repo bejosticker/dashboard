@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PengambilanBahanController;
+use App\Http\Controllers\TokoIncomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
@@ -79,6 +80,21 @@ Route::middleware(['global', 'web'])->group(function () {
 
     Route::prefix('pengambilan-bahan')->group(function () {
         Route::get('/', [PengambilanBahanController::class, 'index'])->name('pengambilan-bahan');
+        Route::post('/', [PengambilanBahanController::class, 'store']);
+        Route::get('/delete/{id}', [PengambilanBahanController::class, 'destroy']);
+    });
+
+    Route::prefix('pengambilan-bahan')->group(function () {
+        Route::get('/', [PengambilanBahanController::class, 'index'])->name('pengambilan-bahan');
+        Route::post('/', [PengambilanBahanController::class, 'store']);
+        Route::get('/delete/{id}', [PengambilanBahanController::class, 'destroy']);
+    });
+
+    Route::prefix('toko-income')->group(function () {
+        Route::get('/', [TokoIncomeController::class, 'index'])->name('pengeluaran');
+        Route::post('/', [TokoIncomeController::class, 'store']);
+        Route::post('/update/{id}', [TokoIncomeController::class, 'update']);
+        Route::get('/delete/{id}', [TokoIncomeController::class, 'destroy']);
     });
 
     Route::prefix('pengeluaran')->group(function () {

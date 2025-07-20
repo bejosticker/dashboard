@@ -37,7 +37,7 @@
             </thead>
             <tbody class="table-border-bottom-0">
                 @forelse ($products as $product)
-                    <tr>
+                    <tr @if($product->stock_cm < $product->minimum_stock_cm) style="background-color: #ffe5e5;" @endif>
                         <td>{{$loop->iteration + ((request('page', 1) - 1) * 10)}}</td>
                         <td>
                             <div class="rounded" style="width: 64px; height: 64px; border-radius: 8px; overflow: hidden;">

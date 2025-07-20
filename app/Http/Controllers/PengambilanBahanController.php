@@ -17,9 +17,52 @@ class PengambilanBahanController extends Controller
 
         $tokos = Toko::orderBy('name', 'asc')->get();
 
-        $products = Product::whereColumn('stock_cm', '<', 'minimum_stock_cm')
+        $products = Product::where('stock_cm', '>', 0)
             ->orderBy('name', 'asc')
             ->get();
+
         return view('pengambilan-bahan.index', compact('datas', 'tokos', 'products'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'toko_id' => 'nullable|exists:toko,id',
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required',
+            'date' => 'required'
+        ]);
+
+        $product = Product::where('id', $request->input('product_id'))->first();
+        if ($request->input('quantity') > ($product->stock_cm / $product->per_roll_cm)) {
+            return back()->withErrors(['Quantity melebihi stock']);
+        }
+
+        PengambilanBahan::create([
+            'toko_id' => $request->input('toko_id'),
+            'product_id' => $request->input('product_id'),
+            'price' => $product->price_agent,
+            'quantity' => $request->input('quantity'),
+            'total' => $product->price_agent * $request->input('quantity'),
+            'date' => $request->input('date')
+        ]);
+
+        $product->stock_cm = $product->stock_cm - ($request->input('quantity') * $product->per_roll_cm);
+        $product->save();
+
+        return back()->with('success', 'Pengambilan barang berhasil disimpan');
+    }
+
+    public function destroy($id)
+    {
+        $data = PengambilanBahan::where('id', $id)->with('product')->first();
+        Product::where('id', $data->product->id)
+            ->update([
+                'stock_cm' => $data->product->stock_cm + ($data->quantity * $data->product->per_roll_cm)
+            ]);
+
+        PengambilanBahan::where('id', $id)->delete();
+
+        return redirect()->back()->with('success', 'Pengambilan bahan berhasil dihapus.');
     }
 }

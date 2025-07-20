@@ -31,7 +31,7 @@
       $activeClass = null;
       $currentRouteName = Route::currentRouteName();
 
-      if ($currentRouteName === $menu->slug || str(url()->current())->contains($menu->slug)) {
+      if (request()->segment(1) == $menu->slug) {
         $activeClass = 'active';
       }
       elseif (isset($menu->submenu)) {
