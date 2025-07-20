@@ -99,6 +99,7 @@ class KulakForm extends Component
             $product = Product::where('id', $item['product_id'])->first();
 
             KulakItem::create([
+                'kulak_id' => $kulak->id,
                 'product_id' => $item['product_id'],
                 'price' => $item['harga'],
                 'rolls' => $item['jumlah'],
