@@ -84,8 +84,10 @@
     "boxicons": "2.1.4",
     "highlight.js": "11.9.0",
     "jquery": "3.7.1",
+    "laravel-vite-plugin": "1.0.1",
     "masonry-layout": "4.2.2",
     "perfect-scrollbar": "1.5.5",
-    "laravel-vite-plugin": "1.0.1"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   }
 }

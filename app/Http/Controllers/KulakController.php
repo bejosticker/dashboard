@@ -14,6 +14,7 @@ class KulakController extends Controller
             ->withSum('items', 'subtotal')
             ->orderBy('id', 'desc')
             ->paginate(10);
+
         return view('kulak.index', compact('kulaks'));
     }
 }

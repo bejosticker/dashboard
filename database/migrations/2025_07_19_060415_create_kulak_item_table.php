@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('kulak_item', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('kulak_id')->nullable()->constrained('kulak')->nullOnDelete()->nullOnUpdate();
             $table->foreignId('product_id')->nullable()->constrained('products')->nullOnDelete()->nullOnUpdate();
             $table->integer('price');
             $table->integer('rolls');
