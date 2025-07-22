@@ -8,6 +8,15 @@
 @section('content')
 <div class="card p-4">
     <form class="row d-flex-row align-items-end" method="GET">
+        <div class="col-md-4">
+            <label class="form-label">Metode Pembayaran</label>
+            <select name="payment_method_id" class="form-control">
+                <option value="">Pilih Metode Pembayaran</option>
+                @foreach ($paymentMethods as $payment_method)
+                    <option value="{{ $payment_method->id }}" {{ ($_GET['payment_method_id'] ?? '') == $payment_method->id ? 'selected' : '' }}>{{ $payment_method->name }}</option>
+                @endforeach
+            </select>
+        </div>
         <div class="col-md-3">
             <label class="form-label">Tanggal Awal:</label>
             <input type="date" name="from" class="form-control" value="{{ $_GET['from'] ?? '' }}">
