@@ -25,11 +25,14 @@ class MenuServiceProvider extends ServiceProvider
   {
     $verticalMenuJson = file_get_contents(base_path('resources/menu/verticalMenu.json'));
     $verticalMenuData = json_decode($verticalMenuJson);
-    $count = Product::whereColumn('stock_cm', '<', 'minimum_stock_cm')->count();
-    \Log::info($count);
+    if (Schema::hasTable('products')) {
+      $count = Product::whereColumn('stock_cm', '<', 'minimum_stock_cm')->count();
+    }
 
     // Share all menuData to all the views
     $this->app->make('view')->share('menuData', [$verticalMenuData]);
-    $this->app->make('view')->share('need_to_kulak_products', $count);
+    if (Schema::hasTable('products')) {
+      $this->app->make('view')->share('need_to_kulak_products', $count);
+    }
   }
 }
