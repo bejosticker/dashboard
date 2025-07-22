@@ -26,6 +26,7 @@ class MenuServiceProvider extends ServiceProvider
     $verticalMenuJson = file_get_contents(base_path('resources/menu/verticalMenu.json'));
     $verticalMenuData = json_decode($verticalMenuJson);
     $count = Product::whereColumn('stock_cm', '<', 'minimum_stock_cm')->count();
+    \Log::info($count);
 
     // Share all menuData to all the views
     $this->app->make('view')->share('menuData', [$verticalMenuData]);
