@@ -1,10 +1,19 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Laporan Keuangan')
+@section('title', 'Laporan Toko')
 
 @section('content')
 <div class="card p-4">
     <form class="row d-flex-row align-items-end" method="GET">
+        <div class="col-md-4">
+            <label class="form-label">Toko</label>
+            <select name="toko_id" class="form-control">
+                <option value="">Pilih Toko</option>
+                @foreach ($tokos as $toko)
+                    <option value="{{ $toko->id }}" {{ ($_GET['toko_id'] ?? '') == $toko->id ? 'selected' : '' }}>{{ $toko->name }}</option>
+                @endforeach
+            </select>
+        </div>
         <div class="col-md-3">
             <label class="form-label">Tanggal Awal:</label>
             <input type="date" name="from" class="form-control" value="{{ $_GET['from'] ?? '' }}">

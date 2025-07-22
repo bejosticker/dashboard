@@ -6,21 +6,31 @@
 @section('title', 'Pembelian Bahan')
 
 @section('content')
-<div class="card p-4 mb-4">
-    <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-            <form action="" method="GET">
-                <div class="input-group">
-                    <input type="text" name="search" class="form-control" value="{{ $_GET['search'] ?? '' }}" placeholder="Cari pembelianBahan..." aria-describedby="button-addon2">
-                    <button class="btn btn-primary" type="submit" id="button-addon2">Cari</button>
-                </div>
-            </form>
+<div class="card p-4">
+    <form class="row d-flex-row align-items-end" method="GET">
+        <div class="col-md-3">
+            <label class="form-label">Supplier</label>
+            <select name="supplier_id" class="form-control">
+                <option value="">Pilih Supplier</option>
+                @foreach ($suppliers as $supplier)
+                    <option value="{{ $supplier->id }}" {{ ($_GET['supplier_id'] ?? '') == $supplier->id ? 'selected' : '' }}>{{ $supplier->name }}</option>
+                @endforeach
+            </select>
         </div>
-    </div>
+        <div class="col-md-3">
+            <label class="form-label">Tanggal Awal:</label>
+            <input type="date" name="from" class="form-control" value="{{ $_GET['from'] ?? '' }}">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Tanggal Akhir:</label>
+            <input type="date" name="to" class="form-control" value="{{ $_GET['to'] ?? '' }}">
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary">Filter Pengambilan Bahan</button>
+        </div>
+    </form>
 </div>
-<div class="card">
+<div class="card mt-4">
     <div class="table-responsive text-nowrap">
         <table class="table">
             <thead>

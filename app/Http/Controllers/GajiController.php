@@ -14,7 +14,7 @@ class GajiController extends Controller
         $gajis = Gaji::with('items.karyawan')
             ->withCount('items')
             ->withSum('items', 'amount')
-            ->orderBy('id', 'desc')
+            ->orderBy('date', 'desc')
             ->paginate(10);
 
         return view('gaji.index', compact('gajis'));
@@ -24,7 +24,8 @@ class GajiController extends Controller
     {
         $gaji = Gaji::create([
             'month' => $request->month,
-            'year' => $request->year
+            'year' => $request->year,
+            'date' => $request->date
         ]);
 
         $karyawans = Karyawan::orderBy('name', 'asc')->get();

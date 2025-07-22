@@ -1,3 +1,6 @@
+@php
+    use Carbon\Carbon;
+@endphp
 @extends('layouts/contentNavbarLayout')
 
 @section('title', 'Gaji')
@@ -12,8 +15,9 @@
                     <th>#</th>
                     <th>Bulan</th>
                     <th>Tahun</th>
+                    <th>Tanggal Gaji</th>
                     <th>Karyawan</th>
-                    <th>Total</th>
+                    <th>Total Gaji</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -23,6 +27,7 @@
                         <td>{{$loop->iteration}}</td>
                         <td>{{$gaji->month}}</td>
                         <td>{{$gaji->year}}</td>
+                        <td>{{Carbon::parse($gaji->date)->locale('id')->translatedFormat('d F Y')}}</td>
                         <td>{{$gaji->items_count}}</td>
                         <td>{{formatRupiah($gaji->items_sum_amount)}}</td>
                         <td>
@@ -32,7 +37,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center">Belum ada data gaji.</td>
+                        <td colspan="7" class="text-center">Belum ada data gaji.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -95,6 +100,12 @@
                         <div class="col mb-0">
                             <label class="form-label">Tahun</label>
                             <input type="number" name="year" class="form-control" required placeholder="2019">
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col mb-0">
+                            <label class="form-label">Tanggal Gaji:</label>
+                            <input type="date" name="date" class="form-control" required>
                         </div>
                     </div>
                     <div class="alert alert-info d-flex align-items-center gap-2 mt-4" role="alert">

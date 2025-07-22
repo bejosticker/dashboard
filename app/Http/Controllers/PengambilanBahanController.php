@@ -9,9 +9,29 @@ use App\Models\Toko;
 
 class PengambilanBahanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $datas = PengambilanBahan::with(['product', 'toko'])
+        $from = $request->from;
+        $to = $request->to;
+        $toko_id = $request->toko_id;
+
+        if (!$request->from || !$request->to) {
+            $defaultFrom = now()->startOfMonth()->toDateString();
+            $defaultTo = now()->toDateString();
+
+            return redirect()->route('pengambilan-bahan', array_merge($request->all(), [
+                'from' => $request->from ?? $defaultFrom,
+                'to' => $request->to ?? $defaultTo,
+                'toko_id' => $toko_id ?? ''
+            ]));
+        }
+
+        $datas = PengambilanBahan::with(['product', 'toko']);
+        if ($toko_id) {
+            $datas = $datas->where('toko_id', $toko_id);
+        }
+        
+        $datas = $datas->whereBetween('date', [$from, $to])
             ->orderBy('id', 'desc')
             ->paginate(10);
 

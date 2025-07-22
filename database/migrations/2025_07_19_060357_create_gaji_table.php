@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('month');
             $table->string('year');
+            $table->date('date');
             $table->timestamps();
         });
     }

@@ -23,7 +23,7 @@ Route::middleware(['global', 'web'])->group(function () {
         Route::post('/login', [AuthController::class, 'login']);
         Route::get('/logout', [AuthController::class, 'logout']);
     });
-    Route::get('/', [HomeController::class, 'index']);
+    Route::get('/', [HomeController::class, 'index'])->name('beranda');
 
     Route::prefix('suppliers')->group(function () {
         Route::get('/', [SupplierController::class, 'index']);
@@ -72,39 +72,37 @@ Route::middleware(['global', 'web'])->group(function () {
     });
 
     Route::prefix('sales')->group(function () {
-        Route::get('/', [SalesController::class, 'index']);
+        Route::get('/', [SalesController::class, 'index'])->name('sales');
         Route::get('/delete/{id}', [SalesController::class, 'destroy']);
     });
 
     Route::prefix('reports')->group(function () {
-        Route::get('/', [ReportController::class, 'index']);
+        Route::get('/', [ReportController::class, 'index'])->name('reports');
+    });
+
+    Route::prefix('toko-reports')->group(function () {
+        Route::get('/', [ReportController::class, 'tokoReport'])->name('toko-reports');
     });
 
     Route::prefix('kulak')->group(function () {
-        Route::get('/', [KulakController::class, 'index']);
+        Route::get('/', [KulakController::class, 'index'])->name('kulak');
     });
 
     Route::prefix('pengambilan-bahan')->group(function () {
-        Route::get('/', [PengambilanBahanController::class, 'index']);
-        Route::post('/', [PengambilanBahanController::class, 'store']);
-        Route::get('/delete/{id}', [PengambilanBahanController::class, 'destroy']);
-    });
-
-    Route::prefix('pengambilan-bahan')->group(function () {
-        Route::get('/', [PengambilanBahanController::class, 'index']);
+        Route::get('/', [PengambilanBahanController::class, 'index'])->name('pengambilan-bahan');
         Route::post('/', [PengambilanBahanController::class, 'store']);
         Route::get('/delete/{id}', [PengambilanBahanController::class, 'destroy']);
     });
 
     Route::prefix('toko-income')->group(function () {
-        Route::get('/', [TokoIncomeController::class, 'index']);
+        Route::get('/', [TokoIncomeController::class, 'index'])->name('toko-income');
         Route::post('/', [TokoIncomeController::class, 'store']);
         Route::post('/update/{id}', [TokoIncomeController::class, 'update']);
         Route::get('/delete/{id}', [TokoIncomeController::class, 'destroy']);
     });
 
     Route::prefix('pengeluaran')->group(function () {
-        Route::get('/', [PengeluaranController::class, 'index']);
+        Route::get('/', [PengeluaranController::class, 'index'])->name('pengeluaran');
         Route::post('/', [PengeluaranController::class, 'store']);
         Route::post('/update/{id}', [PengeluaranController::class, 'update']);
         Route::get('/delete/{id}', [PengeluaranController::class, 'destroy']);

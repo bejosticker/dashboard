@@ -10,10 +10,26 @@ class TokoIncomeController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->get('search') ?? '';
-        $incomes = TokoIncome::where('name', 'like', "%{$search}%")
-            ->with('toko')
-            ->paginate(10);
+        $from = $request->from;
+        $to = $request->to;
+        $toko_id = $request->toko_id;
+
+        if (!$request->from || !$request->to) {
+            $defaultFrom = now()->startOfMonth()->toDateString();
+            $defaultTo = now()->toDateString();
+
+            return redirect()->route('toko-income', array_merge($request->all(), [
+                'from' => $request->from ?? $defaultFrom,
+                'to' => $request->to ?? $defaultTo,
+                'toko_id' => $toko_id ?? ''
+            ]));
+        }
+        $incomes = TokoIncome::whereBetween('date', [$from, $to]);
+        if ($toko_id) {
+            $incomes = $incomes->where('toko_id', $toko_id);
+        }
+        
+        $incomes = $incomes->with('toko')->paginate(10);
 
         $tokos = Toko::orderBy('name', 'asc')->get();
 

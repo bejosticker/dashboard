@@ -7,19 +7,29 @@ use Carbon\Carbon;
 
 @section('content')
 @include('layouts/sections/message')
-<div class="card p-4 mb-4">
-    <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4"></div>
+<div class="card p-4">
+    <form class="row d-flex-row align-items-end" method="GET">
         <div class="col-md-4">
-            <form action="" method="GET">
-                <div class="input-group">
-                    <input type="text" name="search" class="form-control" value="{{ $_GET['search'] ?? '' }}" placeholder="Cari pengeluaran..." aria-describedby="button-addon2">
-                    <button class="btn btn-primary" type="submit" id="button-addon2">Cari</button>
-                </div>
-            </form>
+            <label class="form-label">Toko</label>
+            <select name="toko_id" class="form-control">
+                <option value="">Pilih Toko</option>
+                @foreach ($tokos as $toko)
+                    <option value="{{ $toko->id }}" {{ ($_GET['toko_id'] ?? '') == $toko->id ? 'selected' : '' }}>{{ $toko->name }}</option>
+                @endforeach
+            </select>
         </div>
-    </div>
+        <div class="col-md-3">
+            <label class="form-label">Tanggal Awal:</label>
+            <input type="date" name="from" class="form-control" value="{{ $_GET['from'] ?? '' }}">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Tanggal Akhir:</label>
+            <input type="date" name="to" class="form-control" value="{{ $_GET['to'] ?? '' }}">
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary">Filter Laporan</button>
+        </div>
+    </form>
 </div>
 <div class="card">
     <div class="table-responsive text-nowrap">

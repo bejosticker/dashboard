@@ -10,7 +10,7 @@ class Gaji extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'month', 'year', 'created_at', 'updated_at'
+        'month', 'year', 'date', 'created_at', 'updated_at'
     ];
 
     public function items()

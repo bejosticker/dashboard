@@ -63,21 +63,15 @@
     },
     {
       "url": "reports",
-      "name": "laporan Cetak",
-      "icon": "menu-icon tf-icons bx bx-line-chart-down",
-      "slug": "reports"
-    },
-    {
-      "url": "reports",
       "name": "Laporan Keuangan",
       "icon": "menu-icon tf-icons bx bx-line-chart",
       "slug": "reports"
     },
     {
-      "url": "reports",
+      "url": "toko-reports",
       "name": "Laporan Toko",
       "icon": "menu-icon tf-icons bx bx-bar-chart-alt-2",
-      "slug": "reports"
+      "slug": "toko-reports"
     },
     {
       "url": "kulak",
