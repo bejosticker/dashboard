@@ -21,7 +21,7 @@
 </div>
 @if (count($reports) == 0)
     <div class="card p-4 mt-4">
-        <p>Tidak ada data laporan.</p>
+        <p class="text-center">Tidak ada data laporan.</p>
     </div>
     @else
         @foreach ($reports as $report)
