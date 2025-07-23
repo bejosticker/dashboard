@@ -43,7 +43,7 @@
           }
         }
         else{
-          if (str_contains($currentRouteName,$menu->slug) and strpos($currentRouteName,$menu->slug) === 0) {
+          if (in_array($currentRouteName, ['toko-supplier', 'products', 'toko', 'suppliers', 'metode-pembayaran', 'karyawan', 'gaji', 'users'])) {
             $activeClass = 'active open';
           }
         }

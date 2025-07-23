@@ -10,41 +10,41 @@
       "menuHeader": "Manajemen & Data"
     },
     {
-      "url": "toko-supplier",
-      "name": "Toko & Supplier",
-      "icon": "menu-icon tf-icons bx bx-home-circle",
-      "slug": "toko-supplier"
-    },
-    {
-      "url": "products",
-      "name": "Produk",
-      "icon": "menu-icon tf-icons bx bx-box",
-      "slug": "products",
-      "badge": []
-    },
-    {
-      "url": "metode-pembayaran",
-      "name": "Metode Pembayaran",
-      "icon": "menu-icon tf-icons bx bx-credit-card",
-      "slug": "metode-pembayaran"
-    },
-    {
-      "url": "karyawan",
-      "name": "Karyawan",
-      "icon": "menu-icon tf-icons bx bx-male-female",
-      "slug": "karyawan"
-    },
-    {
-      "url": "gaji",
-      "name": "Gaji",
-      "icon": "menu-icon tf-icons bx bx-money",
-      "slug": "gaji"
-    },
-    {
-      "url": "users",
-      "name": "Pengguna",
-      "icon": "menu-icon tf-icons bx bx-group",
-      "slug": "users"
+      "name": "Manajemen & Data",
+      "icon": "menu-icon tf-icons bx bx-grid-alt",
+      "slug": "layouts",
+      "submenu": [
+        {
+          "url": "toko-supplier",
+          "name": "Toko & Supplier",
+          "slug": "toko-supplier"
+        },
+        {
+          "url": "products",
+          "name": "Produk",
+          "slug": "products"
+        },
+        {
+          "url": "metode-pembayaran",
+          "name": "Metode Pembayaran",
+          "slug": "metode-pembayaran"
+        },
+        {
+          "url": "karyawan",
+          "name": "Karyawan",
+          "slug": "karyawan"
+        },
+        {
+          "url": "gaji",
+          "name": "Gaji",
+          "slug": "gaji"
+        },
+        {
+          "url": "users",
+          "name": "Pengguna",
+          "slug": "users"
+        }
+      ]
     },
     {
       "menuHeader": "Transaksi"
@@ -74,6 +74,18 @@
       "slug": "toko-income"
     },
     {
+      "url": "online-income",
+      "name": "Pemasukan Online",
+      "icon": "menu-icon tf-icons bx bx-cloud-lightning",
+      "slug": "online-income"
+    },
+    {
+      "url": "online-ads",
+      "name": "Iklan Online",
+      "icon": "menu-icon tf-icons bx bx-radar",
+      "slug": "online-ads"
+    },
+    {
       "url": "pengeluaran",
       "name": "Pengeluaran Lainnya",
       "icon": "menu-icon tf-icons bx bx-upload",
@@ -93,6 +105,12 @@
       "name": "Laporan Toko",
       "icon": "menu-icon tf-icons bx bx-bar-chart-alt-2",
       "slug": "toko-reports"
+    },
+    {
+      "url": "online-reports",
+      "name": "Laporan Market Online",
+      "icon": "menu-icon tf-icons bx bx-radar",
+      "slug": "online-reports"
     }
   ]
 }
