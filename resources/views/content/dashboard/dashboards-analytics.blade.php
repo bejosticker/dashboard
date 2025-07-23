@@ -112,5 +112,36 @@
                 @endif
             </div>
         </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header d-flex align-items-center justify-content-between" style="padding-bottom: 20px;">
+                    <h5 class="card-title m-0 me-2">Produk Perlu Restock</h5>
+                </div>
+                @if (count($report['products']) > 0)
+                    <div class="table-responsive text-nowrap">
+                        <table class="table">
+                            <thead style="border-color: transparent;">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nama Produk</th>
+                                    <th>Stok</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($report['products'] as $product)
+                                    <tr style="border-color: transparent;">
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $product->name }}</td>
+                                        <td>{{ $product->stock_cm / $product->per_roll_cm }} Roll</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <p>Tidak ada produk perlu restock.</p>
+                @endif
+            </div>
+        </div>
     </div>
 @endsection

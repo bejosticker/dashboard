@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Gaji;
 use App\Models\Kulak;
+use App\Models\OnlineAd;
+use App\Models\OnlineIncome;
 use App\Models\PengambilanBahan;
 use App\Models\Pengeluaran;
+use App\Models\Product;
 use App\Models\Sale;
 use App\Models\Toko;
 use App\Models\TokoIncome;
@@ -100,14 +103,29 @@ class HomeController extends Controller
             ->get()
             ->toArray();
 
-        $reports = array_merge($kulak, $pengambilanBarang, $gaji, $pemasukan);
+        $pemasukanOnline = OnlineIncome::whereBetween('online_incomes.date', [$from, $to])
+            ->leftJoin('online_markets', 'online_incomes.online_market_id', 'online_markets.id')
+            ->selectRaw('CONCAT(online_markets.name, " - ", online_markets.vendor) as name, "-" as description, online_incomes.amount, online_incomes.date, "Pemasukan Market Online" as source, "credit" as type')
+            ->get()
+            ->toArray();
+
+        $iklanOnline = OnlineAd::whereBetween('online_ads.date', [$from, $to])
+            ->leftJoin('online_markets', 'online_ads.online_market_id', 'online_markets.id')
+            ->selectRaw('CONCAT("Iklan ",online_markets.name, " - ", online_markets.vendor) as name, "-" as description, online_ads.amount, online_ads.date, "Iklan Market Online" as source, "debit" as type')
+            ->get()
+            ->toArray();
+
+        $reports = array_merge($kulak, $pengambilanBarang, $gaji, $pemasukan, $pemasukanOnline, $iklanOnline);
         $results = collect($reports);
         $totalCredit = $results->where('type', 'credit')->sum('amount');
         $totalDebit = $results->where('type', 'debit')->sum('amount');
 
+        $products = Product::whereColumn('stock_cm', '<', 'minimum_stock_cm')->orderBy('name', 'asc')->get();
+
         return [
             'credit' => $totalCredit,
-            'debit' => $totalDebit
+            'debit' => $totalDebit,
+            'products' => $products
         ];
     }
 }

@@ -99,6 +99,10 @@ Route::middleware(['global', 'web'])->group(function () {
         Route::get('/', [ReportController::class, 'tokoReport'])->name('toko-reports');
     });
 
+    Route::prefix('online-reports')->group(function () {
+        Route::get('/', [ReportController::class, 'onlineReport'])->name('online-reports');
+    });
+
     Route::prefix('kulak')->group(function () {
         Route::get('/', [KulakController::class, 'index'])->name('kulak');
     });
