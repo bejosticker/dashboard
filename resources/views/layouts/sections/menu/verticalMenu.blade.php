@@ -57,7 +57,7 @@
             <i class="{{ $menu->icon }}"></i>
           @endisset
           <div>{{ isset($menu->name) ? __($menu->name) : '' }}</div>
-          @if($menu->name == 'Produk' && $need_to_kulak_products > 0)
+          @if($menu->name == 'Beranda' && $need_to_kulak_products > 0)
             <div class="badge rounded-pill bg-danger text-uppercase ms-auto">{{ $need_to_kulak_products }}</div>
           @endif
         </a>
