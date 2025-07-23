@@ -69,6 +69,10 @@ Route::middleware(['global', 'web'])->group(function () {
 
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'index']);
+        Route::post('/', [UserController::class, 'store']);
+        Route::post('/update/{id}', [UserController::class, 'update']);
+        Route::post('/update-password/{id}', [UserController::class, 'updatePassword']);
+        Route::get('/delete/{id}', [UserController::class, 'destroy']);
     });
 
     Route::prefix('sales')->group(function () {

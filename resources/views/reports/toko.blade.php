@@ -3,6 +3,7 @@
 @section('title', 'Laporan Toko')
 
 @section('content')
+@include('layouts/sections/message')
 <div class="card p-4">
     <form class="row d-flex-row align-items-end" method="GET">
         <div class="col-md-4">

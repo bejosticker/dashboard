@@ -82,28 +82,34 @@
                 <div class="card-header d-flex align-items-center justify-content-between" style="padding-bottom: 20px;">
                     <h5 class="card-title m-0 me-2">Keuangan Toko Bulan Ini</h5>
                 </div>
-                <div class="card-body pt-0 pb-4">
-                    <div class="table-responsive text-nowrap">
-                        <table class="table">
-                            <thead style="border-color: transparent;">
-                                <tr>
-                                    <th>Nama Toko</th>
-                                    <th>Uang Masuk (Credit)</th>
-                                    <th>Uang Keluar (Debit)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($tokos as $toko)
-                                    <tr style="border-color: transparent;">
-                                        <td>{{ $toko->name }}</td>
-                                        <td>{{ formatRupiah($toko->credit) }}</td>
-                                        <td>{{ formatRupiah($toko->debit) }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                @if (count($tokos) == 0)
+                    <div class="card-body text-center">
+                        <p class="mb-0">Tidak ada data keuangan toko bulan ini.</p>
                     </div>
-                </div>
+                @else
+                    <div class="card-body pt-0 pb-4">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table">
+                                <thead style="border-color: transparent;">
+                                    <tr>
+                                        <th>Nama Toko</th>
+                                        <th>Uang Masuk (Credit)</th>
+                                        <th>Uang Keluar (Debit)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($tokos as $toko)
+                                        <tr style="border-color: transparent;">
+                                            <td>{{ $toko->name }}</td>
+                                            <td>{{ formatRupiah($toko->credit) }}</td>
+                                            <td>{{ formatRupiah($toko->debit) }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
