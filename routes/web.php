@@ -5,6 +5,8 @@ use App\Http\Controllers\SalesController;
 use App\Http\Controllers\TokoIncomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TokoSupplierController;
+use App\Http\Controllers\MarketOnlineController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GajiController;
 use App\Http\Controllers\KaryawanController;
@@ -24,6 +26,7 @@ Route::middleware(['global', 'web'])->group(function () {
         Route::get('/logout', [AuthController::class, 'logout']);
     });
     Route::get('/', [HomeController::class, 'index'])->name('beranda');
+    Route::get('/toko-supplier', [TokoSupplierController::class, 'index'])->name('toko-supplier');
 
     Route::prefix('suppliers')->group(function () {
         Route::get('/', [SupplierController::class, 'index']);
@@ -51,6 +54,12 @@ Route::middleware(['global', 'web'])->group(function () {
         Route::post('/', [TokoController::class, 'store']);
         Route::post('/update/{id}', [TokoController::class, 'update']);
         Route::get('/delete/{id}', [TokoController::class, 'destroy']);
+    });
+
+    Route::prefix('toko-online')->group(function () {
+        Route::post('/', [MarketOnlineController::class, 'store']);
+        Route::post('/update/{id}', [MarketOnlineController::class, 'update']);
+        Route::get('/delete/{id}', [MarketOnlineController::class, 'destroy']);
     });
 
     Route::prefix('karyawan')->group(function () {

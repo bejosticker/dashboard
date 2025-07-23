@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class MarketOnline extends Model
+{
+    protected $table = 'online_markets';
+
+    protected $fillable = [
+        'name',
+        'description',
+        'vendor',
+        'created_at',
+        'updated_at',
+    ];
+}

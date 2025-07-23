@@ -10,10 +10,10 @@
       "menuHeader": "Manajemen & Data"
     },
     {
-      "url": "suppliers",
-      "name": "Supplier",
-      "icon": "menu-icon tf-icons bx bx-intersect",
-      "slug": "suppliers"
+      "url": "toko-supplier",
+      "name": "Toko & Supplier",
+      "icon": "menu-icon tf-icons bx bx-home-circle",
+      "slug": "toko-supplier"
     },
     {
       "url": "products",
@@ -27,12 +27,6 @@
       "name": "Metode Pembayaran",
       "icon": "menu-icon tf-icons bx bx-credit-card",
       "slug": "metode-pembayaran"
-    },
-    {
-      "url": "toko",
-      "name": "Toko",
-      "icon": "menu-icon tf-icons bx bx-home-circle",
-      "slug": "toko"
     },
     {
       "url": "karyawan",
@@ -53,25 +47,13 @@
       "slug": "users"
     },
     {
-      "menuHeader": "Laporan, Penjualan & Stok"
+      "menuHeader": "Transaksi"
     },
     {
       "url": "sales",
       "name": "Penjualan",
       "icon": "menu-icon tf-icons bx bx-cart-add",
       "slug": "sales"
-    },
-    {
-      "url": "reports",
-      "name": "Laporan Keuangan",
-      "icon": "menu-icon tf-icons bx bx-line-chart",
-      "slug": "reports"
-    },
-    {
-      "url": "toko-reports",
-      "name": "Laporan Toko",
-      "icon": "menu-icon tf-icons bx bx-bar-chart-alt-2",
-      "slug": "toko-reports"
     },
     {
       "url": "kulak",
@@ -92,13 +74,25 @@
       "slug": "toko-income"
     },
     {
-      "menuHeader": "Lainnya"
-    },
-    {
       "url": "pengeluaran",
       "name": "Pengeluaran Lainnya",
       "icon": "menu-icon tf-icons bx bx-upload",
       "slug": "pengeluaran"
+    },
+    {
+      "menuHeader": "Laporan"
+    },
+    {
+      "url": "reports",
+      "name": "Laporan Keuangan",
+      "icon": "menu-icon tf-icons bx bx-line-chart",
+      "slug": "reports"
+    },
+    {
+      "url": "toko-reports",
+      "name": "Laporan Toko",
+      "icon": "menu-icon tf-icons bx bx-bar-chart-alt-2",
+      "slug": "toko-reports"
     }
   ]
 }
