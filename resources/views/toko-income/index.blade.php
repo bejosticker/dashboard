@@ -31,7 +31,7 @@ use Carbon\Carbon;
         </div>
     </form>
 </div>
-<div class="card">
+<div class="card mt-4">
     <div class="table-responsive text-nowrap">
         <table class="table">
             <thead>

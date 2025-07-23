@@ -74,10 +74,10 @@
       "slug": "toko-income"
     },
     {
-      "url": "online-income",
+      "url": "online-incomes",
       "name": "Pemasukan Online",
       "icon": "menu-icon tf-icons bx bx-cloud-lightning",
-      "slug": "online-income"
+      "slug": "online-incomes"
     },
     {
       "url": "online-ads",

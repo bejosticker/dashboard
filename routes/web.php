@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\OnlineAdController;
+use App\Http\Controllers\OnlineIncomeController;
 use App\Http\Controllers\PengambilanBahanController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\TokoIncomeController;
@@ -112,6 +114,20 @@ Route::middleware(['global', 'web'])->group(function () {
         Route::post('/', [TokoIncomeController::class, 'store']);
         Route::post('/update/{id}', [TokoIncomeController::class, 'update']);
         Route::get('/delete/{id}', [TokoIncomeController::class, 'destroy']);
+    });
+
+    Route::prefix('online-incomes')->group(function () {
+        Route::get('/', [OnlineIncomeController::class, 'index'])->name('online-incomes');
+        Route::post('/', [OnlineIncomeController::class, 'store']);
+        Route::post('/update/{id}', [OnlineIncomeController::class, 'update']);
+        Route::get('/delete/{id}', [OnlineIncomeController::class, 'destroy']);
+    });
+
+    Route::prefix('online-ads')->group(function () {
+        Route::get('/', [OnlineAdController::class, 'index'])->name('online-ads');
+        Route::post('/', [OnlineAdController::class, 'store']);
+        Route::post('/update/{id}', [OnlineAdController::class, 'update']);
+        Route::get('/delete/{id}', [OnlineAdController::class, 'destroy']);
     });
 
     Route::prefix('pengeluaran')->group(function () {
