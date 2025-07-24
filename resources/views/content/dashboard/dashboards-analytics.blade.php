@@ -139,7 +139,7 @@
                         </table>
                     </div>
                 @else
-                    <p>Tidak ada produk perlu restock.</p>
+                    <p class="text-center">Tidak ada produk perlu restock.</p>
                 @endif
             </div>
         </div>
