@@ -7,33 +7,25 @@
 
     <div style="margin-bottom: 15px;display: flex; flex-direction: row; align-items: end;" class="row">
         <div class="col-md-4">
-            <label for="priceSelect" class="form-label">Pilih Jenis Harga:</label>
-            <select wire:model.live="price_type" id="priceSelect" class="form-control">
-                <option value="">-- Pilih Jenis Harga --</option>
-                @foreach ($prices as $price)
-                    <option value="{{ $price }}">{{ convertPriceType($price) }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-4">
             <label class="form-label">Tanggal Penjualan:</label>
             <input type="date" wire:model.live="date" name="date" class="form-control" id="">
         </div>
         <div class="col-md-4">
-             <label class="form-label">Nama Customer (boleh kosong):</label>
+             <label class="form-label">Nama Customer (opsional):</label>
             <input type="text" wire:model.live="customer" name="customer" class="form-control" id="">
         </div>
     </div>
 
     <hr>
 
-    @if ($price_type != '' && $date != '')
+    @if ($date != '')
 
     <div style="display: flex; gap: 10px; margin-bottom: 8px; flex-direction: row; align-items: center; font-weight: bold;">
         <b style="width: 30px; text-align: center;">No.</b>
         <p class="w-100 m-0"><b>Produk</b></p>
-        <p class="w-100 m-0"><b>Quantity (cm)</b></p>
-        <p class="w-100 m-0"><b>{{ convertPriceType($price_type) }}</b></p>
+        <p class="w-100 m-0"><b>Jenis Harga</b></p>
+        <p class="w-100 m-0"><b>Quantity</b></p>
+        <p class="w-100 m-0"><b>Harga</b></p>
         <p class="w-100 m-0"><b>Subtotal</b></p>
         <div style="width: 40px;"></div>
     </div>
@@ -49,8 +41,18 @@
                 @endforeach
             </select>
 
-            <input type="number" name="jumlah.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.jumlah" placeholder="Jumlah" />
-            <input type="number" name="harga.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.harga" placeholder="Harga" />
+            <select wire:model.live="items.{{ $i }}.price_type" class="form-control">
+                <option value="">-- Pilih Jenis Harga --</option>
+                @foreach ($prices as $price)
+                    <option value="{{ $price }}">{{ convertPriceType($price) }}</option>
+                @endforeach
+            </select>
+
+            <div class="input-group input-group-merge">
+                <input type="number" name="jumlah.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.jumlah" placeholder="Jumlah" />
+                <span class="input-group-text">{{ in_array($item['price_type'], ['price_agent', 'price_grosir', 'price_umum_roll']) ? 'Roll' : 'Meter' }}</span>
+            </div>
+            <input type="number" name="price.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.price" placeholder="Harga" readonly />
             <input type="number" name="subtotal.{{$i}}" class="form-control" value="{{ $item['subtotal'] }}" readonly />
 
             <button type="button" class="btn btn-danger" wire:click.prevent="removeItem({{ $i }})">

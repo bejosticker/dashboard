@@ -16,13 +16,18 @@
                 $priceType = 'Harga Grosir';
                 break;
 
-            case 'price_ecer_roll':
-                $priceType = 'Harga Roll Ecer';
+            case 'price_umum_roll':
+                $priceType = 'Harga Roll Umum';
                 break;
 
-            case 'price_ecer':
-                $priceType = 'Harga Ecer';
+            case 'price_grosir_meter':
+                $priceType = 'Harga Meteran Grosir';
                 break;
+
+            case 'price_umum_meter':
+                $priceType = 'Harga Meteran Umum';
+                break;
+
             default:
                 $priceType = '-';
                 break;

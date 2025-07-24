@@ -10,7 +10,7 @@ class ProductController extends Controller
     {
         $search = $request->get('search') ?? '';
         $products = Product::where('name', 'like', "%{$search}%")
-            ->orderByRaw('stock_cm < minimum_stock_cm asc')
+            ->orderByRaw('stock_cm <= minimum_stock_cm asc')
             ->orderBy('name', 'asc')
             ->paginate(10);
 
@@ -39,12 +39,14 @@ class ProductController extends Controller
             Product::create([
                 'name' => $request->input('name'),
                 'image' => $fileName,
-                'price_agent' => $request->input('price_agent'),
-                'price_grosir' => $request->input('price_grosir'),
-                'price_ecer_roll' => $request->input('price_ecer_roll'),
-                'price_ecer' => $request->input('price_ecer'),
-                'price_kulak' => $request->input('price_kulak'),
+                'price_agent' => $request->input('price_agent', 0),
+                'price_grosir' => $request->input('price_grosir',0),
+                'price_umum_roll' => $request->input('price_umum_roll',0),
+                'price_grosir_meter' => $request->input('price_grosir_meter',0),
+                'price_umum_meter' => $request->input('price_umum_meter',0),
+                'price_kulak' => $request->input('price_kulak',0),
                 'per_roll_cm' => $perRoll,
+                'stock_cm' => 0,
                 'minimum_stock_cm' => $minimumStock
             ]);
 
@@ -79,11 +81,12 @@ class ProductController extends Controller
             Product::where('id', $id)->update([
                 'name' => $request->input('name'),
                 'image' => $fileName,
-                'price_agent' => $request->input('price_agent'),
-                'price_grosir' => $request->input('price_grosir'),
-                'price_ecer_roll' => $request->input('price_ecer_roll'),
-                'price_ecer' => $request->input('price_ecer'),
-                'price_kulak' => $request->input('price_kulak'),
+                'price_agent' => $request->input('price_agent', 0),
+                'price_grosir' => $request->input('price_grosir',0),
+                'price_umum_roll' => $request->input('price_umum_roll',0),
+                'price_grosir_meter' => $request->input('price_grosir_meter',0),
+                'price_umum_meter' => $request->input('price_umum_meter',0),
+                'price_kulak' => $request->input('price_kulak',0),
                 'per_roll_cm' => $perRoll,
                 'minimum_stock_cm' => $minimumStock
             ]);

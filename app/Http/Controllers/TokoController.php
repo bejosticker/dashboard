@@ -14,10 +14,15 @@ class TokoController extends Controller
 
     public function store(Request $request)
     {
-        \Log::info($request->all());
+        $request->validate([
+            'name' => 'required',
+            'decription' => 'nullable',
+            'type' => 'required'
+        ]);
+
         Toko::create([
             'name' => $request->name,
-            'description' => $request->description,
+            'description' => $request->description ?? '-',
             'type' => $request->type
         ]);
 
@@ -26,9 +31,15 @@ class TokoController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required',
+            'decription' => 'nullable',
+            'type' => 'required'
+        ]);
+
         Toko::where('id', $id)->update([
             'name' => $request->name,
-            'description' => $request->description,
+            'description' => $request->description ?? '-',
             'type' => $request->type
         ]);
 

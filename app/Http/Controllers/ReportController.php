@@ -37,16 +37,19 @@ class ReportController extends Controller
             ]));
         }
 
-        $kulak = Kulak::whereBetween('date', [$from, $to])
-            ->selectRaw('"-" as name, "-" as description, date, total as amount, "debit" as type, "Pembelian Bahan" as source')
+        $kulak = Kulak::whereBetween('kulak.date', [$from, $to])
+            ->join('suppliers', 'kulak.supplier_id', 'suppliers.id')
+            ->selectRaw('suppliers.name as name, "-" as description, kulak.date, SUM(kulak.total) as amount, "debit" as type, "Pembelian Bahan" as source')
+            ->groupBy('suppliers.name')
             ->get()
             ->toArray();
 
         $pengambilanBarang = PengambilanBahan::whereBetween('pengambilan_bahans.date', [$from, $to])
             ->leftJoin('toko', 'pengambilan_bahans.toko_id', 'toko.id')
             ->selectRaw(
-                '"-" as description, pengambilan_bahans.date, pengambilan_bahans.total as amount, "credit" as type, "Pengambilan Bahan" as source,toko.name'
+                '"-" as description, pengambilan_bahans.date, SUM(pengambilan_bahans.total) as amount, "credit" as type, "Pengambilan Bahan" as source,toko.name'
             )
+            ->groupBy('toko.name')
             ->get()
             ->toArray();
 
@@ -57,25 +60,22 @@ class ReportController extends Controller
             ->get()
             ->toArray();
 
-        $pemasukan = Sale::whereBetween('date', [$from, $to])
-            ->selectRaw('customer as name, "-" as description, date, total as amount, "credit" as type, "Penjualan" as source')
-            ->get()
-            ->toArray();
+        $pemasukan = Sale::whereBetween('date', [$from, $to])->sum('total');
 
-        $pemasukanOnline = OnlineIncome::whereBetween('online_incomes.date', [$from, $to])
-            ->leftJoin('online_markets', 'online_incomes.online_market_id', 'online_markets.id')
-            ->selectRaw('CONCAT(online_markets.name, " - ", online_markets.vendor) as name, "-" as description, online_incomes.amount, online_incomes.date, "Pemasukan Market Online" as source, "credit" as type')
-            ->get()
-            ->toArray();
-
-        $iklanOnline = OnlineAd::whereBetween('online_ads.date', [$from, $to])
-            ->leftJoin('online_markets', 'online_ads.online_market_id', 'online_markets.id')
-            ->selectRaw('CONCAT("Iklan ",online_markets.name, " - ", online_markets.vendor) as name, "-" as description, online_ads.amount, online_ads.date, "Iklan Market Online" as source, "debit" as type')
-            ->get()
-            ->toArray();
-
-        $reports = array_merge($kulak, $pengambilanBarang, $gaji, $pemasukan, $pemasukanOnline, $iklanOnline);
-        $results = collect($reports)->sortByDesc('date');
+        $reports = array_merge(
+            $kulak,
+            $pengambilanBarang,
+            $gaji,
+            [[
+                'name' => 'Penjualan Offline',
+                'description' => '-',
+                'type' => 'credit',
+                'amount' => $pemasukan,
+                'source' => 'Penjualan Offline',
+                'date' => ''
+            ]]
+        );
+        $results = collect($reports);
         $totalKredit = $results->where('type', 'credit')->sum('amount');
         $totalDebit = $results->where('type', 'debit')->sum('amount');
         return view('reports.index', compact('tokos', 'results', 'totalKredit', 'totalDebit'));

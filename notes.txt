@@ -1,4 +1,2 @@
-- Keterangan dalam cm
-- Harga ecer dijual pakai harga per meter (input by meter)
-- Penjualan price type nempel ke items
-- Harga jadinya (Agen, Grosir(roll), Roll Umum(roll), Meteran Grosir(m), Meteran Umum(m))
+- laporan penjualan untuk laporan keuangan dijadikan satu jadi "Penjualan Offline"
+- laporan keuangan semuanya dijadikan satu aja, tanggal gk perlu muncul

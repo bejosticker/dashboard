@@ -17,17 +17,16 @@ class SalesForm extends Component
     public $products = [];
     public $paymentMethods = [];
     public $items = [];
-    public $prices = ['price_agent', 'price_grosir', 'price_ecer_roll', 'price_ecer'];
+    public $prices = ['price_agent', 'price_grosir', 'price_umum_roll', 'price_grosir_meter', 'price_umum_meter'];
     public $customer = '';
     public $total = 0;
     public $discount = 0;
     public $date = '';
-    public $price_type = '';
     public $payment_method_id = '';
 
     public function mount()
     {
-        $this->products = Product::orderBy('name', 'asc')->get()->toArray();
+        $this->products = Product::where('stock_cm', '>', 0)->orderBy('name', 'asc')->get()->toArray();
         $this->paymentMethods = PaymentMethod::orderBy('name', 'asc')->get()->toArray();
         $this->customer = '';
         $this->payment_method_id = '';
@@ -38,7 +37,7 @@ class SalesForm extends Component
 
     public function addItem()
     {
-        $this->items[] = ['product_id' => '', 'jumlah' => 0, 'harga' => 0, 'subtotal' => 0];
+        $this->items[] = ['product_id' => '', 'jumlah' => 0, 'price' => 0, 'price_type' => '', 'subtotal' => 0];
         $this->calculateTotal();
     }
 
@@ -69,19 +68,24 @@ class SalesForm extends Component
 
             if ($field === 'product_id') {
                 $product = collect($this->products)->firstWhere('id', $this->items[$index]['product_id']);
-                $this->items[$index]['harga'] = $product[$this->price_type] ?? 0;
+                $this->items[$index]['price'] = $product[$this->items[$index]['price']] ?? 0;
+            }
+
+            if ($field === 'price_type') {
+                $product = collect($this->products)->firstWhere('id', $this->items[$index]['product_id']);
+                $this->items[$index]['price'] = $product[$value] ?? 0;
             }
 
             $jumlah = (float)($this->items[$index]['jumlah'] ?? 0);
-            $harga = (float)($this->items[$index]['harga'] ?? 0);
+            $price = (float)($this->items[$index]['price'] ?? 0);
 
             $productData = Product::where('id', $this->items[$index]['product_id'])->first();
-            $this->items[$index]['subtotal'] = ceil($jumlah / $productData->per_roll_cm * $harga);
+            if (in_array($this->items[$index]['price_type'], ['price_agent', 'price_grosir', 'price_umum_roll'])) {
+                $this->items[$index]['subtotal'] = ceil($jumlah * $price);
+            }else{
+                $this->items[$index]['subtotal'] = ceil($jumlah * $price);
+            }
             $this->calculateTotal();
-        }
-
-        if ($propertyName == 'price_type') {
-            $this->items = [];
         }
     }
 
@@ -94,18 +98,17 @@ class SalesForm extends Component
     {
         $this->validate([
             'customer' => 'nullable',
-            'price_type' => 'required',
             'date' => 'required',
-            'payment_method_id' => 'required',
+            'payment_method_id' => 'required|exists:payment_methods,id',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.jumlah' => 'required|numeric|min:1',
-            'items.*.harga' => 'required|numeric|min:0',
+            'items.*.price' => 'required|numeric|min:1',
+            'items.*.price_type' => 'required',
         ]);
 
         $sale = Sale::create([
             'payment_method_id' => $this->payment_method_id,
             'customer' => $this->customer ?? '-',
-            'price_type' => $this->price_type,
             'discount' => $this->discount,
             'total' => $this->total,
             'date' => $this->date
@@ -117,12 +120,18 @@ class SalesForm extends Component
             SaleItems::create([
                 'sale_id' => $sale->id,
                 'product_id' => $item['product_id'],
-                'price' => $item['harga'],
+                'price' => $item['price'],
+                'price_type' => $item['price_type'],
                 'quantity' => $item['jumlah'],
                 'subtotal' => $item['subtotal'],
             ]);
 
-            $product->stock_cm = ($product->stock_cm ?? 0) - $item['jumlah'];
+            if (in_array($item['price_type'], ['price_agent', 'price_grosir', 'price_umum_roll'])) {
+                $product->stock_cm = ($product->stock_cm ?? 0) - $item['jumlah'] * $product->per_roll_cm;
+            }else{
+                $product->stock_cm = ($product->stock_cm ?? 0) - $item['jumlah'] * 100;
+            }
+
             $product->save();
         }
 
@@ -137,7 +146,6 @@ class SalesForm extends Component
         $this->items = [];
         $this->customer = '';
         $this->date = '';
-        $this->price_type = '';
         $this->total = 0;
     }
 

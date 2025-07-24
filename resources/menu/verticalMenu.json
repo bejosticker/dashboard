@@ -15,9 +15,19 @@
       "slug": "layouts",
       "submenu": [
         {
-          "url": "toko-supplier",
-          "name": "Toko & Supplier",
-          "slug": "toko-supplier"
+          "url": "toko",
+          "name": "Toko",
+          "slug": "toko"
+        },
+        {
+          "url": "online-toko",
+          "name": "Toko Market Online",
+          "slug": "online-toko"
+        },
+        {
+          "url": "suppliers",
+          "name": "Supplier",
+          "slug": "suppliers"
         },
         {
           "url": "products",
@@ -35,9 +45,9 @@
           "slug": "karyawan"
         },
         {
-          "url": "gaji",
-          "name": "Gaji",
-          "slug": "gaji"
+          "url": "gaji-history",
+          "name": "Riwayat Gaji",
+          "slug": "gaji-history"
         },
         {
           "url": "users",
@@ -84,6 +94,12 @@
       "name": "Iklan Online",
       "icon": "menu-icon tf-icons bx bx-radar",
       "slug": "online-ads"
+    },
+    {
+      "url": "gaji",
+      "name": "Gaji Karyawan",
+      "icon": "menu-icon tf-icons bx bx-money",
+      "slug": "gaji"
     },
     {
       "url": "pengeluaran",

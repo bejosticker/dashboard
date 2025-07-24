@@ -10,7 +10,7 @@ class SaleItems extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'product_id', 'sale_id', 'price', 'quantity', 'subtotal', 'created_at', 'updated_at'
+        'product_id', 'sale_id', 'price', 'price_type', 'quantity', 'subtotal', 'created_at', 'updated_at'
     ];
 
     public function product()

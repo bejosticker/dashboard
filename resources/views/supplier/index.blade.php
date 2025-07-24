@@ -59,8 +59,8 @@ use Carbon\Carbon;
                     </div>
                     <div class="row g-4">
                         <div class="col mb-0">
-                            <label class="form-label">Keterangan</label>
-                            <input type="text" value="{{ $supplier->description }}" name="description" class="form-control" required placeholder="Keterangan...">
+                            <label class="form-label">Keterangan (opsional)</label>
+                            <input type="text" value="{{ $supplier->description }}" name="description" class="form-control" placeholder="Keterangan...">
                         </div>
                     </div>
                 </div>
@@ -109,8 +109,8 @@ use Carbon\Carbon;
                     </div>
                     <div class="row g-4">
                         <div class="col mb-0">
-                            <label class="form-label">Keterangan</label>
-                            <input type="text" name="description" class="form-control" required placeholder="Keterangan...">
+                            <label class="form-label">Keterangan (opsional)</label>
+                            <input type="text" name="description" class="form-control" placeholder="Keterangan...">
                         </div>
                     </div>
                 </div>

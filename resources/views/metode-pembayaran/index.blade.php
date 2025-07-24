@@ -52,7 +52,7 @@ use Carbon\Carbon;
                 <h5 class="modal-title" id="exampleModalLabel1">Edit Metode Pembayaran</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/metode-pembayaran/update/{{ $paymentMethod->id }}" method="POST">
+            <form action="/metode-pembayaran/update/{{ $paymentMethod->id }}" method="POST" enctype="multipart/form-data">
                 <div class="modal-body">
                     @csrf
                     <div class="row">
@@ -102,7 +102,7 @@ use Carbon\Carbon;
                 <h5 class="modal-title" id="exampleModalLabel1">Tambah Metode Pembayaran</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="" method="POST">
+            <form action="" method="POST" enctype="multipart/form-data">
                 <div class="modal-body">
                     @csrf
                     <div class="row">

@@ -36,12 +36,10 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>#</th>
                     <th>Nama Customer</th>
                     <th>Tanggal Penjualan</th>
                     <th>Total Nominal</th>
                     <th>Total Produk</th>
-                    <th>Jenis Harga</th>
                     <th>Metode Pembayaran</th>
                     <th>Aksi</th>
                 </tr>
@@ -49,12 +47,10 @@
             <tbody class="table-border-bottom-0">
                 @forelse ($sales as $sale)
                     <tr>
-                        <td>{{$loop->iteration}}</td>
                         <td>{{$sale->customer == '' || $sale->customer == NULL ? '-' : $sale->customer}}</td>
                         <td>{{Carbon::parse($sale->date)->locale('id')->translatedFormat('d F Y')}}</td>
                         <td>{{formatRupiah($sale->total)}}</td>
                         <td>{{count($sale->items)}} Produk</td>
-                        <td>{{ convertPriceType($sale->price_type) }}</td>
                         <td>{{ $sale->paymentMethod?->name ?? '-' }}</td>
                         <td>
                             <button class="btn btn-success btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#detailsale{{ $sale->id }}"><span class="menu-icon tf-icons bx bx-info-circle"></span> Rincian</button>
@@ -63,7 +59,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center">Belum ada data penjualan.</td>
+                        <td colspan="6" class="text-center">Belum ada data penjualan.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -78,7 +74,7 @@
 </button>
 @foreach ($sales as $sale)
 <div class="modal fade" id="detailsale{{ $sale->id }}" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel1">Rincian Penjualan</h5>
@@ -91,7 +87,8 @@
                             <th>No.</th>
                             <th>Nama Produk</th>
                             <th>Harga</th>
-                            <th>Quantity (cm)</th>
+                            <th>Jenis Harga</th>
+                            <th>Quantity</th>
                             <th>Subtotal</th>
                         </tr>
                     </thead>
@@ -101,7 +98,8 @@
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$item->product?->name ?? '-'}}</td>
                                 <td>{{formatRupiah($item->price)}}</td>
-                                <td>{{$item->quantity}}</td>
+                                <td>{{convertPriceType($item->price_type)}}</td>
+                                <td>{{$item->quantity}} {{ in_array($item['price_type'], ['price_agent', 'price_grosir', 'price_umum_roll']) ? 'Roll' : 'Meter' }}</td>
                                 <td>{{formatRupiah($item->subtotal)}}</td>
                             </tr>
                         @endforeach
@@ -134,7 +132,7 @@
 </div>
 @endforeach
 <div class="modal fade" id="createsale" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel1">Tambah Penjualan</h5>

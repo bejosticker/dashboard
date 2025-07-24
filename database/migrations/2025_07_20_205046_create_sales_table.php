@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('payment_method_id')->nullable()->constrained('payment_methods')->nullOnDelete()->nullOnUpdate();
             $table->string('customer');
             $table->date('date');
-            $table->string('price_type');
             $table->integer('discount')->default(0);
             $table->integer('total');
             $table->timestamps();

@@ -10,9 +10,15 @@ class MarketOnline extends Model
 
     protected $fillable = [
         'name',
+        'toko_id',
         'description',
         'vendor',
         'created_at',
         'updated_at',
     ];
+
+    public function toko()
+    {
+        return $this->belongsTo(Toko::class, 'toko_id', 'id');
+    }
 }

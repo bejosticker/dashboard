@@ -17,4 +17,9 @@ class GajiItem extends Model
     {
         return $this->belongsTo(Karyawan::class, 'karyawan_id', 'id');
     }
+
+    public function gaji()
+    {
+        return $this->belongsTo(Gaji::class, 'gaji_id', 'id');
+    }
 }

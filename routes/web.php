@@ -28,7 +28,6 @@ Route::middleware(['global', 'web'])->group(function () {
         Route::get('/logout', [AuthController::class, 'logout']);
     });
     Route::get('/', [HomeController::class, 'index'])->name('beranda');
-    Route::get('/toko-supplier', [TokoSupplierController::class, 'index'])->name('toko-supplier');
 
     Route::prefix('suppliers')->group(function () {
         Route::get('/', [SupplierController::class, 'index'])->name('suppliers');
@@ -58,7 +57,8 @@ Route::middleware(['global', 'web'])->group(function () {
         Route::get('/delete/{id}', [TokoController::class, 'destroy']);
     });
 
-    Route::prefix('toko-online')->group(function () {
+    Route::prefix('online-toko')->group(function () {
+        Route::get('/', [MarketOnlineController::class, 'index'])->name('online-toko');
         Route::post('/', [MarketOnlineController::class, 'store']);
         Route::post('/update/{id}', [MarketOnlineController::class, 'update']);
         Route::get('/delete/{id}', [MarketOnlineController::class, 'destroy']);
@@ -71,11 +71,8 @@ Route::middleware(['global', 'web'])->group(function () {
         Route::get('/delete/{id}', [KaryawanController::class, 'destroy']);
     });
 
-    Route::prefix('gaji')->group(function () {
-        Route::get('/', [GajiController::class, 'index'])->name('gaji');
-        Route::post('/', [GajiController::class, 'store']);
-        Route::get('/detail/{id}', [GajiController::class, 'detail']);
-        Route::get('/delete/{id}', [GajiController::class, 'destroy']);
+    Route::prefix('gaji-history')->group(function () {
+        Route::get('/', [GajiController::class, 'history'])->name('gaji-history');
     });
 
     Route::prefix('users')->group(function () {
@@ -133,6 +130,13 @@ Route::middleware(['global', 'web'])->group(function () {
         Route::post('/', [OnlineAdController::class, 'store']);
         Route::post('/update/{id}', [OnlineAdController::class, 'update']);
         Route::get('/delete/{id}', [OnlineAdController::class, 'destroy']);
+    });
+
+    Route::prefix('gaji')->group(function () {
+        Route::get('/', [GajiController::class, 'index'])->name('gaji');
+        Route::post('/', [GajiController::class, 'store']);
+        Route::get('/detail/{id}', [GajiController::class, 'detail']);
+        Route::get('/delete/{id}', [GajiController::class, 'destroy']);
     });
 
     Route::prefix('pengeluaran')->group(function () {

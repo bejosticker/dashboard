@@ -103,19 +103,7 @@ class HomeController extends Controller
             ->get()
             ->toArray();
 
-        $pemasukanOnline = OnlineIncome::whereBetween('online_incomes.date', [$from, $to])
-            ->leftJoin('online_markets', 'online_incomes.online_market_id', 'online_markets.id')
-            ->selectRaw('CONCAT(online_markets.name, " - ", online_markets.vendor) as name, "-" as description, online_incomes.amount, online_incomes.date, "Pemasukan Market Online" as source, "credit" as type')
-            ->get()
-            ->toArray();
-
-        $iklanOnline = OnlineAd::whereBetween('online_ads.date', [$from, $to])
-            ->leftJoin('online_markets', 'online_ads.online_market_id', 'online_markets.id')
-            ->selectRaw('CONCAT("Iklan ",online_markets.name, " - ", online_markets.vendor) as name, "-" as description, online_ads.amount, online_ads.date, "Iklan Market Online" as source, "debit" as type')
-            ->get()
-            ->toArray();
-
-        $reports = array_merge($kulak, $pengambilanBarang, $gaji, $pemasukan, $pemasukanOnline, $iklanOnline);
+        $reports = array_merge($kulak, $pengambilanBarang, $gaji, $pemasukan);
         $results = collect($reports);
         $totalCredit = $results->where('type', 'credit')->sum('amount');
         $totalDebit = $results->where('type', 'debit')->sum('amount');

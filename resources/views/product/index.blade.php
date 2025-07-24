@@ -23,14 +23,14 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>#</th>
                     <th>Nama</th>
                     <th>Stok</th>
                     <th>Kulak</th>
                     <th>Agen</th>
                     <th>Grosir</th>
-                    <th>Ecer Roll</th>
-                    <th>Ecer</th>
+                    <th>Roll Umum</th>
+                    <th>Meteran Grosir</th>
+                    <th>Meteran Umum</th>
                     <th>Stok Minimal</th>
                     <th>Aksi</th>
                 </tr>
@@ -38,19 +38,31 @@
             <tbody class="table-border-bottom-0">
                 @forelse ($products as $product)
                     <tr @if($product->stock_cm < $product->minimum_stock_cm) style="background-color: #ffe5e5;" @endif>
-                        <td>{{$loop->iteration + ((request('page', 1) - 1) * 10)}}</td>
                         <td>
                             <div class="rounded" style="width: 64px; height: 64px; border-radius: 8px; overflow: hidden;">
                                 <img src="/assets/img/products/{{ $product->image }}"  class="w-100 h-100"/>
                             </div>
                             <p>{{$product->name}}</p>
                         </td>
-                        <td>{{$product->stock_cm ? floor($product->stock_cm / $product->per_roll_cm) : 0}} Roll</td>
+                        @php
+                            $stockCm = $product->stock_cm;
+                            $rollCm = $product->per_roll_cm;
+                            $meterCm = 100;
+
+                            $roll = intdiv($stockCm, $rollCm);
+                            $sisaCm = $stockCm % $rollCm;
+
+                            $meter = intdiv($sisaCm, $meterCm);
+
+                            $quantity = $meter > 0 ? "{$roll} Roll {$meter} Meter" : "{$roll} Roll";
+                        @endphp
+                        <td>{{$quantity}}</td>
                         <td>{{formatRupiah($product->price_kulak)}}</td>
                         <td>{{formatRupiah($product->price_agent)}}</td>
                         <td>{{formatRupiah($product->price_grosir)}}</td>
-                        <td>{{formatRupiah($product->price_ecer_roll)}}</td>
-                        <td>{{formatRupiah($product->price_ecer)}}</td>
+                        <td>{{formatRupiah($product->price_umum_roll)}}</td>
+                        <td>{{formatRupiah($product->price_grosir_meter)}}</td>
+                        <td>{{formatRupiah($product->price_umum_meter)}}</td>
                         <td>{{$product->minimum_stock_cm/$product->per_roll_cm}} Roll</td>
                         <td>
                             <button class="btn btn-success btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#editproduct{{ $product->id }}"><span class="tf-icons bx bx-edit"></span></button>
@@ -83,7 +95,7 @@
                     <div class="row">
                         <div class="col mb-4">
                             <label class="form-label">Nama Produk</label>
-                            <input type="text" value="{{ $product->name }}" name="name" class="form-control" required placeholder="Masukkan  nama...">
+                            <input type="text" name="name" class="form-control" value="{{ $product->name }}" required placeholder="Masukkan  nama...">
                         </div>
                     </div>
                     <div class="row g-4">
@@ -93,40 +105,44 @@
                         </div>
                     </div>
                     <div class="row mt-4">
-                        <div class="col">
-                            <label class="form-label">Harga Kulak</label>
-                            <input type="number" value="{{ $product->price_kulak }}" name="price_kulak" class="form-control" required>
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Kulak (per roll)</label>
+                            <input type="number" name="price_kulak" value="{{ $product->price_kulak }}" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Agen (per roll)</label>
+                            <input type="number" name="price_agent" value="{{ $product->price_agent }}" class="form-control">
                         </div>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-lg-6">
-                            <label class="form-label">Harga Agen</label>
-                            <input type="number" value="{{ $product->price_agent }}" name="price_agent" class="form-control" required>
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Grosir (per roll)</label>
+                            <input type="number" name="price_grosir" value="{{ $product->price_grosir }}" class="form-control">
                         </div>
-                        <div class="col-lg-6">
-                            <label class="form-label">Harga Grosir</label>
-                            <input type="number" value="{{ $product->price_grosir }}" name="price_grosir" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-lg-6">
-                            <label class="form-label">Harga Ritel (per meter)</label>
-                            <input type="number" value="{{ $product->price_ecer_roll }}" name="price_ecer_roll" class="form-control" required>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="form-label">Harga Ritel Max (per meter)</label>
-                            <input type="number" value="{{ $product->price_ecer }}" name="price_ecer" class="form-control" required>
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Roll Umum (per roll)</label>
+                            <input type="number" name="price_umum_roll" value="{{ $product->price_umum_roll }}" class="form-control">
                         </div>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-lg-6">
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Meteran Grosir (per meter)</label>
+                            <input type="number" name="price_grosir_meter" value="{{ $product->price_grosir_meter }}" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Meteran Umum (per meter)</label>
+                            <input type="number" name="price_umum_meter" value="{{ $product->price_umum_meter }}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
                             <label class="form-label">Stok Minimal</label>
                             <div class="input-group input-group-merge">
-                                <input type="number" value="{{ $product->minimum_stock_cm / $product->per_roll_cm }}" class="form-control" name="minimum_stock_cm"required placeholder="10">
+                                <input type="number" class="form-control" value="{{ $product->minimum_stock_cm / $product->per_roll_cm }}" name="minimum_stock_cm"required placeholder="10">
                                 <span class="input-group-text">Roll</span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-md-6">
                             <label class="form-label">Per Roll</label>
                              <div class="input-group input-group-merge">
                                 <input type="number" class="form-control" value="{{ $product->per_roll_cm / 100 }}" name="per_roll_cm"required placeholder="10">
@@ -185,40 +201,44 @@
                         </div>
                     </div>
                     <div class="row mt-4">
-                        <div class="col">
-                            <label class="form-label">Harga Kulak</label>
-                            <input type="number" name="price_kulak" class="form-control" required>
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Kulak (per roll)</label>
+                            <input type="number" name="price_kulak" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Agen (per roll)</label>
+                            <input type="number" name="price_agent" class="form-control">
                         </div>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-lg-6">
-                            <label class="form-label">Harga Agen</label>
-                            <input type="number" name="price_agent" class="form-control" required>
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Grosir (per roll)</label>
+                            <input type="number" name="price_grosir" class="form-control">
                         </div>
-                        <div class="col-lg-6">
-                            <label class="form-label">Harga Grosir</label>
-                            <input type="number" name="price_grosir" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-lg-6">
-                            <label class="form-label">Harga Ritel (per meter)</label>
-                            <input type="number" name="price_ecer_roll" class="form-control" required>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="form-label">Harga Ritel Max (per meter)</label>
-                            <input type="number" name="price_ecer" class="form-control" required>
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Roll Umum (per roll)</label>
+                            <input type="number" name="price_umum_roll" class="form-control">
                         </div>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-lg-6">
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Meteran Grosir (per meter)</label>
+                            <input type="number" name="price_grosir_meter" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Meteran Umum (per meter)</label>
+                            <input type="number" name="price_umum_meter" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
                             <label class="form-label">Stok Minimal</label>
                             <div class="input-group input-group-merge">
                                 <input type="number" class="form-control" name="minimum_stock_cm"required placeholder="10">
                                 <span class="input-group-text">Roll</span>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-md-6">
                             <label class="form-label">Per Roll</label>
                              <div class="input-group input-group-merge">
                                 <input type="number" class="form-control" name="per_roll_cm"required placeholder="10">

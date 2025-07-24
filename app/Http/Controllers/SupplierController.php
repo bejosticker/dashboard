@@ -16,9 +16,14 @@ class SupplierController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
+        ]);
+
         Supplier::create([
             'name' => $request->name,
-            'description' => $request->description
+            'description' => $request->description ?? '-'
         ]);
 
         return redirect()->back()->with('success', 'Supplier berhasil disimpan.');
@@ -26,9 +31,14 @@ class SupplierController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
+        ]);
+
         Supplier::where('id', $id)->update([
             'name' => $request->name,
-            'description' => $request->description
+            'description' => $request->description ?? '-'
         ]);
 
         return redirect()->back()->with('success', 'Supplier berhasil disimpan.');

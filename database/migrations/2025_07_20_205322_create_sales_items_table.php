@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('sale_id')->nullable()->constrained('sales')->nullOnDelete()->nullOnUpdate();
             $table->foreignId('product_id')->nullable()->constrained('products')->nullOnDelete()->nullOnUpdate();
             $table->integer('quantity')->comment('in cm');
+            $table->string('price_type');
             $table->integer('price');
             $table->integer('subtotal');
             $table->timestamps();

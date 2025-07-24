@@ -17,10 +17,11 @@ return new class extends Migration
             $table->string('image')->default('default.png');
 
             // Harga jual berdasarkan jenis pembeli / metode jual
-            $table->integer('price_agent')->default(0);        // Harga agen
-            $table->integer('price_grosir')->default(0);       // Harga grosir
-            $table->integer('price_ecer_roll')->default(0);    // Harga ecer roll
-            $table->integer('price_ecer')->default(0);         // Harga ecer per meter
+            $table->integer('price_agent')->default(0);        // Harga agen (per roll)
+            $table->integer('price_grosir')->default(0);       // Harga grosir (per roll)
+            $table->integer('price_umum_roll')->default(0);    // Harga roll umum (per roll)
+            $table->integer('price_grosir_meter')->default(0); // Harga grosir per meter
+            $table->integer('price_umum_meter')->default(0);   // Harga umum per meter
             $table->integer('price_kulak')->default(0);        // Harga kulak per roll
 
             // Panjang 1 roll dalam satuan sentimeter

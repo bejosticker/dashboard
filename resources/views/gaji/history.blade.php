@@ -3,11 +3,27 @@
 @endphp
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Gaji')
+@section('title', 'Riwayat Gaji')
 
 @section('content')
 @include('layouts/sections/message')
-<div class="card">
+<div class="card p-4">
+    <form class="row d-flex-row align-items-end" method="GET">
+        <div class="col-md-4">
+            <label class="form-label">Karyawan</label>
+            <select name="karyawan_id" class="form-control">
+                <option value="">Pilih Karyawan</option>
+                @foreach ($karyawans as $karyawan)
+                    <option value="{{ $karyawan->id }}" {{ ($_GET['karyawan_id'] ?? '') == $karyawan->id ? 'selected' : '' }}>{{ $karyawan->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary">Filter Riwayat Gaji</button>
+        </div>
+    </form>
+</div>
+<div class="card mt-4">
     <div class="table-responsive text-nowrap">
         <table class="table">
             <thead>
@@ -16,26 +32,21 @@
                     <th>Tahun</th>
                     <th>Tanggal Gaji</th>
                     <th>Karyawan</th>
-                    <th>Total Gaji</th>
-                    <th>Aksi</th>
+                    <th>Gaji</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
                 @forelse ($gajis as $gaji)
                     <tr>
-                        <td>{{$gaji->month}}</td>
-                        <td>{{$gaji->year}}</td>
-                        <td>{{Carbon::parse($gaji->date)->locale('id')->translatedFormat('d F Y')}}</td>
-                        <td>{{$gaji->items_count}}</td>
-                        <td>{{formatRupiah($gaji->items_sum_amount)}}</td>
-                        <td>
-                            <a href="/gaji/detail/{{ $gaji->id }}" class="btn btn-primary btn-sm rounded-pill"><span class="menu-icon tf-icons bx bx-info-circle"></span> Lihat Detail</a>
-                            <button class="btn btn-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#deletegaji{{ $gaji->id }}"><span class="menu-icon tf-icons bx bx-trash"></span> Hapus</button>
-                        </td>
+                        <td>{{$gaji->gaji->month}}</td>
+                        <td>{{$gaji->gaji->year}}</td>
+                        <td>{{Carbon::parse($gaji->gaji->date)->locale('id')->translatedFormat('d F Y')}}</td>
+                        <td>{{$gaji->karyawan->name}}</td>
+                        <td>{{formatRupiah($gaji->amount)}}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center">Belum ada data gaji.</td>
+                        <td colspan="7" class="text-center">Belum ada data gaji.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -106,18 +117,10 @@
                             <input type="date" name="date" class="form-control" required>
                         </div>
                     </div>
-                    <hr>
-                    @foreach ($karyawans as $karyawan)
-                        <div class="row mt-4">
-                            <div class="col-md-6">
-                                <p>{{ $karyawan->name }}</p>
-                            </div>
-                            <div class="col-md-6">
-                                <input type="hidden" name="karyawan_id[]" value="{{ $karyawan->id }}" required>
-                                <input type="number" name="gaji[]" value="{{ $karyawan->gaji }}" class="form-control" required>
-                            </div>
-                        </div>
-                    @endforeach
+                    <div class="alert alert-info d-flex align-items-center gap-2 mt-4" role="alert">
+                        <span class="alert-icon rounded"><i class="icon-base bx icon-xs bx-info-circle"></i></span>
+                        Data karyawan akan terinput otomatis sesuai data gaji masing-masing
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Batal</button>
