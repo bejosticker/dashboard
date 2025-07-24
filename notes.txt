@@ -1,5 +1,3 @@
 - Keterangan dalam cm
 - Harga ecer dijual pakai harga per meter (input by meter)
 - Penjualan price type nempel ke items
-- stock minimal jadi roll
-- cm per roll input nya per meter

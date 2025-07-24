@@ -122,14 +122,14 @@
                         <div class="col-lg-6">
                             <label class="form-label">Stok Minimal</label>
                             <div class="input-group input-group-merge">
-                                <input type="number" value="{{ $product->minimum_stock_cm }}" class="form-control" name="minimum_stock_cm"required placeholder="10">
+                                <input type="number" value="{{ $product->minimum_stock_cm / $product->per_roll_cm / 100 }}" class="form-control" name="minimum_stock_cm"required placeholder="10">
                                 <span class="input-group-text">Roll</span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <label class="form-label">Per Roll</label>
                              <div class="input-group input-group-merge">
-                                <input type="number" class="form-control" value="{{ $product->per_roll_cm }}" name="per_roll_cm"required placeholder="10">
+                                <input type="number" class="form-control" value="{{ $product->per_roll_cm / 100 }}" name="per_roll_cm"required placeholder="10">
                                 <span class="input-group-text">Meter</span>
                             </div>
                         </div>
