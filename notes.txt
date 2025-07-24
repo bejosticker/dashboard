@@ -1,3 +1,4 @@
 - Keterangan dalam cm
 - Harga ecer dijual pakai harga per meter (input by meter)
 - Penjualan price type nempel ke items
+- Harga jadinya (Agen, Grosir(roll), Roll Umum(roll), Meteran Grosir(m), Meteran Umum(m))

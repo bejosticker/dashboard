@@ -40,4 +40,12 @@ class KulakController extends Controller
 
         return view('kulak.index', compact('kulaks', 'suppliers'));
     }
+
+    public function destroy($id)
+    {
+        $marketOnline = Kulak::findOrFail($id);
+        $marketOnline->delete();
+
+        return redirect()->back()->with('success', 'Kulak berhasil dihapus.');
+    }
 }

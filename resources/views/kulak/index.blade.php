@@ -53,8 +53,8 @@
                         <td>{{formatRupiah($pembelianBahan->total)}}</td>
                         <td>{{count($pembelianBahan->items)}} Produk</td>
                         <td>
-                            <button class="btn btn-success btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#detailpembelianBahan{{ $pembelianBahan->id }}"><span class="menu-icon tf-icons bx bx-info-circle"></span> Rincian</button>
-                            <button class="btn btn-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#deletepembelianBahan{{ $pembelianBahan->id }}"><span class="menu-icon tf-icons bx bx-trash"></span> Hapus</button>
+                            <button class="btn btn-success btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#detailKulak{{ $pembelianBahan->id }}"><span class="menu-icon tf-icons bx bx-info-circle"></span> Rincian</button>
+                            <button class="btn btn-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteKulak{{ $pembelianBahan->id }}"><span class="menu-icon tf-icons bx bx-trash"></span> Hapus</button>
                         </td>
                     </tr>
                 @empty
@@ -73,7 +73,7 @@
     <span class="menu-icon tf-icons bx bx-plus-circle"></span> Tambah Pembelian Bahan
 </button>
 @foreach ($kulaks as $kulak)
-<div class="modal fade" id="detailpembelianBahan{{ $kulak->id }}" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="detailKulak{{ $kulak->id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -110,7 +110,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="deletekulak{{ $kulak->id }}" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="deleteKulak{{ $kulak->id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">

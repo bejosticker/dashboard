@@ -105,6 +105,7 @@ Route::middleware(['global', 'web'])->group(function () {
 
     Route::prefix('kulak')->group(function () {
         Route::get('/', [KulakController::class, 'index'])->name('kulak');
+        Route::get('/delete/{id}', [KulakController::class, 'destroy']);
     });
 
     Route::prefix('pengambilan-bahan')->group(function () {
