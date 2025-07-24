@@ -110,22 +110,28 @@
                     </div>
                     <div class="row mt-4">
                         <div class="col-lg-6">
-                            <label class="form-label">Harga Ecer Roll</label>
+                            <label class="form-label">Harga Ritel (per meter)</label>
                             <input type="number" value="{{ $product->price_ecer_roll }}" name="price_ecer_roll" class="form-control" required>
                         </div>
                         <div class="col-lg-6">
-                            <label class="form-label">Harga Ecer</label>
+                            <label class="form-label">Harga Ritel Max (per meter)</label>
                             <input type="number" value="{{ $product->price_ecer }}" name="price_ecer" class="form-control" required>
                         </div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-lg-6">
                             <label class="form-label">Stok Minimal</label>
-                            <input type="number" value="{{ $product->minimum_stock_cm }}" name="minimum_stock_cm" class="form-control" required>
+                            <div class="input-group input-group-merge">
+                                <input type="number" value="{{ $product->minimum_stock_cm }}" class="form-control" name="minimum_stock_cm"required placeholder="10">
+                                <span class="input-group-text">Roll</span>
+                            </div>
                         </div>
                         <div class="col-lg-6">
-                            <label class="form-label">Cm Per Roll</label>
-                            <input type="number" value="{{ $product->per_roll_cm }}" name="per_roll_cm" class="form-control" required>
+                            <label class="form-label">Per Roll</label>
+                             <div class="input-group input-group-merge">
+                                <input type="number" class="form-control" value="{{ $product->per_roll_cm }}" name="per_roll_cm"required placeholder="10">
+                                <span class="input-group-text">Meter</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -196,22 +202,28 @@
                     </div>
                     <div class="row mt-4">
                         <div class="col-lg-6">
-                            <label class="form-label">Harga Ecer Roll</label>
+                            <label class="form-label">Harga Ritel (per meter)</label>
                             <input type="number" name="price_ecer_roll" class="form-control" required>
                         </div>
                         <div class="col-lg-6">
-                            <label class="form-label">Harga Ecer</label>
+                            <label class="form-label">Harga Ritel Max (per meter)</label>
                             <input type="number" name="price_ecer" class="form-control" required>
                         </div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-lg-6">
                             <label class="form-label">Stok Minimal</label>
-                            <input type="number" name="minimum_stock_cm" class="form-control" required>
+                            <div class="input-group input-group-merge">
+                                <input type="number" class="form-control" name="minimum_stock_cm"required placeholder="10">
+                                <span class="input-group-text">Roll</span>
+                            </div>
                         </div>
                         <div class="col-lg-6">
-                            <label class="form-label">Cm Per Roll</label>
-                            <input type="number" name="per_roll_cm" class="form-control" value="1500" required>
+                            <label class="form-label">Per Roll</label>
+                             <div class="input-group input-group-merge">
+                                <input type="number" class="form-control" name="per_roll_cm"required placeholder="10">
+                                <span class="input-group-text">Meter</span>
+                            </div>
                         </div>
                     </div>
                 </div>

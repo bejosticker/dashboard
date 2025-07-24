@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
-
 class ProductController extends Controller
 {
     public function index(Request $request)
@@ -34,6 +33,9 @@ class ProductController extends Controller
                 $image->move($destinationPath, $fileName);
             }
 
+            $perRoll = $request->input('per_roll_cm') * 100;
+            $minimumStock = $perRoll * $request->input('minimum_stock_cm');
+
             Product::create([
                 'name' => $request->input('name'),
                 'image' => $fileName,
@@ -42,8 +44,8 @@ class ProductController extends Controller
                 'price_ecer_roll' => $request->input('price_ecer_roll'),
                 'price_ecer' => $request->input('price_ecer'),
                 'price_kulak' => $request->input('price_kulak'),
-                'per_roll_cm' => $request->input('per_roll_cm'),
-                'minimum_stock_cm' => $request->input('minimum_stock_cm')
+                'per_roll_cm' => $perRoll,
+                'minimum_stock_cm' => $minimumStock
             ]);
 
             return back()->with('success', 'Produk berhasil disimpan!');
@@ -71,6 +73,9 @@ class ProductController extends Controller
                 $image->move($destinationPath, $fileName);
             }
 
+            $perRoll = $request->input('per_roll_cm') * 100;
+            $minimumStock = $perRoll * $request->input('minimum_stock_cm');
+
             Product::where('id', $id)->update([
                 'name' => $request->input('name'),
                 'image' => $fileName,
@@ -79,8 +84,8 @@ class ProductController extends Controller
                 'price_ecer_roll' => $request->input('price_ecer_roll'),
                 'price_ecer' => $request->input('price_ecer'),
                 'price_kulak' => $request->input('price_kulak'),
-                'per_roll_cm' => $request->input('per_roll_cm'),
-                'minimum_stock_cm' => $request->input('minimum_stock_cm')
+                'per_roll_cm' => $perRoll,
+                'minimum_stock_cm' => $minimumStock
             ]);
 
             return back()->with('success', 'Produk berhasil disimpan!');
