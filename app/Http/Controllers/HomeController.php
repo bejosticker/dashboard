@@ -59,7 +59,16 @@ class HomeController extends Controller
             ->get()
             ->toArray();
 
-        $reports = array_merge($pengeluaran, $pengambilanBarang, $pemasukan);
+        $pengeluaranLain = Pengeluaran::whereBetween('pengeluaran.date', [$from, $to])
+            ->join('toko', 'pengeluaran.toko_id', 'toko.id')
+            ->selectRaw(
+                '"-" as description, pengeluaran.date, SUM(pengeluaran.amount) as amount, "debit" as type, "Pengeluaran Lain Toko" as source,CONCAT("Pengeluaran Lain ", toko.name) as name'
+            )
+            ->groupBy('toko.name')
+            ->get()
+            ->toArray();
+
+        $reports = array_merge($pengeluaran, $pengambilanBarang, $pemasukan, $pengeluaranLain);
         $results = collect($reports);
         $totalCredit = $results->where('type', 'credit')->sum('amount');
         $totalDebit = $results->where('type', 'debit')->sum('amount');

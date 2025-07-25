@@ -45,9 +45,18 @@ class ReportController extends Controller
             ->toArray();
 
         $pengambilanBarang = PengambilanBahan::whereBetween('pengambilan_bahans.date', [$from, $to])
-            ->leftJoin('toko', 'pengambilan_bahans.toko_id', 'toko.id')
+            ->join('toko', 'pengambilan_bahans.toko_id', 'toko.id')
             ->selectRaw(
                 '"-" as description, pengambilan_bahans.date, SUM(pengambilan_bahans.total) as amount, "credit" as type, "Pengambilan Bahan" as source,toko.name'
+            )
+            ->groupBy('toko.name')
+            ->get()
+            ->toArray();
+
+        $pengeluaranLain = Pengeluaran::whereBetween('pengeluaran.date', [$from, $to])
+            ->join('toko', 'pengeluaran.toko_id', 'toko.id')
+            ->selectRaw(
+                '"-" as description, pengeluaran.date, SUM(pengeluaran.amount) as amount, "debit" as type, "Pengeluaran Lain Toko" as source,CONCAT("Pengeluaran Lain ", toko.name) as name'
             )
             ->groupBy('toko.name')
             ->get()
@@ -73,7 +82,8 @@ class ReportController extends Controller
                 'amount' => $pemasukan,
                 'source' => 'Penjualan Offline',
                 'date' => ''
-            ]]
+            ]],
+            $pengeluaranLain
         );
         $results = collect($reports);
         $totalKredit = $results->where('type', 'credit')->sum('amount');
