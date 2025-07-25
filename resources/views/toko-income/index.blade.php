@@ -40,7 +40,7 @@ use Carbon\Carbon;
                     <th>Toko</th>
                     <th>Nominal</th>
                     <th>Tanggal</th>
-                    <th>Aksi</th>
+                    <th style="width: 150px;">Aksi</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
