@@ -249,6 +249,8 @@ use Carbon\Carbon;
                             <option value="Tiktok">Tiktok</option>
                             <option value="Shopee">Shopee</option>
                             <option value="Lazada">Lazada</option>
+                            <option value="Youtube">Youtube</option>
+                            <option value="Blibli">Blibli</option>
                         </select>
                     </div>
                 </div>

@@ -84,6 +84,8 @@
                             <option value="Tiktok" {{ $toko->vendor == 'Tiktok' ? 'selected' : '' }}>Tiktok</option>
                             <option value="Shopee" {{ $toko->vendor == 'Shopee' ? 'selected' : '' }}>Shopee</option>
                             <option value="Lazada" {{ $toko->vendor == 'Lazada' ? 'selected' : '' }}>Lazada</option>
+                            <option value="Youtube" {{ $toko->vendor == 'Youtube' ? 'selected' : '' }}>Youtube</option>
+                            <option value="Blibli" {{ $toko->vendor == 'Blibli' ? 'selected' : '' }}>Blibli</option>
                         </select>
                     </div>
                 </div>
@@ -154,6 +156,8 @@
                             <option value="Tiktok">Tiktok</option>
                             <option value="Shopee">Shopee</option>
                             <option value="Lazada">Lazada</option>
+                            <option value="Youtube">Youtube</option>
+                            <option value="Blibli">Blibli</option>
                         </select>
                     </div>
                 </div>
