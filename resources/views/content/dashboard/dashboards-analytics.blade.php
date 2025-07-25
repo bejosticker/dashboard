@@ -2,18 +2,6 @@
 
 @section('title', 'Beranda')
 
-@section('vendor-style')
-    @vite('resources/assets/vendor/libs/apex-charts/apex-charts.scss')
-@endsection
-
-@section('vendor-script')
-    @vite('resources/assets/vendor/libs/apex-charts/apexcharts.js')
-@endsection
-
-@section('page-script')
-    @vite('resources/assets/js/dashboards-analytics.js')
-@endsection
-
 @section('content')
     <div class="row">
         <div class="col-md-8 mb-6 order-0">
@@ -132,7 +120,19 @@
                                     <tr style="border-color: transparent;">
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $product->name }}</td>
-                                        <td>{{ $product->stock_cm / $product->per_roll_cm }} Roll</td>
+                                        @php
+                                            $stockCm = $product->stock_cm;
+                                            $rollCm = $product->per_roll_cm;
+                                            $meterCm = 100;
+
+                                            $roll = intdiv($stockCm, $rollCm);
+                                            $sisaCm = $stockCm % $rollCm;
+
+                                            $meter = intdiv($sisaCm, $meterCm);
+
+                                            $quantity = $meter > 0 ? "{$roll} Roll {$meter} Meter" : "{$roll} Roll";
+                                        @endphp
+                                        <td>{{ $quantity }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
