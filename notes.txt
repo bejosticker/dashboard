@@ -1,1 +1,2 @@
 - laporan market online tiap market online dimasukkan di laporan keuangan
+- pengambilan bahan masuk debit

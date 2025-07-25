@@ -39,8 +39,8 @@ class TokoIncomeController extends Controller
     public function store(Request $request)
     {
         TokoIncome::create([
-            'name' => $request->name,
-            'description' => $request->description,
+            'name' => $request->name ?? '-',
+            'description' => $request->description ?? '-',
             'date' => $request->date,
             'toko_id' => $request->toko_id,
             'amount' => $request->amount,
@@ -52,8 +52,8 @@ class TokoIncomeController extends Controller
     public function update(Request $request, $id)
     {
         TokoIncome::where('id', $id)->update([
-            'name' => $request->name,
-            'description' => $request->description,
+            'name' => $request->name ?? '-',
+            'description' => $request->description ?? '-',
             'date' => $request->date,
             'toko_id' => $request->toko_id,
             'amount' => $request->amount,

@@ -82,18 +82,6 @@ use Carbon\Carbon;
             <form action="/toko-income/update/{{ $income->id }}" method="POST">
                 <div class="modal-body">
                     @csrf
-                    <div class="row">
-                        <div class="col mb-4">
-                            <label class="form-label">Nama Pemasukan</label>
-                            <input type="text" value="{{ $income->name }}" name="name" class="form-control" required placeholder="Masukkan  nama...">
-                        </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col mb-0">
-                            <label class="form-label">Keterangan</label>
-                            <input type="text" value="{{ $income->description }}" name="description" class="form-control" required placeholder="Keterangan...">
-                        </div>
-                    </div>
                     <div class="row mt-4">
                         <div class="col mb-0">
                             <label class="form-label">Toko</label>
@@ -155,18 +143,6 @@ use Carbon\Carbon;
             <form action="" method="POST">
                 <div class="modal-body">
                     @csrf
-                    <div class="row">
-                        <div class="col mb-4">
-                            <label class="form-label">Nama Pemasukan</label>
-                            <input type="text" name="name" class="form-control" required placeholder="Masukkan  nama...">
-                        </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col mb-0">
-                            <label class="form-label">Keterangan</label>
-                            <input type="text" name="description" class="form-control" required placeholder="Keterangan...">
-                        </div>
-                    </div>
                     <div class="row mt-4">
                         <div class="col mb-0">
                             <label class="form-label">Toko</label>
