@@ -39,10 +39,10 @@ $navbarDetached = ($navbarDetached ?? '');
         </div>
         <ul class="navbar-nav flex-row align-items-center ms-auto">
           <!-- User -->
-          <li class="nav-item navbar-dropdown dropdown-user dropdown" style="border: 2px solid #6063ea;border-radius: 100%;">
+          <li class="nav-item navbar-dropdown dropdown-user dropdown">
             <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
               <div class="avatar rounded-circle" style="display: flex;flex-direction: row;justify-content: center;align-items: center;">
-                 @include('_partials.macros',["width"=>25,"withbg"=>'var(--bs-primary)'])
+                 <img style="width:38px; height: 38px;" src="/assets/img/logo.png" alt="">
               </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
@@ -51,7 +51,7 @@ $navbarDetached = ($navbarDetached ?? '');
                   <div class="d-flex">
                     <div class="flex-shrink-0 me-3">
                       <div class="avatar rounded-circle" style="display: flex;flex-direction: row;justify-content: center;align-items: center;">
-                        @include('_partials.macros',["width"=>25,"withbg"=>'var(--bs-primary)'])
+                        <img style="width:38px; height: 38px;" src="/assets/img/logo.png" alt="">
                       </div>
                     </div>
                     <div class="flex-grow-1">

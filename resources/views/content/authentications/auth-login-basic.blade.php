@@ -14,11 +14,15 @@
     <div class="authentication-inner">
       <!-- Register -->
       <div class="card px-sm-6 px-0">
-        <div class="card-body">
+        <div class="card-body align-items-center">
           <!-- Logo -->
-          <div class="app-brand justify-content-center">
+           <div class="w-100 d-flex flex-row justify-content-center">
+             <img style="width:96px; height: 96px;" src="/assets/img/logo.png" alt=""></a>
+            </div>
+          <div class="app-brand justify-content-center mt-4">
             <a href="{{url('/')}}" class="app-brand-link gap-2">
-              <span class="app-brand-logo demo">@include('_partials.macros',["width"=>25,"withbg"=>'var(--bs-primary)'])</span>
+              <span class="app-brand-logo demo">
+              </span>
               <span class="app-brand-text demo text-heading fw-bold">{{config('variables.templateName')}}</span>
             </a>
           </div>
