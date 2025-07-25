@@ -18,6 +18,14 @@
         </div>
     </div>
 </div>
+@php
+    $totalKulak = 0;
+    $totalAgen = 0;
+    $totalGrosir = 0;
+    $totalRollUmum = 0;
+    $totalMeteranGrosir = 0;
+    $totalMeteranUmum = 0;
+@endphp
 <div class="card">
     <div class="table-responsive text-nowrap">
         <table class="table">
@@ -59,6 +67,15 @@
                         <td>{{$quantity}}</td>
                         <td>
                             {{formatRupiah($product->price_kulak)}}
+                            @php
+                                $totalKulak = $totalKulak + ($product->price_kulak * $product->stock_cm / $product->per_roll_cm);
+                                $totalAgen = $totalAgen + ($product->price_agent * $product->stock_cm / $product->per_roll_cm);
+                                $totalGrosir = $totalGrosir + ($product->price_grosir * $product->stock_cm / $product->per_roll_cm);
+                                $totalRollUmum = $totalRollUmum + ($product->price_umum_roll * $product->stock_cm / $product->per_roll_cm);
+
+                                $totalMeteranGrosir = $totalMeteranGrosir + ($product->price_grosir_meter * $product->stock_cm / 100);
+                                $totalMeteranUmum = $totalMeteranUmum + ($product->price_umum_meter * $product->stock_cm / 100);
+                            @endphp
                             <p class="text-success fw-bold" style="font-size:11px;">Total: {{formatRupiah($product->price_kulak * $product->stock_cm / $product->per_roll_cm)}}</p>
                         </td>
                         <td>{{formatRupiah($product->price_agent)}}</td>
@@ -77,6 +94,15 @@
                         <td colspan="10" class="text-center">Belum ada data produk.</td>
                     </tr>
                 @endforelse
+                <tr style="background-color: #d8f3dc; color: white;">
+                    <td colspan="2"><strong>Grand Total:</strong></td>
+                    <td><strong>{{ formatRupiah($totalKulak) }}</strong></td>
+                    <td><strong>{{ formatRupiah($totalAgen) }}</strong></td>
+                    <td><strong>{{ formatRupiah($totalGrosir) }}</strong></td>
+                    <td><strong>{{ formatRupiah($totalRollUmum) }}</strong></td>
+                    <td><strong>{{ formatRupiah($totalMeteranGrosir) }}</strong></td>
+                    <td colspan="4"><strong>{{ formatRupiah($totalMeteranUmum) }}</strong></td>
+                </tr>
             </tbody>
         </table>
         <div style="padding:2rem;">
