@@ -24,6 +24,7 @@ class HomeController extends Controller
             $report = $this->tokoReport($toko->id);
             $toko->credit = $report['credit'];
             $toko->debit = $report['debit'];
+            $toko->online = $report['online'];
         }
         $report = $this->report();
         return view('content.dashboard.dashboards-analytics', compact('tokos', 'report'));
@@ -37,12 +38,6 @@ class HomeController extends Controller
         $results = [];
         $totalDebit = 0;
         $totalCredit = 0;
-
-        $pengeluaran = Pengeluaran::where('toko_id', $toko_id)
-            ->whereBetween('date', [$from, $to])
-            ->selectRaw('name, description, date, amount, "debit" as type, "Pengeluaran Lain" as source')
-            ->get()
-            ->toArray();
 
         $pengambilanBarang = PengambilanBahan::where('toko_id', $toko_id)
             ->whereBetween('pengambilan_bahans.date', [$from, $to])
@@ -59,13 +54,20 @@ class HomeController extends Controller
             ->get()
             ->toArray();
 
-        $reports = array_merge($pengeluaran, $pengambilanBarang, $pemasukan);
+        $onlineReport = OnlineIncome::whereBetween('online_incomes.date', [$from, $to])
+            ->join('online_markets', 'online_incomes.online_market_id', 'online_markets.id')
+            ->where('online_markets.toko_id', $toko_id)
+            ->sum('online_incomes.amount');
+
+        $reports = array_merge($pengambilanBarang, $pemasukan);
         $results = collect($reports);
         $totalCredit = $results->where('type', 'credit')->sum('amount');
         $totalDebit = $results->where('type', 'debit')->sum('amount');
+
         return [
             'credit' => $totalCredit,
-            'debit' => $totalDebit
+            'debit' => $totalDebit,
+            'online' => $onlineReport
         ];
     }
 

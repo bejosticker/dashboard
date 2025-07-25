@@ -81,16 +81,18 @@
                                 <thead style="border-color: transparent;">
                                     <tr>
                                         <th>Nama Toko</th>
-                                        <th>Uang Masuk (Credit)</th>
-                                        <th>Uang Keluar (Debit)</th>
+                                        <th>Total Pengambilan Bahan</th>
+                                        <th>Total Pemasukan Offline</th>
+                                        <th>Total Pemasukan Online</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($tokos as $toko)
                                         <tr style="border-color: transparent;">
                                             <td>{{ $toko->name }}</td>
-                                            <td>{{ formatRupiah($toko->credit) }}</td>
                                             <td>{{ formatRupiah($toko->debit) }}</td>
+                                            <td>{{ formatRupiah($toko->credit) }}</td>
+                                            <td>{{ formatRupiah($toko->online) }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
