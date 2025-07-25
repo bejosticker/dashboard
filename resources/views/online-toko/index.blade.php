@@ -109,7 +109,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Batal</button>
-                <a href="/toko/delete/{{ $toko->id }}" class="btn btn-primary">Hapus</a>
+                <a href="/online-toko/delete/{{ $toko->id }}" class="btn btn-primary">Hapus</a>
             </div>
         </div>
     </div>
