@@ -38,8 +38,6 @@ use Carbon\Carbon;
                 <tr>
                     <th>#</th>
                     <th>Toko</th>
-                    <th>Nama</th>
-                    <th>Keterangan</th>
                     <th>Nominal</th>
                     <th>Tanggal</th>
                     <th>Aksi</th>
@@ -50,8 +48,6 @@ use Carbon\Carbon;
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$income->toko?->name ?? '-'}}</td>
-                        <td>{{$income->name}}</td>
-                        <td>{{$income->description}}</td>
                         <td>{{formatRupiah($income->amount)}}</td>
                         <td>{{Carbon::parse($income->date)->locale('id')->translatedFormat('d F Y')}}</td>
                         <td>
