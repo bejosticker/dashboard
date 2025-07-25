@@ -11,6 +11,7 @@
                         <div class="card-body">
                             <h5 class="card-title text-primary mb-3">Selamat Datang {{ session('data')->name }}! 🎉</h5>
                             <p class="mb-6">Selamat datang di dashboard Bejosticker</p>
+                            <p style="margin-top:54px; font-size: 18px; font-weight: bold;">Total Pembelian Bahan Bulan Ini: {{ formatRupiah($kulak) }}</p>
                         </div>
                     </div>
                     <div class="col-sm-5 text-center text-sm-left">

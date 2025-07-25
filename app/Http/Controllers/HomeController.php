@@ -27,7 +27,13 @@ class HomeController extends Controller
             $toko->online = $report['online'];
         }
         $report = $this->report();
-        return view('content.dashboard.dashboards-analytics', compact('tokos', 'report'));
+
+        $from = now()->startOfMonth()->toDateString();
+        $to = now()->toDateString();
+
+        $kulak = Kulak::whereBetween('date', [$from, $to])->sum('total');
+
+        return view('content.dashboard.dashboards-analytics', compact('tokos', 'report', 'kulak'));
     }
 
     public function tokoReport($toko_id)
