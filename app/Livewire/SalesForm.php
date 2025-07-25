@@ -85,8 +85,8 @@ class SalesForm extends Component
             }else{
                 $this->items[$index]['subtotal'] = ceil($jumlah * $price);
             }
-            $this->calculateTotal();
         }
+        $this->calculateTotal();
     }
 
     public function calculateTotal()

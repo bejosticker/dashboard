@@ -68,7 +68,7 @@
     <div class="row flex-row align-items-end">
         <div class="col-md-4">
             <label class="form-label">Diskon (Rp):</label>
-            <input type="number" name="discount}" class="form-control" wire:model.live="discount" placeholder="Diskon" />
+            <input type="number" name="discount" class="form-control" wire:model.live="discount" placeholder="Diskon" />
         </div>
         <div class="col-md-4">
             <label class="form-label">Metode Pembayaran:</label>
