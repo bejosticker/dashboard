@@ -35,6 +35,11 @@
           "slug": "products"
         },
         {
+          "url": "cetak-products",
+          "name": "Produk Cetak",
+          "slug": "cetak-products"
+        },
+        {
           "url": "metode-pembayaran",
           "name": "Metode Pembayaran",
           "slug": "metode-pembayaran"
@@ -64,6 +69,12 @@
       "name": "Penjualan",
       "icon": "menu-icon tf-icons bx bx-cart-add",
       "slug": "sales"
+    },
+    {
+      "url": "cetak-sales",
+      "name": "Penjualan Cetak",
+      "icon": "menu-icon tf-icons bx bx-cart-add",
+      "slug": "cetak-sales"
     },
     {
       "url": "kulak",

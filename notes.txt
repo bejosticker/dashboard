@@ -1,2 +1,7 @@
 - laporan market online tiap market online dimasukkan di laporan keuangan
 - pengambilan bahan masuk debit
+- total penjualan
+- produk cetak (grosir, umum)
+- penjualan cetak
+- total penjualan cetak masuk ke beranda (tambahin + total sales)
+- download pdf

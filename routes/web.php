@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CetakProductController;
 use App\Http\Controllers\OnlineAdController;
 use App\Http\Controllers\OnlineIncomeController;
 use App\Http\Controllers\PengambilanBahanController;
@@ -7,7 +8,6 @@ use App\Http\Controllers\SalesController;
 use App\Http\Controllers\TokoIncomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\TokoSupplierController;
 use App\Http\Controllers\MarketOnlineController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GajiController;
@@ -48,6 +48,13 @@ Route::middleware(['global', 'web'])->group(function () {
         Route::post('/', [ProductController::class, 'store']);
         Route::post('/update/{id}', [ProductController::class, 'update']);
         Route::get('/delete/{id}', [ProductController::class, 'destroy']);
+    });
+
+    Route::prefix('cetak-products')->group(function () {
+        Route::get('/', [CetakProductController::class, 'index'])->name('cetak-products');
+        Route::post('/', [CetakProductController::class, 'store']);
+        Route::post('/update/{id}', [CetakProductController::class, 'update']);
+        Route::get('/delete/{id}', [CetakProductController::class, 'destroy']);
     });
 
     Route::prefix('toko')->group(function () {
