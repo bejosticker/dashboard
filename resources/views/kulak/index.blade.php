@@ -62,6 +62,12 @@
                         <td colspan="7" class="text-center">Belum ada data pembelian bahan.</td>
                     </tr>
                 @endforelse
+                @if (count($kulaks) > 0)
+                    <tr style="background-color: #d8f3dc; color: white;">
+                        <td colspan="3"><strong>Grand Total:</strong></td>
+                        <td colspan="3"><strong>{{ formatRupiah($kulaks->sum('total')) }}</strong></td>
+                    </tr>
+                @endif
             </tbody>
         </table>
         <div style="padding:2rem;">
