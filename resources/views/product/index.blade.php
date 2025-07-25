@@ -57,7 +57,10 @@
                             $quantity = $meter > 0 ? "{$roll} Roll {$meter} Meter" : "{$roll} Roll";
                         @endphp
                         <td>{{$quantity}}</td>
-                        <td>{{formatRupiah($product->price_kulak)}}</td>
+                        <td>
+                            {{formatRupiah($product->price_kulak)}}
+                            <p class="text-success fw-bold" style="font-size:11px;">Total: {{formatRupiah($product->price_kulak * $product->stock_cm / $product->per_roll_cm)}}</p>
+                        </td>
                         <td>{{formatRupiah($product->price_agent)}}</td>
                         <td>{{formatRupiah($product->price_grosir)}}</td>
                         <td>{{formatRupiah($product->price_umum_roll)}}</td>
