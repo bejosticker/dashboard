@@ -82,9 +82,9 @@
                                 <thead style="border-color: transparent;">
                                     <tr>
                                         <th>Nama Toko</th>
-                                        <th>Total Pengambilan Bahan</th>
-                                        <th>Total Pemasukan Offline</th>
-                                        <th>Total Pemasukan Online</th>
+                                        <th>Pengambilan Bahan</th>
+                                        <th>Pemasukan Offline</th>
+                                        <th>Pemasukan Online</th>
                                     </tr>
                                 </thead>
                                 <tbody>

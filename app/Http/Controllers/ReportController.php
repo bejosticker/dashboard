@@ -10,6 +10,7 @@ use App\Models\OnlineIncome;
 use App\Models\PengambilanBahan;
 use App\Models\Pengeluaran;
 use App\Models\Sale;
+use App\Models\CetakProductSale;
 use App\Models\Toko;
 use App\Models\TokoIncome;
 use Illuminate\Http\Request;
@@ -70,6 +71,18 @@ class ReportController extends Controller
             ->toArray();
 
         $pemasukan = Sale::whereBetween('date', [$from, $to])->sum('total');
+        $cetak = CetakProductSale::whereBetween('date', [$from, $to])->sum('total');
+
+        $onlineReport = DB::table('online_markets')
+            ->whereBetween('online_incomes.date', [$from, $to])
+            ->join('online_incomes', 'online_markets.id', 'online_incomes.online_market_id')
+            ->selectRaw('online_markets.name as name, "-" as description, online_incomes.date, SUM(online_incomes.amount) as amount, "credit" as type, "Pemasukan Online" as source')
+            ->groupBy('online_markets.name')
+            ->get()
+            ->map(function($item) {
+                    return (array) $item;
+                })
+            ->all();
 
         $reports = array_merge(
             $kulak,
@@ -83,7 +96,16 @@ class ReportController extends Controller
                 'source' => 'Penjualan Offline',
                 'date' => ''
             ]],
-            $pengeluaranLain
+            [[
+                'name' => 'Penjualan Cetak',
+                'description' => '-',
+                'type' => 'credit',
+                'amount' => $cetak,
+                'source' => 'Penjualan Cetak',
+                'date' => ''
+            ]],
+            $pengeluaranLain,
+            $onlineReport
         );
         $results = collect($reports);
         $totalKredit = $results->where('type', 'credit')->sum('amount');
