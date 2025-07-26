@@ -21,6 +21,10 @@ use Carbon\Carbon;
 </script>
 @endsection
 
+@php
+    $total = 0;
+@endphp
+
 @section('content')
 @include('layouts/sections/message')
 <div class="card p-4">
@@ -65,6 +69,9 @@ use Carbon\Carbon;
             </thead>
             <tbody class="table-border-bottom-0">
                 @forelse ($datas as $data)
+                    @php
+                        $total += $data->total;
+                    @endphp
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$data->toko?->name ?? '-'}}</td>
@@ -82,6 +89,10 @@ use Carbon\Carbon;
                         <td colspan="7" class="text-center">Belum ada data pengambilan bahan.</td>
                     </tr>
                 @endforelse
+                <tr style="background-color: #d8f3dc; color: white;">
+                    <td colspan="3"><strong>Grand Total:</strong></td>
+                    <td colspan="5"><strong>{{ formatRupiah($total) }}</strong></td>
+                </tr>
             </tbody>
         </table>
         <div style="padding:2rem;">
