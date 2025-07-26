@@ -7,6 +7,11 @@
 
 @section('content')
 @include('layouts/sections/message')
+
+@php
+    $total = 0;
+@endphp
+
 <div class="card p-4">
     <form class="row d-flex-row align-items-end" method="GET">
         <div class="col-md-4">
@@ -46,6 +51,9 @@
             </thead>
             <tbody class="table-border-bottom-0">
                 @forelse ($sales as $sale)
+                    @php
+                        $total += $sale->total;
+                    @endphp
                     <tr>
                         <td>{{$sale->customer == '' || $sale->customer == NULL ? '-' : $sale->customer}}</td>
                         <td>{{Carbon::parse($sale->date)->locale('id')->translatedFormat('d F Y')}}</td>
@@ -62,6 +70,10 @@
                         <td colspan="6" class="text-center">Belum ada data penjualan.</td>
                     </tr>
                 @endforelse
+                <tr style="background-color: #d8f3dc; color: white;">
+                    <td colspan="2"><strong>Grand Total:</strong></td>
+                    <td colspan="4"><strong>{{ formatRupiah($total) }}</strong></td>
+                </tr>
             </tbody>
         </table>
         <div style="padding:2rem;">

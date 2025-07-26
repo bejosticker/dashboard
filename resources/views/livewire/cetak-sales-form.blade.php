@@ -20,7 +20,8 @@
         <b style="width: 30px; text-align: center;">No.</b>
         <p class="w-100 m-0"><b>Produk</b></p>
         <p class="w-100 m-0"><b>Jenis Harga</b></p>
-        <p class="w-100 m-0"><b>Quantity</b></p>
+        <p class="w-100 m-0"><b>Panjang</b></p>
+        <p class="w-100 m-0"><b>Lebar</b></p>
         <p class="w-100 m-0"><b>Harga</b></p>
         <p class="w-100 m-0"><b>Subtotal</b></p>
         <div style="width: 40px;"></div>
@@ -45,8 +46,12 @@
             </select>
 
             <div class="input-group input-group-merge">
-                <input type="number" name="jumlah.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.jumlah" placeholder="Jumlah" />
-                <span class="input-group-text">{{ in_array($item['price_type'], ['price_agent', 'price_grosir', 'price_umum_roll']) ? 'Roll' : 'Meter' }}</span>
+                <input type="number" name="panjang.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.panjang" placeholder="Panjang" />
+                <span class="input-group-text">Meter</span>
+            </div>
+            <div class="input-group input-group-merge">
+                <input type="number" name="lebar.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.lebar" placeholder="Lebar" />
+                <span class="input-group-text">Meter</span>
             </div>
             <input type="number" name="price.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.price" placeholder="Harga" readonly />
             <input type="number" name="subtotal.{{$i}}" class="form-control" value="{{ $item['subtotal'] }}" readonly />
@@ -66,16 +71,7 @@
             <label class="form-label">Diskon (Rp):</label>
             <input type="number" name="discount" class="form-control" wire:model.live="discount" placeholder="Diskon" />
         </div>
-        <div class="col-md-4">
-            <label class="form-label">Metode Pembayaran:</label>
-            <select wire:model.live="payment_method_id" class="form-control" name="payment_method">
-                <option value="">-- Pilih Metode Pembayaran --</option>
-                @foreach ($paymentMethods as $pm)
-                    <option value="{{ $pm['id'] }}">{{ $pm['name'] }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-4">
+        <div class="col-md-8">
             <h5 class="m-0" style="text-align:right;">Total: {{formatRupiah($total)}}</h5>
         </div>
     </div>

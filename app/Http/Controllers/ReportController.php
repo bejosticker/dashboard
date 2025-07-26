@@ -47,7 +47,7 @@ class ReportController extends Controller
         $pengambilanBarang = PengambilanBahan::whereBetween('pengambilan_bahans.date', [$from, $to])
             ->join('toko', 'pengambilan_bahans.toko_id', 'toko.id')
             ->selectRaw(
-                '"-" as description, pengambilan_bahans.date, SUM(pengambilan_bahans.total) as amount, "credit" as type, "Pengambilan Bahan" as source,toko.name'
+                '"-" as description, pengambilan_bahans.date, SUM(pengambilan_bahans.total) as amount, "debit" as type, "Pengambilan Bahan" as source,toko.name'
             )
             ->groupBy('toko.name')
             ->get()

@@ -8,6 +8,10 @@
     function convertPriceType($type) {
         $priceType = '';
         switch ($type) {
+            case 'price_umum':
+                $priceType = 'Harga Umum';
+                break;
+
             case 'price_agent':
                 $priceType = 'Harga Agen';
                 break;

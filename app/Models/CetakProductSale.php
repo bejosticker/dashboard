@@ -15,6 +15,6 @@ class CetakProductSale extends Model
 
     public function items()
     {
-        return $this->hasMany(CetakProductSaleItem::class, 'sale_id', 'id');
+        return $this->hasMany(CetakProductSaleItem::class, 'cetak_product_sale_id', 'id');
     }
 }

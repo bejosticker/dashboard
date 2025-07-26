@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('cetak_product_sale_id')->nullable()->constrained('cetak_product_sales')->nullOnDelete()->nullOnUpdate();
             $table->foreignId('cetak_product_id')->nullable()->constrained('cetak_products')->nullOnDelete()->nullOnUpdate();
-            $table->integer('panjang');
-            $table->integer('lebar');
+            $table->decimal('panjang', 10, 2);
+            $table->decimal('lebar', 10, 2);
             $table->string('price_type');
             $table->integer('price');
             $table->integer('subtotal');

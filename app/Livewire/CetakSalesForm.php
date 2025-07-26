@@ -2,11 +2,10 @@
 
 namespace App\Livewire;
 
-use App\Models\PaymentMethod;
-use App\Models\Sale;
-use App\Models\SaleItems;
+use App\Models\CetakProductSale as Sale;
+use App\Models\CetakProductSaleItem as SaleItems;
 use Livewire\Component;
-use App\Models\Product;
+use App\Models\CetakProduct;
 use App\Models\Supplier;
 use App\Models\Kulak;
 use App\Models\KulakItem;
@@ -15,20 +14,15 @@ use Illuminate\Support\Facades\Log;
 class CetakSalesForm extends Component
 {
     public $products = [];
-    public $paymentMethods = [];
     public $items = [];
-    public $prices = ['price_agent', 'price_grosir', 'price_umum_roll', 'price_grosir_meter', 'price_umum_meter'];
+    public $prices = ['price_grosir', 'price_umum'];
     public $total = 0;
     public $discount = 0;
     public $date = '';
-    public $payment_method_id = '';
 
     public function mount()
     {
-        $this->products = Product::where('stock_cm', '>', 0)->orderBy('name', 'asc')->get()->toArray();
-        $this->paymentMethods = PaymentMethod::orderBy('name', 'asc')->get()->toArray();
-        $this->customer = '';
-        $this->payment_method_id = '';
+        $this->products = CetakProduct::orderBy('name', 'asc')->get()->toArray();
         $this->date = '';
         $this->discount = 0;
         $this->calculateTotal();
@@ -36,7 +30,7 @@ class CetakSalesForm extends Component
 
     public function addItem()
     {
-        $this->items[] = ['product_id' => '', 'jumlah' => 0, 'price' => 0, 'price_type' => '', 'subtotal' => 0];
+        $this->items[] = ['product_id' => '', 'panjang' => 0, 'lebar' => 0, 'price' => 0, 'price_type' => '', 'subtotal' => 0];
         $this->calculateTotal();
     }
 
@@ -75,16 +69,13 @@ class CetakSalesForm extends Component
                 $this->items[$index]['price'] = $product[$value] ?? 0;
             }
 
-            $jumlah = (float)($this->items[$index]['jumlah'] ?? 0);
+            $panjang = (float)($this->items[$index]['panjang'] ?? 0);
+            $lebar = (float)($this->items[$index]['lebar'] ?? 0);
             $price = (float)($this->items[$index]['price'] ?? 0);
 
-            $productData = Product::where('id', $this->items[$index]['product_id'])->first();
-            if (in_array($this->items[$index]['price_type'], ['price_agent', 'price_grosir', 'price_umum_roll'])) {
-                $this->items[$index]['subtotal'] = ceil($jumlah * $price);
-            }else{
-                $this->items[$index]['subtotal'] = ceil($jumlah * $price);
-            }
+            $this->items[$index]['subtotal'] = ceil($panjang * $lebar * $price);
         }
+
         $this->calculateTotal();
     }
 
@@ -96,42 +87,30 @@ class CetakSalesForm extends Component
     public function save()
     {
         $this->validate([
-            'customer' => 'nullable',
             'date' => 'required',
-            'payment_method_id' => 'required|exists:payment_methods,id',
-            'items.*.product_id' => 'required|exists:products,id',
-            'items.*.jumlah' => 'required|numeric|min:1',
+            'items.*.product_id' => 'required|exists:cetak_products,id',
+            'items.*.panjang' => 'required|numeric|min:1',
+            'items.*.lebar' => 'required|numeric|min:1',
             'items.*.price' => 'required|numeric|min:1',
             'items.*.price_type' => 'required',
         ]);
 
         $sale = Sale::create([
-            'payment_method_id' => $this->payment_method_id,
-            'customer' => $this->customer ?? '-',
             'discount' => $this->discount,
             'total' => $this->total,
             'date' => $this->date
         ]);
 
         foreach ($this->items as $item) {
-            $product = Product::where('id', $item['product_id'])->first();
-
             SaleItems::create([
-                'sale_id' => $sale->id,
-                'product_id' => $item['product_id'],
+                'cetak_product_sale_id' => $sale->id,
+                'cetak_product_id' => $item['product_id'],
                 'price' => $item['price'],
                 'price_type' => $item['price_type'],
-                'quantity' => $item['jumlah'],
+                'panjang' => $item['panjang'],
+                'lebar' => $item['lebar'],
                 'subtotal' => $item['subtotal'],
             ]);
-
-            if (in_array($item['price_type'], ['price_agent', 'price_grosir', 'price_umum_roll'])) {
-                $product->stock_cm = ($product->stock_cm ?? 0) - $item['jumlah'] * $product->per_roll_cm;
-            }else{
-                $product->stock_cm = ($product->stock_cm ?? 0) - $item['jumlah'] * 100;
-            }
-
-            $product->save();
         }
 
         session()->flash('success', 'Data berhasil disimpan!');

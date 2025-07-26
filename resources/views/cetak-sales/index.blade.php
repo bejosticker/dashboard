@@ -7,6 +7,10 @@
 
 @section('content')
 @include('layouts/sections/message')
+
+@php
+    $total = 0;
+@endphp
 <div class="card p-4">
     <form class="row d-flex-row align-items-end" method="GET">
         <div class="col-md-3">
@@ -35,11 +39,14 @@
             </thead>
             <tbody class="table-border-bottom-0">
                 @forelse ($sales as $sale)
+                    @php
+                        $total += $sale->total;
+                    @endphp
                     <tr>
                         <td>{{Carbon::parse($sale->date)->locale('id')->translatedFormat('d F Y')}}</td>
                         <td>{{formatRupiah($sale->total)}}</td>
                         <td>{{count($sale->items)}} Produk</td>
-                        <td>
+                        <td style="width: 150px;">
                             <button class="btn btn-success btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#detailsale{{ $sale->id }}"><span class="menu-icon tf-icons bx bx-info-circle"></span> Rincian</button>
                             <button class="btn btn-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#deletesale{{ $sale->id }}"><span class="menu-icon tf-icons bx bx-trash"></span> Hapus</button>
                         </td>
@@ -49,6 +56,10 @@
                         <td colspan="4" class="text-center">Belum ada data penjualan.</td>
                     </tr>
                 @endforelse
+                <tr style="background-color: #d8f3dc; color: white;">
+                    <td><strong>Grand Total:</strong></td>
+                    <td colspan="3"><strong>{{ formatRupiah($total) }}</strong></td>
+                </tr>
             </tbody>
         </table>
         <div style="padding:2rem;">
@@ -87,8 +98,8 @@
                                 <td>{{$item->product?->name ?? '-'}}</td>
                                 <td>{{formatRupiah($item->price)}}</td>
                                 <td>{{convertPriceType($item->price_type)}}</td>
-                                <td>{{$item->panjang}}</td>
-                                <td>{{$item->lebar}}</td>
+                                <td>{{$item->panjang}} Meter</td>
+                                <td>{{$item->lebar}} Meter</td>
                                 <td>{{formatRupiah($item->subtotal)}}</td>
                             </tr>
                         @endforeach
@@ -120,10 +131,10 @@
 </div>
 @endforeach
 <div class="modal fade" id="createsale" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel1">Tambah Penjualan</h5>
+                <h5 class="modal-title" id="exampleModalLabel1">Tambah Penjualan Cetak</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
