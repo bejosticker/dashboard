@@ -2,11 +2,27 @@
 
 @section('title', 'Laporan Toko')
 
+@section('vendor-script')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+@endsection
+
+@section('page-script')
+<script>
+    function downloadPDF(el = 'to-print') {
+        document.querySelectorAll('.no-print').forEach(el => el.style.display = 'none');
+        const element = document.getElementById(el);
+        html2pdf().from(element).save('Laporan Keuangan Toko.pdf').then(() => {
+            document.querySelectorAll('.no-print').forEach(el => el.style.display = '');
+        });
+    }
+</script>
+@endsection
+
 @section('content')
 @include('layouts/sections/message')
 <div class="card p-4">
     <form class="row d-flex-row align-items-end" method="GET">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label class="form-label">Toko</label>
             <select name="toko_id" class="form-control">
                 <option value="">Pilih Toko</option>
@@ -23,8 +39,9 @@
             <label class="form-label">Tanggal Akhir:</label>
             <input type="date" name="to" class="form-control" value="{{ $_GET['to'] ?? '' }}">
         </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-primary">Filter Laporan</button>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary"><span class="tf-icons bx bx-filter-alt"></span> Filter Laporan</button>
+            <button type="button" class="btn btn-info" onclick="downloadPDF()"><span class="tf-icons bx bx-cloud-download"></span> Unduh PDF</button>
         </div>
     </form>
 </div>
@@ -33,7 +50,7 @@
         <p>Tidak ada data laporan.</p>
     @else
         <div class="table-responsive text-nowrap">
-            <table class="table">
+            <table class="table" id="to-print">
                 <thead>
                     <tr>
                         <th>No.</th>

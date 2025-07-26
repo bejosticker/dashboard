@@ -5,6 +5,22 @@
 
 @section('title', 'Pembelian Bahan')
 
+@section('vendor-script')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+@endsection
+
+@section('page-script')
+<script>
+    function downloadPDF(el = 'to-print') {
+        document.querySelectorAll('.no-print').forEach(el => el.style.display = 'none');
+        const element = document.getElementById(el);
+        html2pdf().from(element).save('Pembelian Bahan.pdf').then(() => {
+            document.querySelectorAll('.no-print').forEach(el => el.style.display = '');
+        });
+    }
+</script>
+@endsection
+
 @section('content')
 @include('layouts/sections/message')
 <div class="card p-4">
@@ -27,13 +43,14 @@
             <input type="date" name="to" class="form-control" value="{{ $_GET['to'] ?? '' }}">
         </div>
         <div class="col-md-3">
-            <button type="submit" class="btn btn-primary">Filter Pengambilan Bahan</button>
+            <button type="submit" class="btn btn-primary"><span class="tf-icons bx bx-filter-alt"></span> Filter</button>
+            <button type="button" class="btn btn-info" onclick="downloadPDF()"><span class="tf-icons bx bx-cloud-download"></span> Unduh PDF</button>
         </div>
     </form>
 </div>
 <div class="card mt-4">
     <div class="table-responsive text-nowrap">
-        <table class="table">
+        <table class="table" id="to-print">
             <thead>
                 <tr>
                     <th>#</th>
@@ -41,7 +58,7 @@
                     <th>Tanggal Pembelian</th>
                     <th>Total Nominal</th>
                     <th>Total Produk</th>
-                    <th>Aksi</th>
+                    <th class="no-print">Aksi</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
@@ -52,7 +69,7 @@
                         <td>{{Carbon::parse($pembelianBahan->date)->locale('id')->translatedFormat('d F Y')}}</td>
                         <td>{{formatRupiah($pembelianBahan->total)}}</td>
                         <td>{{count($pembelianBahan->items)}} Produk</td>
-                        <td>
+                        <td class="no-print" style="width: 150px;">
                             <button class="btn btn-success btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#detailKulak{{ $pembelianBahan->id }}"><span class="menu-icon tf-icons bx bx-info-circle"></span> Rincian</button>
                             <button class="btn btn-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteKulak{{ $pembelianBahan->id }}"><span class="menu-icon tf-icons bx bx-trash"></span> Hapus</button>
                         </td>
@@ -87,7 +104,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table class="table">
+                <table class="table" id="to-print{{ $kulak->id }}">
                     <thead>
                         <tr>
                             <th>No.</th>
@@ -111,7 +128,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Oke</button>
+                <button type="button" class="btn btn-primary" onclick="downloadPDF('to-print{{ $kulak->id }}')"><span class="tf-icons bx bx-cloud-download"></span> Unduh PDF</button>
             </div>
         </div>
     </div>

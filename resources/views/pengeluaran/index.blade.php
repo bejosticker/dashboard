@@ -5,11 +5,27 @@ use Carbon\Carbon;
 
 @section('title', 'Pengeluaran')
 
+@section('vendor-script')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+@endsection
+
+@section('page-script')
+<script>
+    function downloadPDF(el = 'to-print') {
+        document.querySelectorAll('.no-print').forEach(el => el.style.display = 'none');
+        const element = document.getElementById(el);
+        html2pdf().from(element).save('Pengeluaran Lainnya.pdf').then(() => {
+            document.querySelectorAll('.no-print').forEach(el => el.style.display = '');
+        });
+    }
+</script>
+@endsection
+
 @section('content')
 @include('layouts/sections/message')
 <div class="card p-4">
     <form class="row d-flex-row align-items-end" method="GET">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label class="form-label">Toko</label>
             <select name="toko_id" class="form-control">
                 <option value="">Pilih Toko</option>
@@ -26,14 +42,15 @@ use Carbon\Carbon;
             <label class="form-label">Tanggal Akhir:</label>
             <input type="date" name="to" class="form-control" value="{{ $_GET['to'] ?? '' }}">
         </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-primary">Filter Laporan</button>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary"><span class="tf-icons bx bx-filter-alt"></span> Filter Laporan</button>
+            <button type="button" class="btn btn-info" onclick="downloadPDF()"><span class="tf-icons bx bx-cloud-download"></span> Unduh PDF</button>
         </div>
     </form>
 </div>
 <div class="card mt-4">
     <div class="table-responsive text-nowrap">
-        <table class="table">
+        <table class="table" id="to-print">
             <thead>
                 <tr>
                     <th>#</th>
@@ -42,7 +59,7 @@ use Carbon\Carbon;
                     <th>Keterangan</th>
                     <th>Nominal</th>
                     <th>Tanggal</th>
-                    <th>Aksi</th>
+                    <th class="no-print" style="width: 160px;">Aksi</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
@@ -54,7 +71,7 @@ use Carbon\Carbon;
                         <td>{{$pengeluaran->description}}</td>
                         <td>{{formatRupiah($pengeluaran->amount)}}</td>
                         <td>{{Carbon::parse($pengeluaran->date)->locale('id')->translatedFormat('d F Y')}}</td>
-                        <td>
+                        <td class="no-print">
                             <button class="btn btn-success btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#editpengeluaran{{ $pengeluaran->id }}"><span class="menu-icon tf-icons bx bx-edit"></span> Ubah</button>
                             <button class="btn btn-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#deletepengeluaran{{ $pengeluaran->id }}"><span class="menu-icon tf-icons bx bx-trash"></span> Hapus</button>
                         </td>
