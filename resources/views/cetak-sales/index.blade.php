@@ -103,6 +103,10 @@
                                 <td>{{formatRupiah($item->subtotal)}}</td>
                             </tr>
                         @endforeach
+                        <tr style="background-color: #d8f3dc; color: white;">
+                            <td colspan="6" class="text-end"><strong>Total:</strong></td>
+                            <td><strong>{{ formatRupiah($sale->items->sum('subtotal')) }}</strong></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
