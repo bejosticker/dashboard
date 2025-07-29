@@ -80,7 +80,9 @@
                                 $totalMeteranGrosir += ($stockCm > 0) ? ($product->price_grosir_meter * $stockCm / 100) : 0;
                                 $totalMeteranUmum += ($stockCm > 0) ? ($product->price_umum_meter * $stockCm / 100) : 0;
                             @endphp
-                            <p class="text-success fw-bold" style="font-size:11px;">Total: {{formatRupiah($product->price_kulak * $product->stock_cm / $product->per_roll_cm)}}</p>
+                            <p class="text-success fw-bold" style="font-size:11px;">
+                                Total: {{ formatRupiah(($product->per_roll_cm > 0) ? $product->price_kulak * $product->stock_cm / $product->per_roll_cm : 0) }}
+                            </p>
                         </td>
                         <td>{{formatRupiah($product->price_agent)}}</td>
                         <td>{{formatRupiah($product->price_grosir)}}</td>
