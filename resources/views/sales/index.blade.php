@@ -14,10 +14,18 @@
 
 @section('page-script')
 <script>
+    const opt = {
+        margin:       0,
+        filename:     'dokumen.pdf',
+        image:        { type: 'jpeg', quality: 1 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
     function downloadPDF(el = 'to-print') {
         document.querySelectorAll('.no-print').forEach(el => el.style.display = 'none');
         const element = document.getElementById(el);
-        html2pdf().from(element).save('Penjualan.pdf').then(() => {
+        html2pdf().set(opt).from(element).save('Penjualan.pdf').then(() => {
             document.querySelectorAll('.no-print').forEach(el => el.style.display = '');
         });
     }
@@ -116,7 +124,7 @@
                             <th>No.</th>
                             <th>Nama Produk</th>
                             <th>Harga</th>
-                            <th>Jenis Harga</th>
+                            <th class="no-print">Jenis Harga</th>
                             <th>Quantity</th>
                             <th>Subtotal</th>
                         </tr>
@@ -127,14 +135,25 @@
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$item->product?->name ?? '-'}}</td>
                                 <td>{{formatRupiah($item->price)}}</td>
-                                <td>{{convertPriceType($item->price_type)}}</td>
+                                <td class="no-print">{{convertPriceType($item->price_type)}}</td>
                                 <td>{{$item->quantity}} {{ in_array($item['price_type'], ['price_agent', 'price_grosir', 'price_umum_roll']) ? 'Roll' : 'Meter' }}</td>
                                 <td>{{formatRupiah($item->subtotal)}}</td>
                             </tr>
                         @endforeach
                         <tr style="background-color: #d8f3dc; color: white;">
-                            <td colspan="5" class="text-end"><strong>Total:</strong></td>
+                            <td class="no-print"></td>
+                            <td colspan="4" class="text-end"><strong>Total:</strong></td>
                             <td><strong>{{ formatRupiah($sale->items->sum('subtotal')) }}</strong></td>
+                        </tr>
+                        <tr style="background-color: #d8f3dc; color: white;">
+                            <td class="no-print"></td>
+                            <td colspan="4" class="text-end"><strong>Tanggal:</strong></td>
+                            <td><strong>{{ Carbon::parse($sale->date)->locale('id')->translatedFormat('d F Y') }}</strong></td>
+                        </tr>
+                        <tr style="background-color: #d8f3dc; color: white;">
+                            <td class="no-print"></td>
+                            <td colspan="4" class="text-end"><strong>Metode Pembayaran:</strong></td>
+                            <td><strong>{{ $sale->paymentMethod?->name ?? '-' }}</strong></td>
                         </tr>
                     </tbody>
                 </table>

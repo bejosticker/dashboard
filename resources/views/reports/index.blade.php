@@ -8,10 +8,18 @@
 
 @section('page-script')
 <script>
+    const opt = {
+        margin:       0,
+        filename:     'dokumen.pdf',
+        image:        { type: 'jpeg', quality: 1 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
     function downloadPDF(el = 'to-print') {
         document.querySelectorAll('.no-print').forEach(el => el.style.display = 'none');
         const element = document.getElementById(el);
-        html2pdf().from(element).save('Laporan Keuangan.pdf').then(() => {
+        html2pdf().set(opt).from(element).save('Laporan Keuangan.pdf').then(() => {
             document.querySelectorAll('.no-print').forEach(el => el.style.display = '');
         });
     }
