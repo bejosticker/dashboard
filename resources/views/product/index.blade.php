@@ -69,13 +69,16 @@
                         <td>
                             {{formatRupiah($product->price_kulak)}}
                             @php
-                                $totalKulak = $totalKulak + ($product->price_kulak * $product->stock_cm / $product->per_roll_cm);
-                                $totalAgen = $totalAgen + ($product->price_agent * $product->stock_cm / $product->per_roll_cm);
-                                $totalGrosir = $totalGrosir + ($product->price_grosir * $product->stock_cm / $product->per_roll_cm);
-                                $totalRollUmum = $totalRollUmum + ($product->price_umum_roll * $product->stock_cm / $product->per_roll_cm);
+                                $rollCm = $product->per_roll_cm;
+                                $stockCm = $product->stock_cm;
 
-                                $totalMeteranGrosir = $totalMeteranGrosir + ($product->price_grosir_meter * $product->stock_cm / 100);
-                                $totalMeteranUmum = $totalMeteranUmum + ($product->price_umum_meter * $product->stock_cm / 100);
+                                $totalKulak += ($rollCm > 0) ? ($product->price_kulak * $stockCm / $rollCm) : 0;
+                                $totalAgen += ($rollCm > 0) ? ($product->price_agent * $stockCm / $rollCm) : 0;
+                                $totalGrosir += ($rollCm > 0) ? ($product->price_grosir * $stockCm / $rollCm) : 0;
+                                $totalRollUmum += ($rollCm > 0) ? ($product->price_umum_roll * $stockCm / $rollCm) : 0;
+
+                                $totalMeteranGrosir += ($stockCm > 0) ? ($product->price_grosir_meter * $stockCm / 100) : 0;
+                                $totalMeteranUmum += ($stockCm > 0) ? ($product->price_umum_meter * $stockCm / 100) : 0;
                             @endphp
                             <p class="text-success fw-bold" style="font-size:11px;">Total: {{formatRupiah($product->price_kulak * $product->stock_cm / $product->per_roll_cm)}}</p>
                         </td>
