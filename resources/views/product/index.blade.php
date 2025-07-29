@@ -173,7 +173,11 @@
                         <div class="col-md-6">
                             <label class="form-label">Stok Minimal</label>
                             <div class="input-group input-group-merge">
-                                <input type="number" class="form-control" value="{{ $product->minimum_stock_cm / $product->per_roll_cm }}" name="minimum_stock_cm"required placeholder="10">
+                                <input type="number" class="form-control"
+                                    value="{{ ($product->per_roll_cm > 0) ? $product->minimum_stock_cm / $product->per_roll_cm : 0 }}"
+                                    name="minimum_stock_cm"
+                                    required
+                                    placeholder="10">
                                 <span class="input-group-text">Roll</span>
                             </div>
                         </div>
