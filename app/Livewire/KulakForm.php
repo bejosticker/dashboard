@@ -20,7 +20,7 @@ class KulakForm extends Component
 
     public function mount()
     {
-        $this->products = Product::select('id', 'name', 'price_kulak as harga')->get()->toArray();
+        $this->products = Product::select('id', 'name', 'price_kulak as harga')->orderBy('name', 'asc')->get()->toArray();
         $this->suppliers = Supplier::select('id', 'name')->get()->toArray();
         $this->supplierId = '';
         $this->date = '';
