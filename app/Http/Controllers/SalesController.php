@@ -45,10 +45,12 @@ class SalesController extends Controller
     {
         $data = Sale::where('id', $id)->with('items')->first();
         foreach ($data->items as $item) {
-            $product = Product::where('id', $item->product->id)->first();
-            if ($product) {
-                $product->stock_cm = $product->stock_cm + $item->quantity;
-                $product->save();
+            if ($item->product) {
+                $product = Product::where('id', $item->product->id)->first();
+                if ($product) {
+                    $product->stock_cm = $product->stock_cm + $item->quantity;
+                    $product->save();
+                }
             }
         }
 
