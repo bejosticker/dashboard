@@ -89,7 +89,7 @@
                         <td>{{formatRupiah($product->price_umum_roll)}}</td>
                         <td>{{formatRupiah($product->price_grosir_meter)}}</td>
                         <td>{{formatRupiah($product->price_umum_meter)}}</td>
-                        <td>{{$product->minimum_stock_cm/$product->per_roll_cm}} Roll</td>
+                        <td>{{ ($product->per_roll_cm > 0) ? $product->minimum_stock_cm / $product->per_roll_cm : 0 }} Roll</td>
                         <td>
                             <button class="btn btn-success btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#editproduct{{ $product->id }}"><span class="tf-icons bx bx-edit"></span></button>
                             <button class="btn btn-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteproduct{{ $product->id }}"><span class="tf-icons bx bx-trash"></span></button>
