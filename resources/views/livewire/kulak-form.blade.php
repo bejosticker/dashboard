@@ -27,7 +27,7 @@
     <hr>
 
     <div style="display: flex; gap: 10px; margin-bottom: 8px; flex-direction: row; align-items: center; font-weight: bold;">
-        <b style="width: 30px; text-align: center;">No.</b>
+        <b style="width: 30px; text-align: center;">##</b>
         <p class="w-100 m-0"><b>Produk</b></p>
         <p class="w-100 m-0"><b>Quantity (Roll)</b></p>
         <p class="w-100 m-0"><b>Harga</b></p>
@@ -37,7 +37,8 @@
 
     @foreach ($items as $i => $item)
         <div style="display: flex; gap: 10px; margin-bottom: 8px; flex-direction: row; align-items: center;" wire:key="item-{{ $i }}">
-            <b style="width: 30px; text-align: center;">{{$loop->iteration}}. </b>
+            <!-- <b style="width: 30px; text-align: center;">{{$loop->iteration}}. </b> -->
+             <input type="checkbox" wire:model="items.{{ $i }}.include" class="form-check-input" style="width: 20px; height: 20px;">
             
             <select wire:model.live="items.{{ $i }}.product_id" class="form-control" name="item.{{$i}}">
                 <option value="">-- Pilih Produk --</option>
@@ -56,9 +57,9 @@
         </div>
     @endforeach
 
-    <button type="button" class="btn btn-info" wire:click="addItem" style="margin-top: 15px;">
+    <!-- <button type="button" class="btn btn-info" wire:click="addItem" style="margin-top: 15px;">
         <span class="menu-icon tf-icons bx bx-plus-circle"></span> Tambah Produk
-    </button>
+    </button> -->
     <br><br>
     <div class="modal-footer p-0">
         <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Batal</button>

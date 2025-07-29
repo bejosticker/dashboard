@@ -24,12 +24,22 @@ class KulakForm extends Component
         $this->suppliers = Supplier::select('id', 'name')->get()->toArray();
         $this->supplierId = '';
         $this->date = '';
+
+        $this->items = collect($this->products)->map(function ($product) {
+            return [
+                'include' => false,
+                'product_id' => $product['id'],
+                'jumlah' => 0,
+                'harga' => $product['harga'],
+                'subtotal' => 0,
+            ];
+        })->toArray();
         $this->calculateTotal();
     }
 
     public function addItem()
     {
-        $this->items[] = ['product_id' => '', 'jumlah' => 1, 'harga' => 0, 'subtotal' => 0];
+        $this->items[] = ['include' => true, 'product_id' => '', 'jumlah' => 1, 'harga' => 0, 'subtotal' => 0];
         $this->calculateTotal();
     }
 
@@ -39,6 +49,27 @@ class KulakForm extends Component
             unset($this->items[$index]);
             $this->items = array_values($this->items);
             $this->calculateTotal();
+        }
+    }
+
+    public function toggleProduct($productId, $checked)
+    {
+        $product = collect($this->products)->firstWhere('id', $productId);
+
+        if ($checked) {
+            if (!collect($this->items)->contains('product_id', $productId)) {
+                $this->items[] = [
+                    'product_id' => $product['id'],
+                    'jumlah' => 1,
+                    'harga' => $product['harga'],
+                    'subtotal' => $product['harga'],
+                ];
+            }
+        } else {
+            $this->items = collect($this->items)
+                ->reject(fn($item) => $item['product_id'] == $productId)
+                ->values()
+                ->toArray();
         }
     }
 
@@ -73,12 +104,26 @@ class KulakForm extends Component
 
     public function calculateTotal()
     {
-        $this->total = collect($this->items)->sum('subtotal');
+        $this->total = collect($this->items)->where('include', true)->sum('subtotal');
     }
 
     public function save()
     {
-        $total = collect($this->items)->sum('subtotal');
+        if (count($this->items) === 0 || !collect($this->items)->contains('include', true)) {
+            session()->flash('error', 'Tidak ada item yang dipilih!');
+            return;
+        }
+        $this->items = collect($this->items)->where('include', true)->map(function ($item) {
+            return [
+                'include' => $item['include'],
+                'product_id' => $item['product_id'],
+                'jumlah' => (float)($item['jumlah'] ?? 0),
+                'harga' => (float)($item['harga'] ?? 0),
+                'subtotal' => (float)($item['subtotal'] ?? 0),
+            ];
+        })->toArray();
+
+        $total = collect($this->items)->where('include', true)->sum('subtotal');
 
         $this->validate([
             'supplierId' => 'required|exists:suppliers,id',
