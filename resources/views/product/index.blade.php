@@ -57,10 +57,11 @@
                             $rollCm = $product->per_roll_cm;
                             $meterCm = 100;
 
-                            $roll = intdiv($stockCm, $rollCm);
-                            $sisaCm = $stockCm % $rollCm;
+                            // Cek agar tidak terjadi division by zero
+                            $roll = ($rollCm > 0) ? intdiv($stockCm, $rollCm) : 0;
+                            $sisaCm = ($rollCm > 0) ? ($stockCm % $rollCm) : $stockCm;
 
-                            $meter = intdiv($sisaCm, $meterCm);
+                            $meter = ($meterCm > 0) ? intdiv($sisaCm, $meterCm) : 0;
 
                             $quantity = $meter > 0 ? "{$roll} Roll {$meter} Meter" : "{$roll} Roll";
                         @endphp
