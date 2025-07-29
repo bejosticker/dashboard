@@ -14,7 +14,33 @@ class ProductController extends Controller
             ->orderBy('name', 'asc')
             ->paginate(10);
 
-        return view('product.index', compact('products'));
+        $allProducts = Product::select('price_agent', 'price_grosir', 'price_umum_roll', 'price_grosir_meter', 'price_umum_meter', 'price_kulak', 'per_roll_cm', 'stock_cm')->get();
+
+        $totalKulak = 0;
+        $totalAgen = 0;
+        $totalGrosir = 0;
+        $totalRollUmum = 0;
+        $totalMeteranGrosir = 0;
+        $totalMeteranUmum = 0;
+
+        foreach ($allProducts as $product) {
+            $stockCm = $product->stock_cm;
+            $rollCm = $product->per_roll_cm;
+
+            if ($rollCm > 0) {
+                $totalKulak += $product->price_kulak * $stockCm / $rollCm;
+                $totalAgen += $product->price_agent * $stockCm / $rollCm;
+                $totalGrosir += $product->price_grosir * $stockCm / $rollCm;
+                $totalRollUmum += $product->price_umum_roll * $stockCm / $rollCm;
+            }
+
+            if ($stockCm > 0) {
+                $totalMeteranGrosir += $product->price_grosir_meter * $stockCm / 100;
+                $totalMeteranUmum += $product->price_umum_meter * $stockCm / 100;
+            }
+        }
+
+        return view('product.index', compact('products', 'totalKulak', 'totalAgen', 'totalGrosir', 'totalRollUmum', 'totalMeteranGrosir', 'totalMeteranUmum'));
     }
 
     public function store(Request $request)

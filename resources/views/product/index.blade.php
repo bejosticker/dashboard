@@ -18,14 +18,6 @@
         </div>
     </div>
 </div>
-@php
-    $totalKulak = 0;
-    $totalAgen = 0;
-    $totalGrosir = 0;
-    $totalRollUmum = 0;
-    $totalMeteranGrosir = 0;
-    $totalMeteranUmum = 0;
-@endphp
 <div class="card">
     <div class="table-responsive text-nowrap">
         <table class="table">
@@ -68,18 +60,6 @@
                         <td>{{$quantity}}</td>
                         <td>
                             {{formatRupiah($product->price_kulak)}}
-                            @php
-                                $rollCm = $product->per_roll_cm;
-                                $stockCm = $product->stock_cm;
-
-                                $totalKulak += ($rollCm > 0) ? ($product->price_kulak * $stockCm / $rollCm) : 0;
-                                $totalAgen += ($rollCm > 0) ? ($product->price_agent * $stockCm / $rollCm) : 0;
-                                $totalGrosir += ($rollCm > 0) ? ($product->price_grosir * $stockCm / $rollCm) : 0;
-                                $totalRollUmum += ($rollCm > 0) ? ($product->price_umum_roll * $stockCm / $rollCm) : 0;
-
-                                $totalMeteranGrosir += ($stockCm > 0) ? ($product->price_grosir_meter * $stockCm / 100) : 0;
-                                $totalMeteranUmum += ($stockCm > 0) ? ($product->price_umum_meter * $stockCm / 100) : 0;
-                            @endphp
                             <p class="text-success fw-bold" style="font-size:11px;">
                                 Total: {{ formatRupiah(($product->per_roll_cm > 0) ? $product->price_kulak * $product->stock_cm / $product->per_roll_cm : 0) }}
                             </p>
