@@ -57,9 +57,9 @@
         </div>
     @endforeach
 
-    <!-- <button type="button" class="btn btn-info" wire:click="addItem" style="margin-top: 15px;">
+    <button type="button" class="btn btn-info" wire:click="addItem" style="margin-top: 15px;">
         <span class="menu-icon tf-icons bx bx-plus-circle"></span> Tambah Produk
-    </button> -->
+    </button>
     <br><br>
     <div class="modal-footer p-0">
         <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Batal</button>

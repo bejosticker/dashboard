@@ -39,7 +39,7 @@ class KulakForm extends Component
 
     public function addItem()
     {
-        $this->items[] = ['include' => true, 'product_id' => '', 'jumlah' => 1, 'harga' => 0, 'subtotal' => 0];
+        $this->items[] = ['include' => false, 'product_id' => '', 'jumlah' => 0, 'harga' => 0, 'subtotal' => 0];
         $this->calculateTotal();
     }
 

@@ -69,6 +69,7 @@
                     <th>Nama Customer</th>
                     <th>Tanggal Penjualan</th>
                     <th>Total Nominal</th>
+                    <th>Diskon</th>
                     <th>Total Produk</th>
                     <th>Metode Pembayaran</th>
                     <th class="no-print">Aksi</th>
@@ -83,6 +84,7 @@
                         <td>{{$sale->customer == '' || $sale->customer == NULL ? '-' : $sale->customer}}</td>
                         <td>{{Carbon::parse($sale->date)->locale('id')->translatedFormat('d F Y')}}</td>
                         <td>{{formatRupiah($sale->total)}}</td>
+                        <td>{{formatRupiah($sale->discount)}}</td>
                         <td>{{count($sale->items)}} Produk</td>
                         <td>{{ $sale->paymentMethod?->name ?? '-' }}</td>
                         <td class="no-print" style="width: 150px;">
@@ -97,7 +99,7 @@
                 @endforelse
                 <tr style="background-color: #d8f3dc; color: white;">
                     <td colspan="2"><strong>Grand Total:</strong></td>
-                    <td colspan="4"><strong>{{ formatRupiah($total) }}</strong></td>
+                    <td colspan="5"><strong>{{ formatRupiah($total) }}</strong></td>
                 </tr>
             </tbody>
         </table>
@@ -142,8 +144,18 @@
                         @endforeach
                         <tr style="background-color: #d8f3dc; color: white;">
                             <td class="no-print"></td>
-                            <td colspan="4" class="text-end"><strong>Total:</strong></td>
+                            <td colspan="4" class="text-end"><strong>Total Subtotal:</strong></td>
                             <td><strong>{{ formatRupiah($sale->items->sum('subtotal')) }}</strong></td>
+                        </tr>
+                        <tr style="background-color: #d8f3dc; color: white;">
+                            <td class="no-print"></td>
+                            <td colspan="4" class="text-end"><strong>Diskon:</strong></td>
+                            <td><strong>{{ formatRupiah($sale->discount) }}</strong></td>
+                        </tr>
+                        <tr style="background-color: #d8f3dc; color: white;">
+                            <td class="no-print"></td>
+                            <td colspan="4" class="text-end"><strong>Total Subtotal:</strong></td>
+                            <td><strong>{{ formatRupiah($sale->total) }}</strong></td>
                         </tr>
                         <tr style="background-color: #d8f3dc; color: white;">
                             <td class="no-print"></td>
