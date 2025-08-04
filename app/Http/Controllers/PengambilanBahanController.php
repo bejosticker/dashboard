@@ -26,7 +26,7 @@ class PengambilanBahanController extends Controller
             ]));
         }
 
-        $datas = PengambilanBahan::with(['product', 'toko']);
+        $datas = PengambilanBahan::with(['items', 'toko']);
         if ($toko_id) {
             $datas = $datas->where('toko_id', $toko_id);
         }

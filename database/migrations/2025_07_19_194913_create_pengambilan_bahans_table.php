@@ -14,9 +14,6 @@ return new class extends Migration
         Schema::create('pengambilan_bahans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('toko_id')->nullable()->constrained('toko')->nullOnDelete()->nullOnUpdate();
-            $table->foreignId('product_id')->nullable()->constrained('products')->nullOnDelete()->nullOnUpdate();
-            $table->integer('price');
-            $table->integer('quantity');
             $table->integer('total');
             $table->date('date');
             $table->timestamps();

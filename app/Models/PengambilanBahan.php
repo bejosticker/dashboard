@@ -18,8 +18,8 @@ class PengambilanBahan extends Model
         return $this->belongsTo(Toko::class, 'toko_id', 'id');
     }
 
-    public function product()
+    public function items()
     {
-        return $this->belongsTo(Product::class, 'product_id', 'id');
+        return $this->hasMany(PengambilanBahanItem::class, 'pengambilan_bahan_id', 'id');
     }
 }
