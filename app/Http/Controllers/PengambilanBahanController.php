@@ -75,12 +75,14 @@ class PengambilanBahanController extends Controller
 
     public function destroy($id)
     {
-        $data = PengambilanBahan::where('id', $id)->with('product')->first();
-        if ($data->product) {
-            Product::where('id', $data->product->id)
-                ->update([
-                    'stock_cm' => $data->product->stock_cm + ($data->quantity * $data->product->per_roll_cm)
-                ]);
+        $data = PengambilanBahan::where('id', $id)->with('items')->first();
+        if ($data->items) {
+            foreach ($data->items as $item) {
+                Product::where('id', $item->product_id)
+                    ->update([
+                        'stock_cm' => $item->product->stock_cm + ($item->quantity * ($item->product_type == 'roll' ? $item->product->per_roll_cm : 100))
+                    ]);
+            }
         }
 
         PengambilanBahan::where('id', $id)->delete();

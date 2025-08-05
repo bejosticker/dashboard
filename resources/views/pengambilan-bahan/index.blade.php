@@ -122,6 +122,51 @@ use Carbon\Carbon;
         </div>
     </div>
 </div>
+<div class="modal fade" id="detaildata{{ $data->id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">Rincian Pengambilan Bahan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table" id="to-print{{ $data->id }}">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Nama Produk</th>
+                            <th>Harga</th>
+                            <th>Quantity</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($data->items as $i => $item)
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$item->product?->name ?? '-'}}</td>
+                                <td>{{formatRupiah($item->price)}}</td>
+                                <td>{{$item->quantity}} {{ $item->product_type }}</td>
+                                <td>{{formatRupiah($item->subtotal)}}</td>
+                            </tr>
+                        @endforeach
+                        <tr style="background-color: #d8f3dc; color: white;">
+                            <td colspan="4" class="text-end"><strong>Total:</strong></td>
+                            <td><strong>{{ formatRupiah($data->total) }}</strong></td>
+                        </tr>
+                        <tr style="background-color: #d8f3dc; color: white;">
+                            <td colspan="4" class="text-end"><strong>Tanggal:</strong></td>
+                            <td><strong>{{ Carbon::parse($data->date)->locale('id')->translatedFormat('d F Y') }}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="downloadPDF('to-print{{ $data->id }}')"><span class="tf-icons bx bx-cloud-download"></span> Unduh Pdf</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endforeach
 <button type="button" style="bottom: 3rem; right: 2rem;" class="btn position-fixed btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#createdata"><span class="menu-icon tf-icons bx bx-plus-circle"></span> Tambah Pengambilan Bahan</button>
 <div class="modal fade" id="createdata" tabindex="-1" aria-hidden="true">
