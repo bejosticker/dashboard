@@ -43,8 +43,7 @@ class KulakController extends Controller
 
     public function destroy($id)
     {
-        $marketOnline = Kulak::findOrFail($id);
-        $marketOnline->delete();
+        Kulak::where('id', $id)->delete();
 
         return redirect()->back()->with('success', 'Kulak berhasil dihapus.');
     }

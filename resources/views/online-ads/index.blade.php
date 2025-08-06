@@ -38,7 +38,7 @@ use Carbon\Carbon;
             <select name="online_market_id" class="form-control">
                 <option value="">Pilih Toko</option>
                 @foreach ($tokos as $toko)
-                    <option value="{{ $toko->id }}" {{ ($_GET['online_market_id'] ?? '') == $toko->id ? 'selected' : '' }}>{{ $toko->name }}</option>
+                    <option value="{{ $toko->id }}" {{ ($_GET['online_market_id'] ?? '') == $toko->id ? 'selected' : '' }}>{{ $toko->name }} - {{ $toko->vendor }}</option>
                 @endforeach
             </select>
         </div>
@@ -165,34 +165,7 @@ use Carbon\Carbon;
             </div>
             <form action="" method="POST">
                 <div class="modal-body">
-                    @csrf
-                    <div class="row mt-4">
-                        <div class="col mb-0">
-                            <label class="form-label">Toko</label>
-                            <select name="online_market_id" class="form-control">
-                                <option value="">Pilih Toko</option>
-                                @foreach ($tokos as $toko)
-                                    <option value="{{ $toko->id }}">{{ $toko->name }} - {{ $toko->vendor }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col mb-0">
-                            <label class="form-label">Nominal</label>
-                            <input type="number" name="amount" class="form-control" required placeholder="1000000">
-                        </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col mb-0">
-                            <label class="form-label">Tanggal</label>
-                            <input type="date" name="date" class="form-control" required placeholder="1000000">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    @livewire('iklan-form')
                 </div>
             </form>
         </div>

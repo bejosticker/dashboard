@@ -89,6 +89,10 @@ use Carbon\Carbon;
                         <td colspan="7" class="text-center">Belum ada data pengeluaran.</td>
                     </tr>
                 @endforelse
+                <tr style="background-color: #d8f3dc; color: white;">
+                    <td colspan="4"><strong>Grand Total:</strong></td>
+                    <td colspan="5"><strong>{{ formatRupiah($pengeluarans->sum('amount')) }}</strong></td>
+                </tr>
             </tbody>
         </table>
         <div style="padding:2rem;">
