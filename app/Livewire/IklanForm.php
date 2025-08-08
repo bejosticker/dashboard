@@ -57,7 +57,11 @@ class IklanForm extends Component
 
     public function calculateTotal()
     {
-        $this->total = collect($this->shops)->where('include', true)->sum('amount');
+        // $this->total = collect($this->shops)->where('include', true)->sum('amount');
+        $this->total = collect($this->shops)
+            ->where('include', true)
+            ->map(fn($shop) => (float) $shop['amount'])
+            ->sum();
     }
 
     public function save()
