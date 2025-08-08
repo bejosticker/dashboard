@@ -20,8 +20,8 @@ class IklanForm extends Component
 
     public function mount()
     {
-        $this->tokos = MarketOnline::selectRaw('id, CONCAT(name, " - ", vendor) as name')->get()->toArray();
-        $this->shops = MarketOnline::selectRaw('id, CONCAT(name, " - ", vendor) as name')->get()->toArray();
+        $this->tokos = MarketOnline::selectRaw('id, CONCAT(name, " - ", vendor) as name')->orderBy("name", "asc")->get()->toArray();
+        $this->shops = MarketOnline::selectRaw('id, CONCAT(name, " - ", vendor) as name')->orderBy("name", "asc")->get()->toArray();
         $this->date = '';
 
         $this->shops = collect($this->shops)->map(function ($shop) {
