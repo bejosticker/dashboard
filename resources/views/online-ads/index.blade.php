@@ -102,7 +102,7 @@ use Carbon\Carbon;
                 <h5 class="modal-title" id="exampleModalLabel1">Edit Iklan Online</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/online-incomes/update/{{ $ad->id }}" method="POST">
+            <form action="/online-ads/update/{{ $ad->id }}" method="POST">
                 <div class="modal-body">
                     @csrf
                     <div class="row mt-4">
@@ -149,7 +149,7 @@ use Carbon\Carbon;
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Batal</button>
-                <a href="/online-incomes/delete/{{ $ad->id }}" class="btn btn-primary">Hapus</a>
+                <a href="/online-ads/delete/{{ $ad->id }}" class="btn btn-primary">Hapus</a>
             </div>
         </div>
     </div>
