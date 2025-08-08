@@ -20,7 +20,12 @@ class PengambilanBahanForm extends Component
 
     public function mount()
     {
-        $this->products = Product::select('id', 'name', 'price_agent', 'price_agent as harga', 'price_grosir_meter', 'per_roll_cm')->orderBy('name', 'asc')->get()->toArray();
+        $this->products = Product::select('id', 'name', 'price_agent', 'price_agent as harga', 'price_grosir_meter', 'per_roll_cm')
+            ->where('stock_cm', '>', 0)
+            ->orderBy('name', 'asc')
+            ->get()
+            ->toArray();
+
         $this->tokos = Toko::select('id', 'name')->get()->toArray();
         $this->tokoId = '';
         $this->date = '';

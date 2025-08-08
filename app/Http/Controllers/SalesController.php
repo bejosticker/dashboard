@@ -36,7 +36,8 @@ class SalesController extends Controller
         $sales = $sales->withCount('items')
             ->withSum('items', 'subtotal')
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         return view('sales.index', compact('sales', 'paymentMethods'));
     }

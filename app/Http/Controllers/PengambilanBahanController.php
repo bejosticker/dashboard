@@ -33,7 +33,8 @@ class PengambilanBahanController extends Controller
         
         $datas = $datas->whereBetween('date', [$from, $to])
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         $tokos = Toko::orderBy('name', 'asc')->get();
 

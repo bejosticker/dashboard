@@ -12,7 +12,8 @@ class ProductController extends Controller
         $products = Product::where('name', 'like', "%{$search}%")
             ->orderByRaw('stock_cm <= minimum_stock_cm asc')
             ->orderBy('name', 'asc')
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         $allProducts = Product::select('price_agent', 'price_grosir', 'price_umum_roll', 'price_grosir_meter', 'price_umum_meter', 'price_kulak', 'per_roll_cm', 'stock_cm')->get();
 

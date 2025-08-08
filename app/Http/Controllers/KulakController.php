@@ -34,7 +34,8 @@ class KulakController extends Controller
             ->withCount('items')
             ->withSum('items', 'subtotal')
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         $suppliers = Supplier::orderBy('name', 'asc')->select('id', 'name')->get();
 

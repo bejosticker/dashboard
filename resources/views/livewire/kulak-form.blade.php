@@ -28,10 +28,10 @@
 
     <div style="display: flex; gap: 10px; margin-bottom: 8px; flex-direction: row; align-items: center; font-weight: bold;">
         <b style="width: 30px; text-align: center;">##</b>
-        <p class="w-100 m-0"><b>Produk</b></p>
-        <p class="w-100 m-0"><b>Quantity (Roll)</b></p>
-        <p class="w-100 m-0"><b>Harga</b></p>
-        <p class="w-100 m-0"><b>Subtotal</b></p>
+        <p class="m-0" style="width: 480px;"><b>Produk</b></p>
+        <p class="m-0" style="width: 140px;"><b>Quantity (Roll)</b></p>
+        <p class="m-0" style="width: 160px;"><b>Harga</b></p>
+        <p class="m-0" style="width: 160px;"><b>Subtotal</b></p>
         <div style="width: 40px;"></div>
     </div>
 
@@ -40,16 +40,16 @@
             <!-- <b style="width: 30px; text-align: center;">{{$loop->iteration}}. </b> -->
              <input type="checkbox" wire:model="items.{{ $i }}.include" class="form-check-input" style="width: 20px; height: 20px;">
             
-            <select wire:model.live="items.{{ $i }}.product_id" class="form-control" name="item.{{$i}}">
+            <select wire:model.live="items.{{ $i }}.product_id" class="form-control" name="item.{{$i}}" style="width: 480px;">
                 <option value="">-- Pilih Produk --</option>
                 @foreach ($products as $product)
                     <option value="{{ $product['id'] }}">{{ $product['name'] }}</option>
                 @endforeach
             </select>
 
-            <input type="number" name="jumlah.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.jumlah" placeholder="Jumlah" />
-            <input type="number" name="harga.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.harga" placeholder="Harga" />
-            <input type="number" name="subtotal.{{$i}}" class="form-control" value="{{ $item['subtotal'] }}" readonly />
+            <input type="number" style="width: 140px;" name="jumlah.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.jumlah" placeholder="Jumlah" />
+            <input type="number" style="width: 160px;" name="harga.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.harga" placeholder="Harga" />
+            <input type="number" style="width: 160px;" name="subtotal.{{$i}}" class="form-control" value="{{ $item['subtotal'] }}" readonly />
 
             <button type="button" class="btn btn-danger" wire:click.prevent="removeItem({{ $i }})">
                 <span class="tf-icons bx bx-trash"></span>

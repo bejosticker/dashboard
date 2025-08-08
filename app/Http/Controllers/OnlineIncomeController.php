@@ -30,7 +30,7 @@ class OnlineIncomeController extends Controller
             $incomes = $incomes->where('online_market_id', $online_market_id);
         }
         
-        $incomes = $incomes->with('shop')->paginate(10);
+        $incomes = $incomes->with('shop')->paginate(10)->withQueryString();
 
         $tokos = MarketOnline::orderBy('name', 'asc')->get();
 

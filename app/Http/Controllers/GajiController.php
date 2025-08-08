@@ -15,7 +15,8 @@ class GajiController extends Controller
             ->withCount('items')
             ->withSum('items', 'amount')
             ->orderBy('date', 'desc')
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         $karyawans = Karyawan::orderBy('name', 'asc')->get();
 
@@ -40,7 +41,8 @@ class GajiController extends Controller
                     ->whereColumn('gaji.id', 'gaji_items.gaji_id'),
                 'desc'
             )
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         $karyawans = Karyawan::orderBy('name', 'asc')->get();
 

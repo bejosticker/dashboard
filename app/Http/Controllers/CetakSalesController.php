@@ -26,7 +26,8 @@ class CetakSalesController extends Controller
             ->withCount('items')
             ->withSum('items', 'subtotal')
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         return view('cetak-sales.index', compact('sales'));
     }

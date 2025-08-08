@@ -30,7 +30,7 @@ class OnlineAdController extends Controller
             $ads = $ads->where('online_market_id', $online_market_id);
         }
         
-        $ads = $ads->with('shop')->paginate(10);
+        $ads = $ads->with('shop')->paginate(10)->withQueryString();
 
         $tokos = MarketOnline::orderBy('name', 'asc')->get();
 

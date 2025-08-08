@@ -31,7 +31,8 @@ class PengeluaranController extends Controller
         }
         
         $pengeluarans = $pengeluarans->with('toko')
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         $tokos = Toko::orderBy('name', 'asc')->get();
 

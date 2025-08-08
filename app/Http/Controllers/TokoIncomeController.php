@@ -29,7 +29,7 @@ class TokoIncomeController extends Controller
             $incomes = $incomes->where('toko_id', $toko_id);
         }
         
-        $incomes = $incomes->with('toko')->paginate(10);
+        $incomes = $incomes->with('toko')->paginate(10)->withQueryString();
 
         $tokos = Toko::orderBy('name', 'asc')->get();
 

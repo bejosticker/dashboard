@@ -144,9 +144,8 @@ class ReportController extends Controller
 
         $pengambilanBarang = PengambilanBahan::where('toko_id', $toko_id)
             ->whereBetween('pengambilan_bahans.date', [$from, $to])
-            ->leftJoin('products', 'pengambilan_bahans.product_id', 'products.id')
             ->selectRaw(
-                '"-" as description, pengambilan_bahans.date, pengambilan_bahans.total as amount, "debit" as type, "Pengambilan Bahan" as source,pengambilan_bahans.product_id, products.name'
+                '"-" as description, pengambilan_bahans.date, pengambilan_bahans.total as amount, "debit" as type, "Pengambilan Bahan" as source,"-" as name'
             )
             ->get()
             ->toArray();

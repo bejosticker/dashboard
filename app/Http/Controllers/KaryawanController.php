@@ -12,7 +12,8 @@ class KaryawanController extends Controller
         $search = $request->get('search') ?? '';
         $karyawans = Karyawan::where('name', 'like', "%{$search}%")
             ->orderBy('name', 'asc')
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
         $tokos = Toko::orderBy('name', 'asc')->get();
         return view('karyawan.index', compact('karyawans', 'tokos'));
     }
