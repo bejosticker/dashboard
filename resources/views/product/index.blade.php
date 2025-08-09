@@ -29,8 +29,8 @@
                     <th>Agen</th>
                     <th>Grosir</th>
                     <th>Roll Umum</th>
-                    <th>Meteran Grosir</th>
-                    <th>Meteran Umum</th>
+                    <th>Meter Grosir</th>
+                    <th>Meter Umum</th>
                     <th>Stok Minimal</th>
                     <th>Aksi</th>
                 </tr>
