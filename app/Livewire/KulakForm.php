@@ -151,7 +151,7 @@ class KulakForm extends Component
                 'subtotal' => $item['subtotal'],
             ]);
 
-            $product->stock_cm = ($product->stock_cm ?? 0) + ($item['jumlah'] * $product->per_roll_cm);
+            $product->stock_cm = $product->stock_cm + ($item['jumlah'] * $product->per_roll_cm);
             $product->save();
         }
 
