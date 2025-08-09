@@ -89,8 +89,8 @@ class CetakSalesForm extends Component
         $this->validate([
             'date' => 'required',
             'items.*.product_id' => 'required|exists:cetak_products,id',
-            'items.*.panjang' => 'required|numeric|min:1',
-            'items.*.lebar' => 'required|numeric|min:1',
+            'items.*.panjang' => 'required|numeric',
+            'items.*.lebar' => 'required|numeric',
             'items.*.price' => 'required|numeric|min:1',
             'items.*.price_type' => 'required',
         ]);
