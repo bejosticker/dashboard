@@ -31,7 +31,7 @@
                     <th>Roll Umum</th>
                     <th>Meter Grosir</th>
                     <th>Meter Umum</th>
-                    <th>Stok Minimal</th>
+                    <th>Minimal</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
