@@ -58,6 +58,7 @@
                 <tr>
                     <th>Tanggal Penjualan</th>
                     <th>Total Nominal</th>
+                    <th>Metode Pembayaran</th>
                     <th>Total Produk</th>
                     <th class="no-print">Aksi</th>
                 </tr>
@@ -70,6 +71,7 @@
                     <tr>
                         <td>{{Carbon::parse($sale->date)->locale('id')->translatedFormat('d F Y')}}</td>
                         <td>{{formatRupiah($sale->total)}}</td>
+                        <td>{{ $sale->paymentMethod->name ?? '-' }}</td>
                         <td>{{count($sale->items)}} Produk</td>
                         <td class="no-print" style="width: 150px;">
                             <button class="btn btn-success btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#detailsale{{ $sale->id }}"><span class="menu-icon tf-icons bx bx-info-circle"></span> Rincian</button>
@@ -78,12 +80,12 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="text-center">Belum ada data penjualan.</td>
+                        <td colspan="5" class="text-center">Belum ada data penjualan.</td>
                     </tr>
                 @endforelse
                 <tr style="background-color: #d8f3dc; color: white;">
                     <td><strong>Grand Total:</strong></td>
-                    <td colspan="3"><strong>{{ formatRupiah($total) }}</strong></td>
+                    <td colspan="4"><strong>{{ formatRupiah($total) }}</strong></td>
                 </tr>
             </tbody>
         </table>

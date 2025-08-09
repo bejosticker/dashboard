@@ -21,7 +21,7 @@ class CetakSalesController extends Controller
             ]));
         }
 
-        $sales = CetakProductSale::with(['items.product'])
+        $sales = CetakProductSale::with(['items.product', 'paymentMethod'])
             ->whereBetween('date', [$from, $to])
             ->withCount('items')
             ->withSum('items', 'subtotal')

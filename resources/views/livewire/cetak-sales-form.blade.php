@@ -71,7 +71,16 @@
             <label class="form-label">Diskon (Rp):</label>
             <input type="number" name="discount" class="form-control" wire:model.live="discount" placeholder="Diskon" />
         </div>
-        <div class="col-md-8">
+        <div class="col-md-4">
+            <label class="form-label">Metode Pembayaran:</label>
+            <select wire:model.live="payment_method_id" class="form-control" name="payment_method">
+                <option value="">-- Pilih Metode Pembayaran --</option>
+                @foreach ($paymentMethods as $pm)
+                    <option value="{{ $pm['id'] }}">{{ $pm['name'] }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-4">
             <h5 class="m-0" style="text-align:right;">Total: {{formatRupiah($total)}}</h5>
         </div>
     </div>

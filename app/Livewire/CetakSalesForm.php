@@ -9,20 +9,24 @@ use App\Models\CetakProduct;
 use App\Models\Supplier;
 use App\Models\Kulak;
 use App\Models\KulakItem;
+use App\Models\PaymentMethod;
 use Illuminate\Support\Facades\Log;
 
 class CetakSalesForm extends Component
 {
     public $products = [];
     public $items = [];
+    public $paymentMethods = [];
     public $prices = ['price_grosir', 'price_umum'];
     public $total = 0;
     public $discount = 0;
     public $date = '';
+    public $payment_method_id = '';
 
     public function mount()
     {
         $this->products = CetakProduct::orderBy('name', 'asc')->get()->toArray();
+        $this->paymentMethods = PaymentMethod::orderBy('name', 'asc')->get()->toArray();
         $this->date = '';
         $this->discount = 0;
         $this->calculateTotal();
@@ -88,6 +92,7 @@ class CetakSalesForm extends Component
     {
         $this->validate([
             'date' => 'required',
+            'payment_method_id' => 'required|exists:payment_methods,id',
             'items.*.product_id' => 'required|exists:cetak_products,id',
             'items.*.panjang' => 'required|numeric',
             'items.*.lebar' => 'required|numeric',
@@ -98,6 +103,7 @@ class CetakSalesForm extends Component
         $sale = Sale::create([
             'discount' => $this->discount,
             'total' => $this->total,
+            'payment_method_id' => $this->payment_method_id,
             'date' => $this->date
         ]);
 
