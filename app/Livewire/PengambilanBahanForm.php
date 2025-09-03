@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 
 class PengambilanBahanForm extends Component
 {
-    private $products = [];
+    public $products = [];
     public $items = [];
     public $tokos = [];
     public $tokoId = '';
