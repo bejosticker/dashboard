@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kulak;
+use App\Models\Product;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 
@@ -38,6 +39,9 @@ class KulakController extends Controller
             ->withQueryString();
 
         $suppliers = Supplier::orderBy('name', 'asc')->select('id', 'name')->get();
+
+        $products = Product::select('id', 'name', 'price_kulak as harga')->orderBy('name', 'asc')->get()->toArray();
+        session(['kulak_products' => $products]);
 
         return view('kulak.index', compact('kulaks', 'suppliers'));
     }

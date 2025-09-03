@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Log;
 
 class KulakForm extends Component
 {
-    public $products = [];
     public $items = [];
     public $suppliers = [];
     public $supplierId = '';
@@ -20,12 +19,11 @@ class KulakForm extends Component
 
     public function mount()
     {
-        $this->products = Product::select('id', 'name', 'price_kulak as harga')->orderBy('name', 'asc')->get()->toArray();
         $this->suppliers = Supplier::select('id', 'name')->get()->toArray();
         $this->supplierId = '';
         $this->date = '';
 
-        $this->items = collect($this->products)->map(function ($product) {
+        $this->items = collect(session('kulak_products'))->map(function ($product) {
             return [
                 'include' => false,
                 'product_id' => $product['id'],
@@ -54,7 +52,7 @@ class KulakForm extends Component
 
     public function toggleProduct($productId, $checked)
     {
-        $product = collect($this->products)->firstWhere('id', $productId);
+        $product = collect(session('kulak_products'))->firstWhere('id', $productId);
 
         if ($checked) {
             if (!collect($this->items)->contains('product_id', $productId)) {
@@ -87,11 +85,6 @@ class KulakForm extends Component
 
             if (!isset($this->items[$index])) {
                 return;
-            }
-
-            if ($field === 'product_id') {
-                $product = collect($this->products)->firstWhere('id', $this->items[$index]['product_id']);
-                $this->items[$index]['harga'] = $product['harga'] ?? 0;
             }
 
             $jumlah = (float)($this->items[$index]['jumlah'] ?? 0);

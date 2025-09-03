@@ -41,10 +41,19 @@
              <input type="checkbox" wire:model="items.{{ $i }}.include" class="form-check-input" style="width: 20px; height: 20px;">
             
             <select wire:model.live="items.{{ $i }}.product_id" class="form-control" name="item.{{$i}}" style="width: 480px;">
-                <option value="">-- Pilih Produk --</option>
-                @foreach ($products as $product)
-                    <option value="{{ $product['id'] }}">{{ $product['name'] }}</option>
-                @endforeach
+                @if ($item['product_id'] != '')
+                    @php
+                        $selectedProduct = collect(session('products'))->firstWhere('id', $item['product_id']);
+                    @endphp
+                    @if ($selectedProduct)
+                        <option value="{{ $selectedProduct['id'] }}">{{ $selectedProduct['name'] }}</option>
+                    @endif
+                @else
+                    <option value="">-- Pilih Produk --</option>
+                    @foreach (session('products') as $product)
+                        <option value="{{ $product['id'] }}">{{ $product['name'] }}</option>
+                    @endforeach
+                @endif
             </select>
 
             <input type="number" style="width: 140px;" wire:loading.attr="disabled" name="jumlah.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.jumlah" placeholder="Jumlah" />
