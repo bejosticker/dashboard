@@ -29,10 +29,6 @@ use Carbon\Carbon;
 </script>
 @endsection
 
-@php
-    $total = 0;
-@endphp
-
 @section('content')
 @include('layouts/sections/message')
 <div class="card p-4">
@@ -74,9 +70,6 @@ use Carbon\Carbon;
             </thead>
             <tbody class="table-border-bottom-0">
                 @forelse ($datas as $data)
-                    @php
-                        $total += $data->total;
-                    @endphp
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$data->toko?->name ?? '-'}}</td>

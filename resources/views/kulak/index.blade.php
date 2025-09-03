@@ -90,7 +90,7 @@
                 @if (count($kulaks) > 0)
                     <tr style="background-color: #d8f3dc; color: white;">
                         <td colspan="3"><strong>Grand Total:</strong></td>
-                        <td colspan="3"><strong>{{ formatRupiah($kulaks->sum('total')) }}</strong></td>
+                        <td colspan="3"><strong>{{ formatRupiah($total) }}</strong></td>
                     </tr>
                 @endif
             </tbody>

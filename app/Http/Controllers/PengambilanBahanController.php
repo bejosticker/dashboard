@@ -50,7 +50,13 @@ class PengambilanBahanController extends Controller
             ->orderBy('name', 'asc')
             ->get();
 
-        return view('pengambilan-bahan.index', compact('datas', 'tokos', 'products'));
+        $total = PengambilanBahan::whereBetween('date', [$from, $to]);
+        if ($toko_id) {
+            $total = $total->where('toko_id', $toko_id);
+        }
+        $total = $total->sum('total');
+
+        return view('pengambilan-bahan.index', compact('datas', 'tokos', 'products', 'total'));
     }
 
     public function store(Request $request)

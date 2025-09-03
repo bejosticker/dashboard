@@ -43,7 +43,13 @@ class KulakController extends Controller
         $products = Product::select('id', 'name', 'price_kulak as harga')->orderBy('name', 'asc')->get()->toArray();
         session(['kulak_products' => $products]);
 
-        return view('kulak.index', compact('kulaks', 'suppliers'));
+        $total = Kulak::whereBetween('date', [$from, $to]);
+        if ($supplier_id) {
+            $total = $total->where('supplier_id', $supplier_id);
+        }
+        $total = $total->sum('total');
+
+        return view('kulak.index', compact('kulaks', 'suppliers', 'total'));
     }
 
     public function destroy($id)
