@@ -17,6 +17,7 @@ class PengambilanBahanForm extends Component
     public $tokoId = '';
     public $total = 0;
     public $date = '';
+    private $productMap = []; // not serialized, for lookups
 
     public function mount()
     {
@@ -24,6 +25,13 @@ class PengambilanBahanForm extends Component
             ->where('stock_cm', '>', 0)
             ->orderBy('name', 'asc')
             ->get()
+            ->toArray();
+
+        // Full product map for internal use
+        $this->productMap = Product::select('id', 'name', 'price_agent', 'price_agent as harga', 'price_grosir_meter', 'per_roll_cm')
+            ->where('stock_cm', '>', 0)
+            ->get()
+            ->keyBy('id')
             ->toArray();
 
         $this->tokos = Toko::select('id', 'name')->get()->toArray();
@@ -66,37 +74,57 @@ class PengambilanBahanForm extends Component
         if (str_starts_with($propertyName, 'items.')) {
             $parts = explode('.', $propertyName);
 
-            if (count($parts) < 3) {
-                return;
-            }
+            // if (count($parts) < 3) {
+            //     return;
+            // }
 
-            $index = $parts[1];
-            $field = $parts[2];
+            // $index = $parts[1];
+            // $field = $parts[2];
 
-            if (!isset($this->items[$index])) {
-                return;
-            }
+            // if (!isset($this->items[$index])) {
+            //     return;
+            // }
 
-            $priceType = $this->items[$index]['product_type'] ?? 'roll';
-            $priceAgent = (float)($this->items[$index]['price_agent'] ?? 0);
-            $priceGrosirMeter = (float)($this->items[$index]['price_grosir_meter'] ?? 0);
+            // $priceType = $this->items[$index]['product_type'] ?? 'roll';
+            // $priceAgent = (float)($this->items[$index]['price_agent'] ?? 0);
+            // $priceGrosirMeter = (float)($this->items[$index]['price_grosir_meter'] ?? 0);
 
-            $this->items[$index]['harga'] = $priceType === 'meter' ? $priceGrosirMeter : $priceAgent;
+            // $this->items[$index]['harga'] = $priceType === 'meter' ? $priceGrosirMeter : $priceAgent;
 
-            $jumlah = (float)($this->items[$index]['jumlah'] ?? 0);
+            // $jumlah = (float)($this->items[$index]['jumlah'] ?? 0);
 
             // $this->items[$index]['subtotal'] = $jumlah * $this->items[$index]['harga'];
             // $this->calculateTotal();
 
-            $oldSubtotal = $this->items[$index]['subtotal'] ?? 0;
-            $newSubtotal = $jumlah * $this->items[$index]['harga'];
+            // $oldSubtotal = $this->items[$index]['subtotal'] ?? 0;
+            // $newSubtotal = $jumlah * $this->items[$index]['harga'];
 
-            $this->items[$index]['subtotal'] = $newSubtotal;
+            // $this->items[$index]['subtotal'] = $newSubtotal;
 
-            // Update total incrementally instead of recalculating everything
-            if ($this->items[$index]['include'] ?? true) {
-                $this->total += ($newSubtotal - $oldSubtotal);
-            }
+            // if ($this->items[$index]['include'] ?? true) {
+            //     $this->total += ($newSubtotal - $oldSubtotal);
+            // }
+
+            // HERE
+            // $parts = explode('.', $name);
+            if (count($parts) < 3) return;
+
+            $index = $parts[1];
+            if (! isset($this->items[$index])) return;
+
+            $item = &$this->items[$index];
+            $product = $this->productMap[$item['product_id']] ?? null;
+            if (! $product) return;
+
+            $priceType = $item['product_type'] ?? 'roll';
+            $harga = $priceType === 'meter'
+                ? $product['price_grosir_meter']
+                : $product['price_agent'];
+
+            $item['harga'] = $harga;
+            $item['subtotal'] = ((float) $item['jumlah']) * $harga;
+
+            $this->calculateTotal();
         }
     }
 
