@@ -40,12 +40,12 @@
         <div style="display: flex; gap: 10px; margin-bottom: 8px; flex-direction: row; align-items: center;" wire:key="item-{{ $i }}">
             <input type="checkbox" wire:model="items.{{ $i }}.include" class="form-check-input" style="width: 20px; height: 20px;">
             
-            <select wire:model.live="items.{{ $i }}.product_id" class="form-control" name="item.{{$i}}">
+            {{-- <select wire:model.live="items.{{ $i }}.product_id" class="form-control" name="item.{{$i}}">
                 <option value="">-- Pilih Produk --</option>
                 @foreach ($products as $product)
                     <option value="{{ $product['id'] }}">{{ $product['name'] }}</option>
                 @endforeach
-            </select>
+            </select> --}}
 
             <select wire:model.live="items.{{ $i }}.product_type" class="form-control" name="item.{{$i}}">
                 <option value="roll">Roll</option>
