@@ -77,9 +77,9 @@ class PengambilanBahanForm extends Component
                 return;
             }
 
-            $product = collect($this->products)->firstWhere('id', $this->items[$index]['product_id']);
-            $this->items[$index]['price_agent'] = $product['price_agent'] ?? 0;
-            $this->items[$index]['price_grosir_meter'] = $product['price_grosir_meter'] ?? 0;
+            // $product = collect($this->products)->firstWhere('id', $this->items[$index]['product_id']);
+            // $this->items[$index]['price_agent'] = $product['price_agent'] ?? 0;
+            // $this->items[$index]['price_grosir_meter'] = $product['price_grosir_meter'] ?? 0;
 
             $priceType = $this->items[$index]['product_type'] ?? 'roll';
             $priceAgent = (float)($this->items[$index]['price_agent'] ?? 0);
