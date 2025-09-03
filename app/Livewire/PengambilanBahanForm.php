@@ -7,122 +7,67 @@ use App\Models\Product;
 use App\Models\Toko;
 use App\Models\PengambilanBahan;
 use App\Models\PengambilanBahanItem;
-use Illuminate\Support\Facades\Log;
 
 class PengambilanBahanForm extends Component
 {
-    public $products = [];
-    public $items = [];
+    public $products = [];   // semua produk (read only)
+    public $items = [];      // status user untuk tiap produk
     public $tokos = [];
     public $tokoId = '';
     public $total = 0;
     public $date = '';
-    private $productMap = []; // not serialized, for lookups
 
     public function mount()
     {
-        $this->products = Product::select('id', 'name', 'price_agent', 'price_agent as harga', 'price_grosir_meter', 'per_roll_cm')
+        // preload semua produk sekali saja
+        $this->products = Product::select('id', 'name', 'price_agent', 'price_grosir_meter', 'per_roll_cm', 'stock_cm')
             ->where('stock_cm', '>', 0)
             ->orderBy('name', 'asc')
             ->get()
-            ->toArray();
-
-        // Full product map for internal use
-        $this->productMap = Product::select('id', 'name', 'price_agent', 'price_agent as harga', 'price_grosir_meter', 'per_roll_cm')
-            ->where('stock_cm', '>', 0)
-            ->get()
-            ->keyBy('id')
+            ->keyBy('id') // supaya bisa akses cepat via product_id
             ->toArray();
 
         $this->tokos = Toko::select('id', 'name')->get()->toArray();
+
         $this->tokoId = '';
         $this->date = '';
 
-        $this->items = collect($this->products)->map(function ($product) {
-            return [
+        // preload items tapi ringan
+        $this->items = [];
+        foreach ($this->products as $product) {
+            $this->items[] = [
                 'include' => false,
                 'product_id' => $product['id'],
                 'jumlah' => 0,
                 'product_type' => 'roll',
-                'harga' => $product['harga'],
-                'price_agent' => $product['price_agent'],
-                'price_grosir_meter' => $product['price_grosir_meter'],
-                'per_roll_cm' => $product['per_roll_cm'],
                 'subtotal' => 0,
             ];
-        })->toArray();
-        $this->calculateTotal();
-    }
-
-    public function addItem()
-    {
-        $this->items[] = ['include' => false, 'product_id' => '', 'jumlah' => 0, 'price_agent' => 0, 'harga' => 0, 'price_grosir_meter' => 0, 'product_type' => 'roll', 'per_roll_cm' => 0, 'subtotal' => 0];
-        $this->calculateTotal();
-    }
-
-    public function removeItem($index)
-    {
-        if (isset($this->items[$index])) {
-            unset($this->items[$index]);
-            $this->items = array_values($this->items);
-            $this->calculateTotal();
         }
+
+        $this->calculateTotal();
     }
 
-    public function updated($propertyName, $value)
+    public function updated($propertyName)
     {
         if (str_starts_with($propertyName, 'items.')) {
             $parts = explode('.', $propertyName);
 
-            // if (count($parts) < 3) {
-            //     return;
-            // }
-
-            // $index = $parts[1];
-            // $field = $parts[2];
-
-            // if (!isset($this->items[$index])) {
-            //     return;
-            // }
-
-            // $priceType = $this->items[$index]['product_type'] ?? 'roll';
-            // $priceAgent = (float)($this->items[$index]['price_agent'] ?? 0);
-            // $priceGrosirMeter = (float)($this->items[$index]['price_grosir_meter'] ?? 0);
-
-            // $this->items[$index]['harga'] = $priceType === 'meter' ? $priceGrosirMeter : $priceAgent;
-
-            // $jumlah = (float)($this->items[$index]['jumlah'] ?? 0);
-
-            // $this->items[$index]['subtotal'] = $jumlah * $this->items[$index]['harga'];
-            // $this->calculateTotal();
-
-            // $oldSubtotal = $this->items[$index]['subtotal'] ?? 0;
-            // $newSubtotal = $jumlah * $this->items[$index]['harga'];
-
-            // $this->items[$index]['subtotal'] = $newSubtotal;
-
-            // if ($this->items[$index]['include'] ?? true) {
-            //     $this->total += ($newSubtotal - $oldSubtotal);
-            // }
-
-            // HERE
-            // $parts = explode('.', $name);
             if (count($parts) < 3) return;
 
             $index = $parts[1];
-            if (! isset($this->items[$index])) return;
+            if (!isset($this->items[$index])) return;
 
             $item = &$this->items[$index];
-            $product = $this->productMap[$item['product_id']] ?? null;
-            if (! $product) return;
+            $product = $this->products[$item['product_id']] ?? null;
 
-            $priceType = $item['product_type'] ?? 'roll';
-            $harga = $priceType === 'meter'
-                ? $product['price_grosir_meter']
-                : $product['price_agent'];
+            if (!$product) return;
 
-            $item['harga'] = $harga;
-            $item['subtotal'] = ((float) $item['jumlah']) * $harga;
+            $harga = $item['product_type'] === 'meter'
+                ? (float)$product['price_grosir_meter']
+                : (float)$product['price_agent'];
+
+            $jumlah = (float)($item['jumlah'] ?? 0);
+            $item['subtotal'] = $jumlah * $harga;
 
             $this->calculateTotal();
         }
@@ -130,34 +75,28 @@ class PengambilanBahanForm extends Component
 
     public function calculateTotal()
     {
-        $this->total = collect($this->items)->where('include', true)->sum('subtotal');
+        $this->total = 0;
+        foreach ($this->items as $item) {
+            if (!empty($item['include'])) {
+                $this->total += $item['subtotal'];
+            }
+        }
     }
 
     public function save()
     {
-        if (count($this->items) === 0 || !collect($this->items)->contains('include', true)) {
+        $selectedItems = array_filter($this->items, fn($item) => !empty($item['include']));
+
+        if (empty($selectedItems)) {
             session()->flash('error', 'Tidak ada item yang dipilih!');
             return;
         }
-        $this->items = collect($this->items)->where('include', true)->map(function ($item) {
-            return [
-                'include' => $item['include'],
-                'product_id' => $item['product_id'],
-                'product_type' => $item['product_type'] ?? 'roll',
-                'jumlah' => (float)($item['jumlah'] ?? 0),
-                'harga' => (float)($item['harga'] ?? 0),
-                'subtotal' => (float)($item['subtotal'] ?? 0),
-            ];
-        })->toArray();
-
-        $total = collect($this->items)->where('include', true)->sum('subtotal');
 
         $this->validate([
             'tokoId' => 'required|exists:toko,id',
             'date' => 'required',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.jumlah' => 'required|numeric|min:1',
-            'items.*.harga' => 'required|numeric|min:0',
         ]);
 
         $pengambilan = PengambilanBahan::create([
@@ -166,20 +105,33 @@ class PengambilanBahanForm extends Component
             'date' => $this->date
         ]);
 
-        foreach ($this->items as $item) {
-            $product = Product::where('id', $item['product_id'])->first();
+        foreach ($selectedItems as $item) {
+            $product = $this->products[$item['product_id']] ?? null;
+            if (!$product) continue;
+
+            $harga = $item['product_type'] === 'meter'
+                ? (float)$product['price_grosir_meter']
+                : (float)$product['price_agent'];
+
+            $subtotal = $item['jumlah'] * $harga;
 
             PengambilanBahanItem::create([
                 'pengambilan_bahan_id' => $pengambilan->id,
                 'product_id' => $item['product_id'],
-                'product_type' => $item['product_type'] ?? 'roll',
-                'price' => $item['harga'],
+                'product_type' => $item['product_type'],
+                'price' => $harga,
                 'quantity' => $item['jumlah'],
-                'subtotal' => $item['subtotal'],
+                'subtotal' => $subtotal,
             ]);
 
-            $product->stock_cm = ($product->stock_cm ?? 0) - ($item['product_type'] == 'roll' ? $item['jumlah'] * $product->per_roll_cm : $item['jumlah'] * 100);
-            $product->save();
+            // update stok
+            $p = Product::find($item['product_id']);
+            if ($p) {
+                $p->stock_cm -= ($item['product_type'] === 'roll')
+                    ? $item['jumlah'] * $p->per_roll_cm
+                    : $item['jumlah'] * 100;
+                $p->save();
+            }
         }
 
         session()->flash('success', 'Data berhasil disimpan!');
@@ -190,7 +142,12 @@ class PengambilanBahanForm extends Component
 
     public function resetForm()
     {
-        $this->items = [];
+        foreach ($this->items as &$item) {
+            $item['include'] = false;
+            $item['jumlah'] = 0;
+            $item['product_type'] = 'roll';
+            $item['subtotal'] = 0;
+        }
         $this->tokoId = '';
         $this->date = '';
         $this->total = 0;
