@@ -64,6 +64,7 @@ use Carbon\Carbon;
                     <th>#</th>
                     <th>Toko</th>
                     <th>Total</th>
+                    <th>Laba</th>
                     <th>Tanggal Pengambilan</th>
                     <th class="no-print">Aksi</th>
                 </tr>
@@ -74,6 +75,20 @@ use Carbon\Carbon;
                         <td>{{$loop->iteration}}</td>
                         <td>{{$data->toko?->name ?? '-'}}</td>
                         <td>{{formatRupiah($data->total)}}</td>
+                        @php
+                            $laba = 0;
+                            foreach ($data->items as $item) {
+                                if ($item->product_type == 'roll') {
+                                    $laba += ($item->price - $item->product->price_kulak) * $item->quantity;
+                                }else{
+                                    $kulakPerMeter = $item->product->price_kulak / $item->product->per_roll_cm * 100;
+                                    $laba += ($item->price - $kulakPerMeter) * $item->quantity;
+                                }
+                            }
+                            $data->laba = $laba;
+                            $total += $data->total;
+                        @endphp
+                        <td>{{formatRupiah($data->laba)}}</td>
                         <td>{{Carbon::parse($data->date)->locale('id')->translatedFormat('d F Y')}}</td>
                         <td class="no-print" style="width: 150px;">
                             <button class="btn btn-primary btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#detaildata{{ $data->id }}"><span class="menu-icon tf-icons bx bx-edit"></span> Rincian</button>
@@ -82,12 +97,12 @@ use Carbon\Carbon;
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="text-center">Belum ada data pengambilan bahan.</td>
+                        <td colspan="6" class="text-center">Belum ada data pengambilan bahan.</td>
                     </tr>
                 @endforelse
                 <tr style="background-color: #d8f3dc; color: white;">
                     <td colspan="2"><strong>Grand Total:</strong></td>
-                    <td colspan="5"><strong>{{ formatRupiah($total) }}</strong></td>
+                    <td colspan="6"><strong>{{ formatRupiah($total) }}</strong></td>
                 </tr>
             </tbody>
         </table>
