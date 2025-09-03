@@ -77,10 +77,6 @@ class PengambilanBahanForm extends Component
                 return;
             }
 
-            // $product = collect($this->products)->firstWhere('id', $this->items[$index]['product_id']);
-            // $this->items[$index]['price_agent'] = $product['price_agent'] ?? 0;
-            // $this->items[$index]['price_grosir_meter'] = $product['price_grosir_meter'] ?? 0;
-
             $priceType = $this->items[$index]['product_type'] ?? 'roll';
             $priceAgent = (float)($this->items[$index]['price_agent'] ?? 0);
             $priceGrosirMeter = (float)($this->items[$index]['price_grosir_meter'] ?? 0);
@@ -89,8 +85,18 @@ class PengambilanBahanForm extends Component
 
             $jumlah = (float)($this->items[$index]['jumlah'] ?? 0);
 
-            $this->items[$index]['subtotal'] = $jumlah * $this->items[$index]['harga'];
-            $this->calculateTotal();
+            // $this->items[$index]['subtotal'] = $jumlah * $this->items[$index]['harga'];
+            // $this->calculateTotal();
+
+            $oldSubtotal = $this->items[$index]['subtotal'] ?? 0;
+            $newSubtotal = $jumlah * $this->items[$index]['harga'];
+
+            $this->items[$index]['subtotal'] = $newSubtotal;
+
+            // Update total incrementally instead of recalculating everything
+            if ($this->items[$index]['include'] ?? true) {
+                $this->total += ($newSubtotal - $oldSubtotal);
+            }
         }
     }
 
