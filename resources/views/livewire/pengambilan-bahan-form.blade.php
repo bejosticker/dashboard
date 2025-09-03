@@ -52,7 +52,7 @@
                 <option value="meter">Meter</option>
             </select>
 
-            <input type="number" name="jumlah.{{$i}}" wire:loading.attr="disabled" class="form-control" wire:model.live="items.{{ $i }}.jumlah" placeholder="Jumlah" />
+            <input type="number" name="jumlah.{{$i}}" wire:loading.attr="disabled" class="form-control" wire:model.lazy="items.{{ $i }}.jumlah" placeholder="Jumlah" />
             <input type="number" name="harga.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.harga" placeholder="Harga" />
             <input type="number" name="subtotal.{{$i}}" class="form-control" value="{{ $item['subtotal'] }}" readonly />
 
