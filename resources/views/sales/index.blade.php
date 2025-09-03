@@ -69,6 +69,7 @@
                     <th>Nama Customer</th>
                     <th>Tanggal Penjualan</th>
                     <th>Total Nominal</th>
+                    <th>Laba</th>
                     <th>Diskon</th>
                     <th>Total Produk</th>
                     <th>Metode Pembayaran</th>
@@ -79,11 +80,21 @@
                 @forelse ($sales as $sale)
                     @php
                         $total += $sale->total;
+                        $laba = 0;
+                        foreach ($sale->items as $item) {
+                            if (in_array($item->price_type, ['price_agent', 'price_grosir', 'price_umum_roll'])) {
+                                $laba += ($item->price - $item->product->price_kulak) * $item->quantity;
+                            }else{
+                                $kulakPerMeter = $item->product->price_kulak / $item->product->per_roll_cm * 100;
+                                $laba += ($item->price - $kulakPerMeter) * $item->quantity;
+                            }
+                        }
                     @endphp
                     <tr>
                         <td>{{$sale->customer == '' || $sale->customer == NULL ? '-' : $sale->customer}}</td>
                         <td>{{Carbon::parse($sale->date)->locale('id')->translatedFormat('d F Y')}}</td>
                         <td>{{formatRupiah($sale->total)}}</td>
+                        <td>{{formatRupiah($laba)}}</td>
                         <td>{{formatRupiah($sale->discount)}}</td>
                         <td>{{count($sale->items)}} Produk</td>
                         <td>{{ $sale->paymentMethod?->name ?? '-' }}</td>
@@ -94,12 +105,12 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center">Belum ada data penjualan.</td>
+                        <td colspan="7" class="text-center">Belum ada data penjualan.</td>
                     </tr>
                 @endforelse
                 <tr style="background-color: #d8f3dc; color: white;">
                     <td colspan="2"><strong>Grand Total:</strong></td>
-                    <td colspan="5"><strong>{{ formatRupiah($total) }}</strong></td>
+                    <td colspan="6"><strong>{{ formatRupiah($total) }}</strong></td>
                 </tr>
             </tbody>
         </table>
