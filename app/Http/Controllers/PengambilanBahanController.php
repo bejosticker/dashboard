@@ -38,6 +38,14 @@ class PengambilanBahanController extends Controller
 
         $tokos = Toko::orderBy('name', 'asc')->get();
 
+        $sess = Product::select('id', 'name', 'price_agent', 'price_agent as harga', 'price_grosir_meter', 'per_roll_cm')
+            ->where('stock_cm', '>', 0)
+            ->orderBy('name', 'asc')
+            ->get()
+            ->toArray();
+
+        session(['products' => $sess]);
+
         $products = Product::where('stock_cm', '>', 0)
             ->orderBy('name', 'asc')
             ->get();

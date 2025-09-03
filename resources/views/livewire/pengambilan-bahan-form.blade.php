@@ -43,14 +43,14 @@
             <select wire:model.live="items.{{ $i }}.product_id" class="form-control" name="item.{{$i}}">
                 @if ($item['product_id'] != '')
                     @php
-                        $selectedProduct = collect($products)->firstWhere('id', $item['product_id']);
+                        $selectedProduct = collect(session('products'))->firstWhere('id', $item['product_id']);
                     @endphp
                     @if ($selectedProduct)
                         <option value="{{ $selectedProduct['id'] }}">{{ $selectedProduct['name'] }}</option>
                     @endif
                 @else
                     <option value="">-- Pilih Produk --</option>
-                    @foreach ($products as $product)
+                    @foreach (session('products') as $product)
                         <option value="{{ $product['id'] }}">{{ $product['name'] }}</option>
                     @endforeach
                 @endif

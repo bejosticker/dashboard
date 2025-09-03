@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 
 class PengambilanBahanForm extends Component
 {
-    public $products = [];
+    // public $products = [];
     public $items = [];
     public $tokos = [];
     public $tokoId = '';
@@ -20,17 +20,17 @@ class PengambilanBahanForm extends Component
 
     public function mount()
     {
-        $this->products = Product::select('id', 'name', 'price_agent', 'price_agent as harga', 'price_grosir_meter', 'per_roll_cm')
-            ->where('stock_cm', '>', 0)
-            ->orderBy('name', 'asc')
-            ->get()
-            ->toArray();
+        // $this->products = Product::select('id', 'name', 'price_agent', 'price_agent as harga', 'price_grosir_meter', 'per_roll_cm')
+        //     ->where('stock_cm', '>', 0)
+        //     ->orderBy('name', 'asc')
+        //     ->get()
+        //     ->toArray();
 
         $this->tokos = Toko::select('id', 'name')->get()->toArray();
         $this->tokoId = '';
         $this->date = '';
 
-        $this->items = collect($this->products)->map(function ($product) {
+        $this->items = collect(session('products'))->map(function ($product) {
             return [
                 'include' => false,
                 'product_id' => $product['id'],
