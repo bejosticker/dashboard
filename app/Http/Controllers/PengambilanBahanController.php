@@ -62,8 +62,9 @@ class PengambilanBahanController extends Controller
         }
         $allPengambilanBahan = $allPengambilanBahan->with('items.product')->get();
 
-        $laba = 0;
+        $labaTotal = 0;
         foreach ($allPengambilanBahan as $data) {
+            $laba = 0;
             foreach ($data->items as $item) {
                 if ($item->product_type == 'roll') {
                     $laba += ($item->price - $item->product->price_kulak) * $item->quantity;
@@ -72,10 +73,10 @@ class PengambilanBahanController extends Controller
                     $laba += ($item->price - $kulakPerMeter) * $item->quantity;
                 }
             }
-            $data->laba = $laba;
+            $labaTotal += $laba;
         }
 
-        return view('pengambilan-bahan.index', compact('datas', 'tokos', 'products', 'total', 'laba'));
+        return view('pengambilan-bahan.index', compact('datas', 'tokos', 'products', 'total', 'labaTotal'));
     }
 
     public function store(Request $request)
