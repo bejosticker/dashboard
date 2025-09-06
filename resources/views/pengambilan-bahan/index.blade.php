@@ -75,6 +75,18 @@ use Carbon\Carbon;
                         <td>{{$loop->iteration}}</td>
                         <td>{{$data->toko?->name ?? '-'}}</td>
                         <td>{{formatRupiah($data->total)}}</td>
+                        @php
+                            $laba = 0;
+                            foreach ($data->items as $item) {
+                                if ($item->product_type == 'roll') {
+                                    $laba += ($item->price - $item->product->price_kulak) * $item->quantity;
+                                }else{
+                                    $kulakPerMeter = $item->product->price_kulak / $item->product->per_roll_cm * 100;
+                                    $laba += ($item->price - $kulakPerMeter) * $item->quantity;
+                                }
+                            }
+                            $data->laba = $laba;
+                        @endphp
                         <td>{{formatRupiah($data->laba)}}</td>
                         <td>{{Carbon::parse($data->date)->locale('id')->translatedFormat('d F Y')}}</td>
                         <td class="no-print" style="width: 150px;">
