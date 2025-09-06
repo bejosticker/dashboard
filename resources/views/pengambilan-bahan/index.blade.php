@@ -86,7 +86,6 @@ use Carbon\Carbon;
                                 }
                             }
                             $data->laba = $laba;
-                            $total += $data->total;
                         @endphp
                         <td>{{formatRupiah($data->laba)}}</td>
                         <td>{{Carbon::parse($data->date)->locale('id')->translatedFormat('d F Y')}}</td>
