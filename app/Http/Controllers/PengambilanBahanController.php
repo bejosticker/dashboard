@@ -56,7 +56,26 @@ class PengambilanBahanController extends Controller
         }
         $total = $total->sum('total');
 
-        return view('pengambilan-bahan.index', compact('datas', 'tokos', 'products', 'total'));
+        $allPengambilanBahan = PengambilanBahan::whereBetween('date', [$from, $to]);
+        if ($toko_id) {
+            $allPengambilanBahan = $allPengambilanBahan->where('toko_id', $toko_id);
+        }
+        $allPengambilanBahan = $allPengambilanBahan->with('items.product')->get();
+
+        $laba = 0;
+        foreach ($allPengambilanBahan as $data) {
+            foreach ($data->items as $item) {
+                if ($item->product_type == 'roll') {
+                    $laba += ($item->price - $item->product->price_kulak) * $item->quantity;
+                }else{
+                    $kulakPerMeter = $item->product->price_kulak / $item->product->per_roll_cm * 100;
+                    $laba += ($item->price - $kulakPerMeter) * $item->quantity;
+                }
+            }
+            $data->laba = $laba;
+        }
+
+        return view('pengambilan-bahan.index', compact('datas', 'tokos', 'products', 'total', 'laba'));
     }
 
     public function store(Request $request)
