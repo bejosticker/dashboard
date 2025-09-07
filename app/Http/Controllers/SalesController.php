@@ -35,6 +35,7 @@ class SalesController extends Controller
 
         $allSales = $sales->get();
         $labaTotal = 0;
+        $total = 0;
 
         foreach ($allSales as $sale) {
             $laba = 0;
@@ -47,6 +48,7 @@ class SalesController extends Controller
                 }
             }
             $labaTotal += $laba;
+            $total += $sale->total;
         }
 
         $sales = $sales->withCount('items')

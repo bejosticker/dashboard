@@ -32,10 +32,6 @@
 </script>
 @endsection
 
-@php
-    $total = 0;
-@endphp
-
 <div class="card p-4">
     <form class="row d-flex-row align-items-end" method="GET">
         <div class="col-md-3">
@@ -78,18 +74,6 @@
             </thead>
             <tbody class="table-border-bottom-0">
                 @forelse ($sales as $sale)
-                    @php
-                        $total += $sale->total;
-                        $laba = 0;
-                        foreach ($sale->items as $item) {
-                            if (in_array($item->price_type, ['price_agent', 'price_grosir', 'price_umum_roll'])) {
-                                $laba += ($item->price - $item->product->price_kulak) * $item->quantity;
-                            }else{
-                                $kulakPerMeter = $item->product->price_kulak / $item->product->per_roll_cm * 100;
-                                $laba += ($item->price - $kulakPerMeter) * $item->quantity;
-                            }
-                        }
-                    @endphp
                     <tr>
                         <td>{{$sale->customer == '' || $sale->customer == NULL ? '-' : $sale->customer}}</td>
                         <td>{{Carbon::parse($sale->date)->locale('id')->translatedFormat('d F Y')}}</td>
