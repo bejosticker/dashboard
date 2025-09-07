@@ -32,14 +32,30 @@ class SalesController extends Controller
         if ($payment_method_id) {
             $sales = $sales->where('payment_method_id', $payment_method_id);
         }
-            
+
+        $allSales = $sales->get();
+        $labaTotal = 0;
+
+        foreach ($allSales as $sale) {
+            $laba = 0;
+            foreach ($sale->items as $item) {
+                if (in_array($item->price_type, ['price_agent', 'price_grosir', 'price_umum_roll'])) {
+                    $laba += ($item->price - $item->product->price_kulak) * $item->quantity;
+                }else{
+                    $kulakPerMeter = $item->product->price_kulak / $item->product->per_roll_cm * 100;
+                    $laba += ($item->price - $kulakPerMeter) * $item->quantity;
+                }
+            }
+            $labaTotal += $laba;
+        }
+
         $sales = $sales->withCount('items')
             ->withSum('items', 'subtotal')
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->withQueryString();
 
-        return view('sales.index', compact('sales', 'paymentMethods'));
+        return view('sales.index', compact('sales', 'paymentMethods', 'labaTotal'));
     }
 
     public function destroy($id)

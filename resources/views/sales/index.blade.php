@@ -110,7 +110,8 @@
                 @endforelse
                 <tr style="background-color: #d8f3dc; color: white;">
                     <td colspan="2"><strong>Grand Total:</strong></td>
-                    <td colspan="6"><strong>{{ formatRupiah($total) }}</strong></td>
+                    <td><strong>{{ formatRupiah($total) }}</strong></td>
+                    <td colspan="5"><strong>{{ formatRupiah($total) }}</strong></td>
                 </tr>
             </tbody>
         </table>
