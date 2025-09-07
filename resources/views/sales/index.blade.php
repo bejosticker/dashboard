@@ -111,7 +111,7 @@
                 <tr style="background-color: #d8f3dc; color: white;">
                     <td colspan="2"><strong>Grand Total:</strong></td>
                     <td><strong>{{ formatRupiah($total) }}</strong></td>
-                    <td colspan="5"><strong>{{ formatRupiah($total) }}</strong></td>
+                    <td colspan="5"><strong>{{ formatRupiah($labaTotal) }}</strong></td>
                 </tr>
             </tbody>
         </table>
