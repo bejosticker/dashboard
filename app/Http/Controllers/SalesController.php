@@ -57,7 +57,7 @@ class SalesController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('sales.index', compact('sales', 'paymentMethods', 'labaTotal'));
+        return view('sales.index', compact('sales', 'paymentMethods', 'labaTotal', 'total'));
     }
 
     public function destroy($id)
