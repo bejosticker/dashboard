@@ -20,12 +20,6 @@ class PengambilanBahanForm extends Component
 
     public function mount()
     {
-        // $this->products = Product::select('id', 'name', 'price_agent', 'price_agent as harga', 'price_grosir_meter', 'per_roll_cm')
-        //     ->where('stock_cm', '>', 0)
-        //     ->orderBy('name', 'asc')
-        //     ->get()
-        //     ->toArray();
-
         $this->tokos = Toko::select('id', 'name')->get()->toArray();
         $this->tokoId = '';
         $this->date = '';
@@ -75,6 +69,19 @@ class PengambilanBahanForm extends Component
 
             if (!isset($this->items[$index])) {
                 return;
+            }
+
+            if ($field === 'product_id') {
+                $product = collect(session('products'))->firstWhere('id', $value);
+                if ($product) {
+                    $this->items[$index]['price_agent'] = $product['price_agent'];
+                    $this->items[$index]['price_grosir_meter'] = $product['price_grosir_meter'];
+                    $this->items[$index]['per_roll_cm'] = $product['per_roll_cm'];
+                } else {
+                    $this->items[$index]['price_agent'] = 0;
+                    $this->items[$index]['price_grosir_meter'] = 0;
+                    $this->items[$index]['per_roll_cm'] = 0;
+                }
             }
 
             $priceType = $this->items[$index]['product_type'] ?? 'roll';
@@ -156,6 +163,12 @@ class PengambilanBahanForm extends Component
         $this->tokoId = '';
         $this->date = '';
         $this->total = 0;
+    }
+
+    public function deleteAllItems()
+    {
+        $this->items = [];
+        $this->calculateTotal();
     }
 
     public function render()

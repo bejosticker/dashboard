@@ -87,6 +87,15 @@ class KulakForm extends Component
                 return;
             }
 
+            if ($field === 'product_id') {
+                $product = collect(session('kulak_products'))->firstWhere('id', $value);
+                if ($product) {
+                    $this->items[$index]['harga'] = $product['harga'];
+                } else {
+                    $this->items[$index]['harga'] = 0;
+                }
+            }
+
             $jumlah = (float)($this->items[$index]['jumlah'] ?? 0);
             $harga = (float)($this->items[$index]['harga'] ?? 0);
 
@@ -160,6 +169,12 @@ class KulakForm extends Component
         $this->supplierId = '';
         $this->date = '';
         $this->total = 0;
+    }
+
+    public function deleteAllItems()
+    {
+        $this->items = [];
+        $this->calculateTotal();
     }
 
     public function render()
