@@ -120,7 +120,7 @@ class CetakSalesForm extends Component
 
             CetakProduct::where('id', $item['product_id'])
                 ->update([
-                    'stock', $item['panjang'] * $item['lebar']
+                    'stock' => $item['panjang'] * $item['lebar']
                 ]);
         }
 
