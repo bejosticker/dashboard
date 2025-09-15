@@ -112,14 +112,15 @@ class PengambilanBahanForm extends Component
             return [
                 'include' => $item['include'],
                 'product_id' => $item['product_id'],
-                'product_type' => $item['product_type'] ?? 'roll',
-                'jumlah' => (float)($item['jumlah'] ?? 0),
-                'harga' => (float)($item['harga'] ?? 0),
-                'subtotal' => (float)($item['subtotal'] ?? 0),
+                'product_type' => $item['product_type'],
+                'price_agent' => $item['price_agent'],
+                'price_grosir_meter' => $item['price_grosir_meter'],
+                'per_roll_cm' => $item['per_roll_cm'],
+                'jumlah' => (float)($item['jumlah']),
+                'harga' => (float)($item['harga']),
+                'subtotal' => (float)($item['subtotal']),
             ];
         })->toArray();
-
-        $total = collect($this->items)->where('include', true)->sum('subtotal');
 
         $this->validate([
             'tokoId' => 'required|exists:toko,id',
