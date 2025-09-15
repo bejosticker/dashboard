@@ -23,7 +23,9 @@ class CetakProductController extends Controller
             CetakProduct::create([
                 'name' => $request->input('name'),
                 'price_grosir' => $request->input('price_grosir',0),
-                'price_umum' => $request->input('price_umum',0)
+                'price_umum' => $request->input('price_umum',0),
+                'kulak_price' => $request->input('kulak_price'),
+                'stock' => $request->input('stock'),
             ]);
 
             return back()->with('success', 'Produk berhasil disimpan!');
@@ -40,7 +42,9 @@ class CetakProductController extends Controller
             CetakProduct::where('id', $id)->update([
                 'name' => $request->input('name'),
                 'price_grosir' => $request->input('price_grosir',0),
-                'price_umum' => $request->input('price_umum',0)
+                'price_umum' => $request->input('price_umum',0),
+                'kulak_price' => $request->input('kulak_price'),
+                'stock' => $request->input('stock')
             ]);
 
             return back()->with('success', 'Produk berhasil disimpan!');

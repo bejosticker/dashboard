@@ -117,6 +117,11 @@ class CetakSalesForm extends Component
                 'lebar' => $item['lebar'],
                 'subtotal' => $item['subtotal'],
             ]);
+
+            CetakProduct::where('id', $item['product_id'])
+                ->update([
+                    'stock', $item['panjang'] * $item['lebar']
+                ]);
         }
 
         session()->flash('success', 'Data berhasil disimpan!');

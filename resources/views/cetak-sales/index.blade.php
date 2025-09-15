@@ -32,9 +32,6 @@
 </script>
 @endsection
 
-@php
-    $total = 0;
-@endphp
 <div class="card p-4">
     <form class="row d-flex-row align-items-end" method="GET">
         <div class="col-md-3">
@@ -58,6 +55,7 @@
                 <tr>
                     <th>Tanggal Penjualan</th>
                     <th>Total Nominal</th>
+                    <th>Laba</th>
                     <th>Metode Pembayaran</th>
                     <th>Total Produk</th>
                     <th class="no-print">Aksi</th>
@@ -66,11 +64,17 @@
             <tbody class="table-border-bottom-0">
                 @forelse ($sales as $sale)
                     @php
-                        $total += $sale->total;
+                        $labaTotal = 0;
+
+                        foreach ($sale->items as $item) {
+                            $laba = ($item->panjang * $item->lebar) * ($item->price - $item->product->kulak_price);
+                            $labaTotal += $laba;
+                        }
                     @endphp
                     <tr>
                         <td>{{Carbon::parse($sale->date)->locale('id')->translatedFormat('d F Y')}}</td>
                         <td>{{formatRupiah($sale->total)}}</td>
+                        <td>{{formatRupiah($labaTotal)}}</td>
                         <td>{{ $sale->paymentMethod->name ?? '-' }}</td>
                         <td>{{count($sale->items)}} Produk</td>
                         <td class="no-print" style="width: 150px;">
@@ -80,12 +84,13 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="text-center">Belum ada data penjualan.</td>
+                        <td colspan="6" class="text-center">Belum ada data penjualan.</td>
                     </tr>
                 @endforelse
                 <tr style="background-color: #d8f3dc; color: white;">
                     <td><strong>Grand Total:</strong></td>
-                    <td colspan="4"><strong>{{ formatRupiah($total) }}</strong></td>
+                    <td><strong>{{ formatRupiah($allTotal) }}</strong></td>
+                    <td colspan="5"><strong>{{ formatRupiah($allLaba) }}</strong></td>
                 </tr>
             </tbody>
         </table>

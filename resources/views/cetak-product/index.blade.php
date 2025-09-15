@@ -27,6 +27,8 @@
                     <th>Nama Produk Cetak</th>
                     <th>Harga Grosir</th>
                     <th>Harga Umum</th>
+                    <th>Harga Kulak</th>
+                    <th>Stok</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -37,6 +39,8 @@
                         <td><p>{{$product->name}}</p></td>
                         <td>{{formatRupiah($product->price_grosir)}}</td>
                         <td>{{formatRupiah($product->price_umum)}}</td>
+                        <td>{{formatRupiah($product->kulak_price)}}</td>
+                        <td>{{$product->stock}} m</td>
                         <td>
                             <button class="btn btn-success btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#editproduct{{ $product->id }}"><span class="tf-icons bx bx-edit"></span></button>
                             <button class="btn btn-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteproduct{{ $product->id }}"><span class="tf-icons bx bx-trash"></span></button>
@@ -44,7 +48,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="text-center">Belum ada data produk.</td>
+                        <td colspan="7" class="text-center">Belum ada data produk.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -76,6 +80,16 @@
                         <div class="col-md-6">
                             <label class="form-label">Harga Umum (per meter)</label>
                             <input type="number" name="price_umum" value="{{ $product->price_umum }}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Kulak (per meter)</label>
+                            <input type="number" name="kulak_price" value="{{ $product->kulak_price }}" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Stok</label>
+                            <input type="number" name="stock" value="{{ $product->stock }}" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -130,6 +144,16 @@
                         <div class="col-md-6">
                             <label class="form-label">Harga Umum (per meter)</label>
                             <input type="number" name="price_umum" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Kulak (per meter)</label>
+                            <input type="number" name="kulak_price" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Stok</label>
+                            <input type="number" name="stock" class="form-control">
                         </div>
                     </div>
                 </div>

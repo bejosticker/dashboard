@@ -29,7 +29,25 @@ class CetakSalesController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('cetak-sales.index', compact('sales'));
+        $allSales = CetakProductSale::with(['items.product'])
+            ->whereBetween('date', [$from, $to])
+            ->get();
+
+        $allLaba = 0;
+        $allTotal = 0;
+
+        foreach ($allSales as $sale) {
+            $laba = 0;
+            foreach ($sale->items as $item) {
+                foreach ($sale->items as $item) {
+                    $laba += ($item->panjang * $item->lebar) * ($item->price - $item->product->kulak_price);
+                }
+            }
+            $allLaba += $laba;
+            $allTotal += $sale->total;
+        }
+
+        return view('cetak-sales.index', compact('sales', 'allLaba', 'allTotal'));
     }
 
     public function destroy($id)
