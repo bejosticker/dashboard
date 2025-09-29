@@ -91,7 +91,7 @@ use Carbon\Carbon;
                 @endforelse
                 <tr style="background-color: #d8f3dc; color: white;">
                     <td colspan="4"><strong>Grand Total:</strong></td>
-                    <td colspan="5"><strong>{{ formatRupiah($pengeluarans->sum('amount')) }}</strong></td>
+                    <td colspan="5"><strong>{{ formatRupiah($total) }}</strong></td>
                 </tr>
             </tbody>
         </table>
