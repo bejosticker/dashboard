@@ -29,6 +29,9 @@ class PengeluaranController extends Controller
         if ($toko_id) {
             $pengeluarans = $pengeluarans->where('toko_id', $toko_id);
         }
+
+        $allPengeluarans = (clone $pengeluarans)->get();
+        $total = $allPengeluarans->sum('amount');
         
         $pengeluarans = $pengeluarans->with('toko')
             ->paginate(10)
@@ -36,7 +39,7 @@ class PengeluaranController extends Controller
 
         $tokos = Toko::orderBy('name', 'asc')->get();
 
-        return view('pengeluaran.index', compact('pengeluarans', 'tokos'));
+        return view('pengeluaran.index', compact('pengeluarans', 'tokos', 'total'));
     }
 
     public function store(Request $request)
