@@ -190,6 +190,7 @@ class ReportController extends Controller
                     ->where('online_markets.name', $name->name)
                     ->where('online_markets.vendor', $vendor->vendor)
                     ->join('online_incomes', 'online_markets.id', 'online_incomes.online_market_id')
+                    ->whereBetween('online_incomes.date', [$from, $to])
                     ->selectRaw('online_incomes.*, "credit" as type')
                     ->orderBy('online_incomes.date', 'desc')
                     ->get();
@@ -198,6 +199,7 @@ class ReportController extends Controller
                     ->where('online_markets.name', $name->name)
                     ->where('online_markets.vendor', $vendor->vendor)
                     ->join('online_ads', 'online_markets.id', 'online_ads.online_market_id')
+                    ->whereBetween('online_ads.date', [$from, $to])
                     ->selectRaw('online_ads.*, "debit" as type')
                     ->orderBy('online_ads.date', 'desc')
                     ->get();
