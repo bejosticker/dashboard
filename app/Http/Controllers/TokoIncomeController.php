@@ -29,11 +29,13 @@ class TokoIncomeController extends Controller
             $incomes = $incomes->where('toko_id', $toko_id);
         }
         
+        $allIncomes = $incomes->get();
+        $totalIncome = $allIncomes->sum('amount');
         $incomes = $incomes->with('toko')->paginate(10)->withQueryString();
 
         $tokos = Toko::orderBy('name', 'asc')->get();
 
-        return view('toko-income.index', compact('incomes', 'tokos'));
+        return view('toko-income.index', compact('incomes', 'tokos', 'totalIncome'));
     }
 
     public function store(Request $request)

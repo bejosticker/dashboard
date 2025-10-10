@@ -29,12 +29,15 @@ class OnlineIncomeController extends Controller
         if ($online_market_id) {
             $incomes = $incomes->where('online_market_id', $online_market_id);
         }
+
+        $allIncomes = $incomes->get();
+        $totalIncome = $allIncomes->sum('amount');
         
         $incomes = $incomes->with('shop')->paginate(10)->withQueryString();
 
         $tokos = MarketOnline::orderBy('name', 'asc')->get();
 
-        return view('online-incomes.index', compact('incomes', 'tokos'));
+        return view('online-incomes.index', compact('incomes', 'tokos', 'totalIncome'));
     }
 
     public function store(Request $request)

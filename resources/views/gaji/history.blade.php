@@ -75,7 +75,7 @@
     </div>
 </div>
 @endforeach
-<button type="button" style="bottom: 3rem; right: 2rem;" class="btn position-fixed btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#creategaji"><span class="menu-icon tf-icons bx bx-plus-circle"></span> Tambah Gaji</button>
+<!-- <button type="button" style="bottom: 3rem; right: 2rem;" class="btn position-fixed btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#creategaji"><span class="menu-icon tf-icons bx bx-plus-circle"></span> Tambah Gaji</button> -->
 <div class="modal fade" id="creategaji" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -83,7 +83,7 @@
                 <h5 class="modal-title" id="exampleModalLabel1">Tambah gaji</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="" method="POST">
+            <form action="/gaji" method="POST">
                 <div class="modal-body">
                     @csrf
                     <div class="row g-4">

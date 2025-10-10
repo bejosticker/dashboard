@@ -87,7 +87,7 @@ use Carbon\Carbon;
                 @endforelse
                 <tr style="background-color: #d8f3dc; color: white;">
                     <td colspan="2" class="text-end"><strong>Total:</strong></td>
-                    <td colspan="3"><strong>{{ formatRupiah($incomes->sum('amount')) }}</strong></td>
+                    <td colspan="3"><strong>{{ formatRupiah($totalIncome) }}</strong></td>
             </tbody>
         </table>
         <div style="padding:2rem;">
