@@ -16,6 +16,7 @@ class KulakForm extends Component
     public $supplierId = '';
     public $total = 0;
     public $date = '';
+    public $search = '';
 
     public function mount()
     {

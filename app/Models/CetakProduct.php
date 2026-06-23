@@ -10,6 +10,6 @@ class CetakProduct extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name', 'price_grosir', 'price_umum', 'created_at', 'updated_at'
+        'name', 'price_grosir', 'price_umum', 'price_eceran_grosir', 'price_eceran_umum', 'kulak_price', 'stock', 'created_at', 'updated_at'
     ];
 }

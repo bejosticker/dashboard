@@ -53,6 +53,8 @@
         <table class="table" id="to-print">
             <thead>
                 <tr>
+                    <th>Nama Customer</th>
+                    <th>No. WA</th>
                     <th>Tanggal Penjualan</th>
                     <th>Total Nominal</th>
                     <th>Laba</th>
@@ -67,11 +69,12 @@
                         $labaTotal = 0;
 
                         foreach ($sale->items as $item) {
-                            $laba = ($item->panjang * $item->lebar) * ($item->price - $item->product->kulak_price);
-                            $labaTotal += $laba;
+                            $labaTotal += cetakItemLaba($item);
                         }
                     @endphp
                     <tr>
+                        <td>{{ $sale->customer ?: '-' }}</td>
+                        <td>{{ $sale->customer_phone ?: '-' }}</td>
                         <td>{{Carbon::parse($sale->date)->locale('id')->translatedFormat('d F Y')}}</td>
                         <td>{{formatRupiah($sale->total)}}</td>
                         <td>{{formatRupiah($labaTotal)}}</td>
@@ -84,13 +87,13 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center">Belum ada data penjualan.</td>
+                        <td colspan="8" class="text-center">Belum ada data penjualan.</td>
                     </tr>
                 @endforelse
                 <tr style="background-color: #d8f3dc; color: white;">
-                    <td><strong>Grand Total:</strong></td>
+                    <td colspan="3"><strong>Grand Total:</strong></td>
                     <td><strong>{{ formatRupiah($allTotal) }}</strong></td>
-                    <td colspan="5"><strong>{{ formatRupiah($allLaba) }}</strong></td>
+                    <td colspan="4"><strong>{{ formatRupiah($allLaba) }}</strong></td>
                 </tr>
             </tbody>
         </table>
@@ -118,8 +121,7 @@
                             <th>Nama Produk</th>
                             <th>Harga</th>
                             <th>Jenis Harga</th>
-                            <th>Panjang</th>
-                            <th>Lebar</th>
+                            <th>Quantity</th>
                             <th>Subtotal</th>
                         </tr>
                     </thead>
@@ -130,13 +132,20 @@
                                 <td>{{$item->product?->name ?? '-'}}</td>
                                 <td>{{formatRupiah($item->price)}}</td>
                                 <td>{{convertPriceType($item->price_type)}}</td>
-                                <td>{{$item->panjang}} Meter</td>
-                                <td>{{$item->lebar}} Meter</td>
+                                <td>{{cetakItemQtyLabel($item)}}</td>
                                 <td>{{formatRupiah($item->subtotal)}}</td>
                             </tr>
                         @endforeach
                         <tr style="background-color: #d8f3dc; color: white;">
-                            <td colspan="6" class="text-end"><strong>Total:</strong></td>
+                            <td colspan="4" class="text-end"><strong>Nama Customer:</strong></td>
+                            <td colspan="2"><strong>{{ $sale->customer ?: '-' }}</strong></td>
+                        </tr>
+                        <tr style="background-color: #d8f3dc; color: white;">
+                            <td colspan="4" class="text-end"><strong>No. WA:</strong></td>
+                            <td colspan="2"><strong>{{ $sale->customer_phone ?: '-' }}</strong></td>
+                        </tr>
+                        <tr style="background-color: #d8f3dc; color: white;">
+                            <td colspan="5" class="text-end"><strong>Total:</strong></td>
                             <td><strong>{{ formatRupiah($sale->items->sum('subtotal')) }}</strong></td>
                         </tr>
                     </tbody>

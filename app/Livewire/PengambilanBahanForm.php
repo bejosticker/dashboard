@@ -17,6 +17,7 @@ class PengambilanBahanForm extends Component
     public $tokoId = '';
     public $total = 0;
     public $date = '';
+    public $search = '';
 
     public function mount()
     {

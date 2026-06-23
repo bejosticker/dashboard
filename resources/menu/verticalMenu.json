@@ -45,6 +45,11 @@
           "slug": "metode-pembayaran"
         },
         {
+          "url": "customers",
+          "name": "Pelanggan",
+          "slug": "customers"
+        },
+        {
           "url": "karyawan",
           "name": "Karyawan",
           "slug": "karyawan"

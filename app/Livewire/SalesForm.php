@@ -10,15 +10,18 @@ use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\Kulak;
 use App\Models\KulakItem;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Log;
 
 class SalesForm extends Component
 {
     public $products = [];
     public $paymentMethods = [];
+    public $customers = [];
     public $items = [];
     public $prices = ['price_agent', 'price_grosir', 'price_umum_roll', 'price_grosir_meter', 'price_umum_meter'];
     public $customer = '';
+    public $customer_phone = '';
     public $total = 0;
     public $discount = 0;
     public $date = '';
@@ -28,11 +31,22 @@ class SalesForm extends Component
     {
         $this->products = Product::where('stock_cm', '>', 0)->orderBy('name', 'asc')->get()->toArray();
         $this->paymentMethods = PaymentMethod::orderBy('name', 'asc')->get()->toArray();
+        $this->customers = Customer::orderBy('name', 'asc')->get(['name', 'phone'])->toArray();
         $this->customer = '';
+        $this->customer_phone = '';
         $this->payment_method_id = '';
         $this->date = '';
         $this->discount = 0;
         $this->calculateTotal();
+    }
+
+    // Saat nomor WA cocok dengan pelanggan yang sudah ada, otomatis isi namanya
+    public function updatedCustomerPhone($value)
+    {
+        $existing = collect($this->customers)->firstWhere('phone', $value);
+        if ($existing) {
+            $this->customer = $existing['name'] ?? $this->customer;
+        }
     }
 
     public function addItem()
@@ -98,17 +112,29 @@ class SalesForm extends Component
     {
         $this->validate([
             'customer' => 'nullable',
+            'customer_phone' => 'nullable|regex:/^08[0-9]{7,13}$/',
             'date' => 'required',
             'payment_method_id' => 'required|exists:payment_methods,id',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.jumlah' => 'required|numeric|min:1',
             'items.*.price' => 'required|numeric|min:1',
             'items.*.price_type' => 'required',
+        ], [
+            'customer_phone.regex' => 'Nomor WA harus berformat 08xxxxxxxxx.',
         ]);
+
+        // Simpan / perbarui database pelanggan (nomor WA sebagai identitas unik)
+        if (!empty($this->customer_phone)) {
+            Customer::updateOrCreate(
+                ['phone' => $this->customer_phone],
+                ['name' => $this->customer ?: null]
+            );
+        }
 
         $sale = Sale::create([
             'payment_method_id' => $this->payment_method_id,
             'customer' => $this->customer ?? '-',
+            'customer_phone' => $this->customer_phone ?: null,
             'discount' => $this->discount,
             'total' => $this->total,
             'date' => $this->date
@@ -145,6 +171,7 @@ class SalesForm extends Component
     {
         $this->items = [];
         $this->customer = '';
+        $this->customer_phone = '';
         $this->date = '';
         $this->total = 0;
     }

@@ -63,6 +63,7 @@
             <thead>
                 <tr>
                     <th>Nama Customer</th>
+                    <th>No. WA</th>
                     <th>Tanggal Penjualan</th>
                     <th>Total Nominal</th>
                     <th>Laba</th>
@@ -87,6 +88,7 @@
                     @endphp
                     <tr>
                         <td>{{$sale->customer == '' || $sale->customer == NULL ? '-' : $sale->customer}}</td>
+                        <td>{{$sale->customer_phone ?: '-'}}</td>
                         <td>{{Carbon::parse($sale->date)->locale('id')->translatedFormat('d F Y')}}</td>
                         <td>{{formatRupiah($sale->total)}}</td>
                         <td>{{formatRupiah($laba)}}</td>
@@ -100,11 +102,11 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center">Belum ada data penjualan.</td>
+                        <td colspan="9" class="text-center">Belum ada data penjualan.</td>
                     </tr>
                 @endforelse
                 <tr style="background-color: #d8f3dc; color: white;">
-                    <td colspan="2"><strong>Grand Total:</strong></td>
+                    <td colspan="3"><strong>Grand Total:</strong></td>
                     <td><strong>{{ formatRupiah($total) }}</strong></td>
                     <td colspan="5"><strong>{{ formatRupiah($labaTotal) }}</strong></td>
                 </tr>
@@ -173,6 +175,16 @@
                             <td class="no-print"></td>
                             <td colspan="4" class="text-end"><strong>Metode Pembayaran:</strong></td>
                             <td><strong>{{ $sale->paymentMethod?->name ?? '-' }}</strong></td>
+                        </tr>
+                        <tr style="background-color: #d8f3dc; color: white;">
+                            <td class="no-print"></td>
+                            <td colspan="4" class="text-end"><strong>Nama Customer:</strong></td>
+                            <td><strong>{{ $sale->customer ?: '-' }}</strong></td>
+                        </tr>
+                        <tr style="background-color: #d8f3dc; color: white;">
+                            <td class="no-print"></td>
+                            <td colspan="4" class="text-end"><strong>No. WA:</strong></td>
+                            <td><strong>{{ $sale->customer_phone ?: '-' }}</strong></td>
                         </tr>
                     </tbody>
                 </table>

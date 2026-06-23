@@ -21,6 +21,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TokoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MetodePembayaranController;
+use App\Http\Controllers\CustomerController;
 
 Route::middleware(['global', 'web'])->group(function () {
     Route::prefix('auth')->group(function () {
@@ -81,6 +82,14 @@ Route::middleware(['global', 'web'])->group(function () {
 
     Route::prefix('gaji-history')->group(function () {
         Route::get('/', [GajiController::class, 'history'])->name('gaji-history');
+    });
+
+    Route::prefix('customers')->group(function () {
+        Route::get('/', [CustomerController::class, 'index'])->name('customers');
+        Route::get('/export', [CustomerController::class, 'export'])->name('customers.export');
+        Route::post('/', [CustomerController::class, 'store']);
+        Route::post('/update/{id}', [CustomerController::class, 'update']);
+        Route::get('/delete/{id}', [CustomerController::class, 'destroy']);
     });
 
     Route::prefix('users')->group(function () {

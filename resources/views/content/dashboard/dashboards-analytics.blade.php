@@ -2,6 +2,22 @@
 
 @section('title', 'Beranda')
 
+@section('page-style')
+<style>
+    /* Buat kolom "Produk Perlu Restock" tetap menempel (sticky) saat halaman di-scroll */
+    .sticky-restock {
+        position: sticky;
+        top: 1.5rem;
+    }
+
+    /* Batasi tinggi daftar agar tidak memanjang ke bawah; daftar panjang akan scroll di dalam card */
+    .sticky-restock-body {
+        max-height: calc(100vh - 9rem);
+        overflow-y: auto;
+    }
+</style>
+@endsection
+
 @section('content')
     <div class="row">
         <div class="col-md-8 mb-6 order-0">
@@ -104,12 +120,12 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card">
+            <div class="card sticky-restock">
                 <div class="card-header d-flex align-items-center justify-content-between" style="padding-bottom: 20px;">
                     <h5 class="card-title m-0 me-2">Produk Perlu Restock</h5>
                 </div>
                 @if (count($report['products']) > 0)
-                    <div class="table-responsive text-nowrap">
+                    <div class="table-responsive text-nowrap sticky-restock-body">
                         <table class="table">
                             <thead style="border-color: transparent;">
                                 <tr>

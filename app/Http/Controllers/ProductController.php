@@ -71,6 +71,8 @@ class ProductController extends Controller
                 'price_umum_roll' => $request->input('price_umum_roll',0),
                 'price_grosir_meter' => $request->input('price_grosir_meter',0),
                 'price_umum_meter' => $request->input('price_umum_meter',0),
+                'price_eceran_grosir_cm' => $request->input('price_eceran_grosir_cm',0),
+                'price_eceran_umum_cm' => $request->input('price_eceran_umum_cm',0),
                 'price_kulak' => $request->input('price_kulak',0),
                 'per_roll_cm' => $perRoll,
                 'stock_cm' => 0,
@@ -113,6 +115,8 @@ class ProductController extends Controller
                 'price_umum_roll' => $request->input('price_umum_roll',0),
                 'price_grosir_meter' => $request->input('price_grosir_meter',0),
                 'price_umum_meter' => $request->input('price_umum_meter',0),
+                'price_eceran_grosir_cm' => $request->input('price_eceran_grosir_cm',0),
+                'price_eceran_umum_cm' => $request->input('price_eceran_umum_cm',0),
                 'price_kulak' => $request->input('price_kulak',0),
                 'per_roll_cm' => $perRoll,
                 'minimum_stock_cm' => $minimumStock

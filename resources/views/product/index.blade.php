@@ -151,6 +151,16 @@
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6">
+                            <label class="form-label">Harga Eceran Grosir (per centimeter)</label>
+                            <input type="number" name="price_eceran_grosir_cm" value="{{ $product->price_eceran_grosir_cm }}" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Eceran Umum (per centimeter)</label>
+                            <input type="number" name="price_eceran_umum_cm" value="{{ $product->price_eceran_umum_cm }}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
                             <label class="form-label">Stok Minimal</label>
                             <div class="input-group input-group-merge">
                                 <input type="number" class="form-control"
@@ -247,6 +257,16 @@
                         <div class="col-md-6">
                             <label class="form-label">Harga Meteran Umum (per meter)</label>
                             <input type="number" name="price_umum_meter" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Eceran Grosir (per centimeter)</label>
+                            <input type="number" name="price_eceran_grosir_cm" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Eceran Umum (per centimeter)</label>
+                            <input type="number" name="price_eceran_umum_cm" class="form-control">
                         </div>
                     </div>
                     <div class="row mt-4">

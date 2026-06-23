@@ -10,7 +10,7 @@ class CetakProductSaleItem extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'cetak_product_sale_id', 'cetak_product_id', 'panjang', 'lebar', 'price_type', 'price', 'subtotal', 'created_at', 'updated_at'
+        'cetak_product_sale_id', 'cetak_product_id', 'panjang', 'lebar', 'quantity', 'unit', 'price_type', 'price', 'subtotal', 'created_at', 'updated_at'
     ];
 
     public function product()

@@ -5,8 +5,10 @@
         </div>
     @endif
 
+    @php $kulakProductMap = collect(session('kulak_products'))->keyBy('id'); @endphp
+
     <div style="margin-bottom: 15px;display: flex; flex-direction: row; align-items: end;" class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label for="supplierSelect" class="form-label">Pilih Supplier:</label>
             <select wire:model.live="supplierId" id="supplierSelect" class="form-control">
                 <option value="">-- Pilih Supplier --</option>
@@ -15,18 +17,24 @@
                 @endforeach
             </select>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label class="form-label">Tanggal Pembelian:</label>
             <input type="date" wire:model.live="date" name="date" class="form-control" id="">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <label class="form-label">Cari Produk:</label>
+            <input type="text" wire:model.live="search" class="form-control" placeholder="Cari produk...">
+        </div>
+        <div class="col-md-3">
             <h5 class="m-0">Total: {{formatRupiah($total)}}</h5>
         </div>
     </div>
 
     <hr>
 
-    <div style="display: flex; gap: 10px; margin-bottom: 8px; flex-direction: row; align-items: center; font-weight: bold;">
+    {{-- Daftar produk dibuat scrollable; header & kontrol di atas tetap terlihat (sticky/fixed) --}}
+    <div style="max-height: 45vh; overflow-y: auto; padding-right: 6px;">
+    <div style="display: flex; gap: 10px; margin-bottom: 8px; flex-direction: row; align-items: center; font-weight: bold; position: sticky; top: 0; background: #fff; z-index: 2; padding: 6px 0;">
         <b style="width: 30px; text-align: center;">##</b>
         <p class="m-0" style="width: 480px;"><b>Produk</b></p>
         <p class="m-0" style="width: 140px;"><b>Quantity (Roll)</b></p>
@@ -36,6 +44,8 @@
     </div>
 
     @foreach ($items as $i => $item)
+        @php $productName = $kulakProductMap[$item['product_id']]['name'] ?? ''; @endphp
+        @continue($search !== '' && stripos($productName, $search) === false)
         <div style="display: flex; gap: 10px; margin-bottom: 8px; flex-direction: row; align-items: center;" wire:key="item-{{ $i }}">
             <!-- <b style="width: 30px; text-align: center;">{{$loop->iteration}}. </b> -->
              <input type="checkbox" wire:model="items.{{ $i }}.include" class="form-check-input" style="width: 20px; height: 20px;">
@@ -65,6 +75,7 @@
             </button>
         </div>
     @endforeach
+    </div>
 
     <button type="button" class="btn btn-info" wire:click="addItem" style="margin-top: 15px;">
         <span class="menu-icon tf-icons bx bx-plus-circle"></span> Tambah Produk

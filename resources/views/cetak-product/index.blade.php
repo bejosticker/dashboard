@@ -27,6 +27,8 @@
                     <th>Nama Produk Cetak</th>
                     <th>Harga Grosir</th>
                     <th>Harga Umum</th>
+                    <th>Eceran Grosir</th>
+                    <th>Eceran Umum</th>
                     <th>Harga Kulak</th>
                     <th>Stok</th>
                     <th>Aksi</th>
@@ -39,8 +41,10 @@
                         <td><p>{{$product->name}}</p></td>
                         <td>{{formatRupiah($product->price_grosir)}}</td>
                         <td>{{formatRupiah($product->price_umum)}}</td>
+                        <td>{{formatRupiah($product->price_eceran_grosir)}}</td>
+                        <td>{{formatRupiah($product->price_eceran_umum)}}</td>
                         <td>{{formatRupiah($product->kulak_price)}}</td>
-                        <td>{{$product->stock}} m</td>
+                        <td>{{$product->stock}} cm</td>
                         <td>
                             <button class="btn btn-success btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#editproduct{{ $product->id }}"><span class="tf-icons bx bx-edit"></span></button>
                             <button class="btn btn-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteproduct{{ $product->id }}"><span class="tf-icons bx bx-trash"></span></button>
@@ -48,7 +52,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center">Belum ada data produk.</td>
+                        <td colspan="9" class="text-center">Belum ada data produk.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -74,21 +78,31 @@
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6">
-                            <label class="form-label">Harga Grosir (per meter)</label>
+                            <label class="form-label">Harga Grosir (per centimeter)</label>
                             <input type="number" name="price_grosir" value="{{ $product->price_grosir }}" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Harga Umum (per meter)</label>
+                            <label class="form-label">Harga Umum (per centimeter)</label>
                             <input type="number" name="price_umum" value="{{ $product->price_umum }}" class="form-control">
                         </div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6">
-                            <label class="form-label">Harga Kulak (per meter)</label>
+                            <label class="form-label">Harga Eceran Grosir (per lembar)</label>
+                            <input type="number" name="price_eceran_grosir" value="{{ $product->price_eceran_grosir }}" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Eceran Umum (per lembar)</label>
+                            <input type="number" name="price_eceran_umum" value="{{ $product->price_eceran_umum }}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Kulak (per centimeter)</label>
                             <input type="number" name="kulak_price" value="{{ $product->kulak_price }}" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Stok</label>
+                            <label class="form-label">Stok (centimeter)</label>
                             <input type="number" name="stock" value="{{ $product->stock }}" class="form-control">
                         </div>
                     </div>
@@ -138,21 +152,31 @@
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6">
-                            <label class="form-label">Harga Grosir (per meter)</label>
+                            <label class="form-label">Harga Grosir (per centimeter)</label>
                             <input type="number" name="price_grosir" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Harga Umum (per meter)</label>
+                            <label class="form-label">Harga Umum (per centimeter)</label>
                             <input type="number" name="price_umum" class="form-control">
                         </div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6">
-                            <label class="form-label">Harga Kulak (per meter)</label>
+                            <label class="form-label">Harga Eceran Grosir (per lembar)</label>
+                            <input type="number" name="price_eceran_grosir" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Eceran Umum (per lembar)</label>
+                            <input type="number" name="price_eceran_umum" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Kulak (per centimeter)</label>
                             <input type="number" name="kulak_price" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Stok</label>
+                            <label class="form-label">Stok (centimeter)</label>
                             <input type="number" name="stock" class="form-control">
                         </div>
                     </div>

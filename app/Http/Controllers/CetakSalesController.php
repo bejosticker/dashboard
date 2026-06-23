@@ -39,9 +39,7 @@ class CetakSalesController extends Controller
         foreach ($allSales as $sale) {
             $laba = 0;
             foreach ($sale->items as $item) {
-                foreach ($sale->items as $item) {
-                    $laba += ($item->panjang * $item->lebar) * ($item->price - $item->product->kulak_price);
-                }
+                $laba += cetakItemLaba($item);
             }
             $allLaba += $laba;
             $allTotal += $sale->total;
