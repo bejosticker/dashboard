@@ -5,6 +5,21 @@
 
 @section('title', 'Penjualan Cetak')
 
+@section('page-style')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+    .select2-container { width: 100% !important; }
+    .select2-container--default .select2-selection--single {
+        height: calc(1.53em + 0.875rem + 2px);
+        padding: 0.2rem 0.25rem;
+        border-color: #d9dee3;
+        border-radius: 0.375rem;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow { height: 100%; }
+    .select2-dropdown { z-index: 1060; }
+</style>
+@endsection
+
 @section('content')
 @include('layouts/sections/message')
 
@@ -29,6 +44,59 @@
             document.querySelectorAll('.no-print').forEach(el => el.style.display = '');
         });
     }
+</script>
+<script>
+    // Select2 (creatable) untuk pemilihan pelanggan. jQuery dimuat template sebagai ES module
+    // (deferred), jadi tunggu jQuery siap lalu muat Select2 dari CDN secara dinamis.
+    (function () {
+        var SELECT2_JS = 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js';
+
+        function whenJqueryReady(cb, tries) {
+            tries = tries || 0;
+            if (window.jQuery) { return cb(window.jQuery); }
+            if (tries > 200) { return; }
+            setTimeout(function () { whenJqueryReady(cb, tries + 1); }, 50);
+        }
+        function ensureSelect2(jq, cb) {
+            if (jq.fn && jq.fn.select2) { return cb(jq); }
+            var s = document.getElementById('select2-cdn-js');
+            if (!s) {
+                s = document.createElement('script');
+                s.id = 'select2-cdn-js';
+                s.src = SELECT2_JS;
+                document.head.appendChild(s);
+            }
+            s.addEventListener('load', function () { cb(window.jQuery); });
+        }
+        function initCustomerSelects($) {
+            $('.select2-customer').each(function () {
+                var $sel = $(this);
+                if ($sel.hasClass('select2-hidden-accessible')) { return; }
+                var modalId = $sel.data('modal');
+                var proxyId = $sel.data('proxy');
+                $sel.select2({
+                    tags: true,
+                    allowClear: true,
+                    placeholder: 'Pilih atau ketik nomor WA baru',
+                    dropdownParent: modalId ? $('#' + modalId) : undefined,
+                    width: '100%',
+                    createTag: function (params) {
+                        var term = $.trim(params.term);
+                        if (term === '') { return null; }
+                        return { id: term, text: 'Tambah: ' + term, newTag: true };
+                    }
+                });
+                $sel.on('change', function () {
+                    var proxy = document.getElementById(proxyId);
+                    if (proxy) {
+                        proxy.value = $(this).val() || '';
+                        proxy.dispatchEvent(new Event('input', { bubbles: true }));
+                    }
+                });
+            });
+        }
+        whenJqueryReady(function (jq) { ensureSelect2(jq, initCustomerSelects); });
+    })();
 </script>
 @endsection
 

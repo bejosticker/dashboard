@@ -11,18 +11,25 @@
             <input type="date" wire:model.live="date" name="date" class="form-control" id="">
         </div>
         <div class="col-md-4">
-             <label class="form-label">Nama Customer (opsional):</label>
-            <input type="text" wire:model.live="customer" name="customer" class="form-control" id="">
+            <label class="form-label">Nomor Telepon (WA):</label>
+            <div wire:ignore>
+                <select id="customerSelect" class="form-control select2-customer"
+                    data-modal="createsale" data-proxy="customerPhoneProxy" style="width: 100%;">
+                    <option value=""></option>
+                    @foreach ($customers as $c)
+                        <option value="{{ $c['phone'] }}" {{ $customer_phone == $c['phone'] ? 'selected' : '' }}>
+                            {{ $c['name'] ? $c['name'].' — '.$c['phone'] : $c['phone'] }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            {{-- Hidden proxy (di luar wire:ignore) untuk menyalurkan nilai Select2 ke Livewire --}}
+            <input type="hidden" id="customerPhoneProxy" wire:model.live="customer_phone">
+            @error('customer_phone') <br><small class="text-danger">{{ $message }}</small> @enderror
         </div>
         <div class="col-md-4">
-            <label class="form-label">Nomor Telepon (WA):</label>
-            <input type="text" wire:model.live="customer_phone" name="customer_phone" class="form-control" list="customerList" placeholder="08xxxxxxxxx">
-            <datalist id="customerList">
-                @foreach ($customers as $c)
-                    <option value="{{ $c['phone'] }}">{{ $c['name'] ?? '' }}</option>
-                @endforeach
-            </datalist>
-            @error('customer_phone') <small class="text-danger">{{ $message }}</small> @enderror
+             <label class="form-label">Nama Customer (opsional):</label>
+            <input type="text" wire:model.live="customer" name="customer" class="form-control" id="">
         </div>
     </div>
 
