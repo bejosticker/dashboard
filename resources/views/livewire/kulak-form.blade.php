@@ -66,7 +66,7 @@
                 @endif
             </select>
 
-            <input type="number" style="width: 140px;" wire:loading.attr="disabled" name="jumlah.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.jumlah" placeholder="Jumlah" />
+            <input type="number" step="any" inputmode="decimal" style="width: 140px;" wire:loading.attr="disabled" name="jumlah.{{$i}}" class="form-control" wire:model.blur="items.{{ $i }}.jumlah" placeholder="Jumlah" />
             <input type="number" style="width: 160px;" name="harga.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.harga" placeholder="Harga" />
             <input type="number" style="width: 160px;" name="subtotal.{{$i}}" class="form-control" value="{{ $item['subtotal'] }}" readonly />
 

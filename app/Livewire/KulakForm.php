@@ -132,7 +132,7 @@ class KulakForm extends Component
             'supplierId' => 'required|exists:suppliers,id',
             'date' => 'required',
             'items.*.product_id' => 'required|exists:products,id',
-            'items.*.jumlah' => 'required|numeric|min:1',
+            'items.*.jumlah' => 'required|numeric|gt:0',
             'items.*.harga' => 'required|numeric|min:0',
         ]);
 

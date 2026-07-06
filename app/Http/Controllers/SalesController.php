@@ -40,6 +40,9 @@ class SalesController extends Controller
         foreach ($allSales as $sale) {
             $laba = 0;
             foreach ($sale->items as $item) {
+                if (!$item->product) {
+                    continue;
+                }
                 if (in_array($item->price_type, ['price_agent', 'price_grosir', 'price_umum_roll'])) {
                     $laba += ($item->price - $item->product->price_kulak) * $item->quantity;
                 }else{

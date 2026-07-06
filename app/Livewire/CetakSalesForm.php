@@ -116,7 +116,7 @@ class CetakSalesForm extends Component
             'date' => 'required',
             'payment_method_id' => 'required|exists:payment_methods,id',
             'items.*.product_id' => 'required|exists:cetak_products,id',
-            'items.*.quantity' => 'required|numeric|min:1',
+            'items.*.quantity' => 'required|numeric|gt:0',
             'items.*.price' => 'required|numeric|min:1',
             'items.*.price_type' => 'required',
         ], [

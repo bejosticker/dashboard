@@ -116,7 +116,7 @@ class SalesForm extends Component
             'date' => 'required',
             'payment_method_id' => 'required|exists:payment_methods,id',
             'items.*.product_id' => 'required|exists:products,id',
-            'items.*.jumlah' => 'required|numeric|min:1',
+            'items.*.jumlah' => 'required|numeric|gt:0',
             'items.*.price' => 'required|numeric|min:1',
             'items.*.price_type' => 'required',
         ], [

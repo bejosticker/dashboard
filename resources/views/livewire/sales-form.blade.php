@@ -66,7 +66,7 @@
             </select>
 
             <div class="input-group input-group-merge">
-                <input type="number" name="jumlah.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.jumlah" placeholder="Jumlah" />
+                <input type="number" step="any" inputmode="decimal" name="jumlah.{{$i}}" class="form-control" wire:model.blur="items.{{ $i }}.jumlah" placeholder="Jumlah" />
                 <span class="input-group-text">{{ in_array($item['price_type'], ['price_agent', 'price_grosir', 'price_umum_roll']) ? 'Roll' : 'Meter' }}</span>
             </div>
             <input type="number" name="price.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.price" placeholder="Harga" readonly />

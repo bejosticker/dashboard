@@ -66,6 +66,9 @@ class PengambilanBahanController extends Controller
         foreach ($allPengambilanBahan as $data) {
             $laba = 0;
             foreach ($data->items as $item) {
+                if (!$item->product) {
+                    continue;
+                }
                 if ($item->product_type == 'roll') {
                     $laba += ($item->price - $item->product->price_kulak) * $item->quantity;
                 }else{
@@ -113,6 +116,9 @@ class PengambilanBahanController extends Controller
         $data = PengambilanBahan::where('id', $id)->with('items')->first();
         if ($data->items) {
             foreach ($data->items as $item) {
+                if (!$item->product) {
+                    continue;
+                }
                 Product::where('id', $item->product_id)
                     ->update([
                         'stock_cm' => $item->product->stock_cm + ($item->quantity * ($item->product_type == 'roll' ? $item->product->per_roll_cm : 100))

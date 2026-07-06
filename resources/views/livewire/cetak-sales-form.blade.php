@@ -66,7 +66,7 @@
             </select>
 
             <div class="input-group input-group-merge">
-                <input type="number" name="quantity.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.quantity" placeholder="Quantity" />
+                <input type="number" step="any" inputmode="decimal" name="quantity.{{$i}}" class="form-control" wire:model.blur="items.{{ $i }}.quantity" placeholder="Quantity" />
                 <span class="input-group-text">{{ in_array($item['price_type'], ['price_eceran_grosir', 'price_eceran_umum']) ? 'Lembar' : 'CM' }}</span>
             </div>
             <input type="number" name="price.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.price" placeholder="Harga" readonly />
