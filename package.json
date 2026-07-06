@@ -16,7 +16,11 @@
     "@babel/preset-env": "7.23.8",
     "@prettier/plugin-php": "0.22.1",
     "@rollup/plugin-html": "1.0.3",
+    "@types/node": "^26.1.0",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
     "@types/typeahead": "0.11.32",
+    "@vitejs/plugin-react": "^4.7.0",
     "ajv": "8.17.1",
     "autoprefixer": "10.4.19",
     "axios": "1.7.2",
@@ -30,6 +34,7 @@
     "resolve-url-loader": "5.0.0",
     "sass": "1.76.0",
     "sass-loader": "14.0.0",
+    "typescript": "^6.0.3",
     "vite": "5.3.5"
   },
   "overrides": {
@@ -78,6 +83,11 @@
     ]
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@inertiajs/react": "^2.3.27",
+    "@mui/material": "^9.2.0",
+    "@mui/x-charts": "^9.8.0",
     "@popperjs/core": "2.11.8",
     "apexcharts-clevision": "3.28.5",
     "bootstrap": "5.3.3",
@@ -85,6 +95,7 @@
     "highlight.js": "11.9.0",
     "jquery": "3.7.1",
     "laravel-vite-plugin": "1.0.1",
+    "lucide-react": "^1.23.0",
     "masonry-layout": "4.2.2",
     "perfect-scrollbar": "1.5.5",
     "react": "^19.1.0",

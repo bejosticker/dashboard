@@ -1,7 +1,9 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import html from '@rollup/plugin-html';
+import react from '@vitejs/plugin-react';
 import { glob } from 'glob';
+import { fileURLToPath, URL } from 'node:url';
 
 /**
  * Get Files from a directory
@@ -40,6 +42,7 @@ export default defineConfig({
   plugins: [
     laravel({
       input: [
+        'resources/js/app.tsx',
         'resources/css/app.css',
         'resources/assets/css/demo.css',
         'resources/js/app.js',
@@ -53,6 +56,12 @@ export default defineConfig({
       ],
       refresh: true
     }),
+    react(),
     html()
-  ]
+  ],
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./resources/js', import.meta.url))
+    }
+  }
 });

@@ -15,6 +15,7 @@ use App\Models\CetakProductSale;
 use App\Models\Toko;
 use App\Models\TokoIncome;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use DB;
 
 class HomeController extends Controller
@@ -35,7 +36,12 @@ class HomeController extends Controller
 
         $kulak = Kulak::whereBetween('date', [$from, $to])->sum('total');
 
-        return view('content.dashboard.dashboards-analytics', compact('tokos', 'report', 'kulak'));
+        return Inertia::render('Beranda', [
+            'tokos' => $tokos,
+            'report' => $report,
+            'kulak' => $kulak,
+            'period' => ['from' => $from, 'to' => $to],
+        ]);
     }
 
     public function tokoReport($toko_id)
