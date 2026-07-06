@@ -102,11 +102,13 @@ Route::middleware(['global', 'web'])->group(function () {
 
     Route::prefix('sales')->group(function () {
         Route::get('/', [SalesController::class, 'index'])->name('sales');
+        Route::post('/', [SalesController::class, 'store']);
         Route::get('/delete/{id}', [SalesController::class, 'destroy']);
     });
 
     Route::prefix('cetak-sales')->group(function () {
         Route::get('/', [CetakSalesController::class, 'index'])->name('cetak-sales');
+        Route::post('/', [CetakSalesController::class, 'store']);
         Route::get('/delete/{id}', [CetakSalesController::class, 'destroy']);
     });
 
@@ -124,6 +126,7 @@ Route::middleware(['global', 'web'])->group(function () {
 
     Route::prefix('kulak')->group(function () {
         Route::get('/', [KulakController::class, 'index'])->name('kulak');
+        Route::post('/', [KulakController::class, 'store']);
         Route::get('/delete/{id}', [KulakController::class, 'destroy']);
     });
 
