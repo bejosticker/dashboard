@@ -1,1 +1,0 @@
-import{j as e,a3 as i}from"./app-BoNsSAH4.js";import{c as a}from"./Stack-KFAEKDKE.js";function m({options:l,placeholder:s,...t}){return e.jsxs(a,{select:!0,...t,children:[s!==void 0&&e.jsx(i,{value:"",children:e.jsx("em",{children:s})}),l.map(r=>e.jsx(i,{value:r.value,children:r.label},String(r.value)))]})}export{m as S};

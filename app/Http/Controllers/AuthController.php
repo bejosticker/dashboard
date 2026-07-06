@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Inertia\Inertia;
 use DB;
 
 class AuthController extends Controller
@@ -21,7 +22,7 @@ class AuthController extends Controller
           'password' => Hash::make('admin')
         ]);
     }
-    return view('content.authentications.auth-login-basic');
+    return Inertia::render('Auth/Login');
   }
 
   public function login(Request $request)
@@ -35,12 +36,8 @@ class AuthController extends Controller
         ->where('username', $request->input('username'))
         ->first();
 
-      if (!$user) {
-        return redirect()->back()->withError('Username tidak valid');
-      }
-
-      if (!Hash::check($request->input('password'), $user->password)) {
-        return redirect()->back()->withError('Password tidak valid');
+      if (!$user || !Hash::check($request->input('password'), $user->password)) {
+        return redirect()->back()->withErrors(['username' => 'Username atau password salah.']);
       }
 
       session()->put('data', $user);

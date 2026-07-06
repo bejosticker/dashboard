@@ -1,0 +1,1 @@
+import{j as e,N as i}from"./app-Cz7-uxF8.js";import{d as n}from"./Stack-DjbHbP_V.js";function m({options:l,placeholder:s,...t}){return e.jsxs(n,{select:!0,...t,children:[s!==void 0&&e.jsx(i,{value:"",children:e.jsx("em",{children:s})}),l.map(r=>e.jsx(i,{value:r.value,children:r.label},String(r.value)))]})}export{m as S};
