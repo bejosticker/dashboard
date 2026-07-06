@@ -3,13 +3,25 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
+use Inertia\Inertia;
 
 class MetodePembayaranController extends Controller
 {
     public function index()
     {
-        $paymentMethods = PaymentMethod::all();
-        return view('metode-pembayaran.index', compact('paymentMethods'));
+        $paymentMethods = PaymentMethod::orderBy('name')->get()->map(function ($pm) {
+            return [
+                'id' => $pm->id,
+                'name' => $pm->name,
+                'image' => $pm->image,
+                'image_url' => '/assets/img/payment-methods/' . $pm->image,
+                'created_at' => $pm->created_at,
+            ];
+        });
+
+        return Inertia::render('MetodePembayaran/Index', [
+            'paymentMethods' => $paymentMethods,
+        ]);
     }
 
     public function store(Request $request)

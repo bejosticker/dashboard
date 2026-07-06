@@ -9,7 +9,7 @@ import {
   Typography,
   type Column,
 } from '@/ui';
-import { Banknote, Upload, Download, Wallet } from 'lucide-react';
+import { Banknote, Upload, Download, Wallet } from '@/icons';
 import { formatRupiah, formatDate } from '@/lib/format';
 
 interface TokoRow {

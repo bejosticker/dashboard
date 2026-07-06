@@ -37,11 +37,15 @@ export {
   Menu as MenuIcon,
   ChevronDown,
   ChevronRight,
+  ChevronLeft,
   Download,
+  Upload,
   FileSpreadsheet,
   KeyRound,
   Eye,
   Save,
+  Banknote,
+  Wallet,
 } from 'lucide-react';
 
 export type { LucideIcon };

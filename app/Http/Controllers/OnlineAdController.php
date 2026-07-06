@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MarketOnline;
 use App\Models\OnlineAd;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class OnlineAdController extends Controller
 {
@@ -25,35 +26,65 @@ class OnlineAdController extends Controller
             ]));
         }
 
-        $ads = OnlineAd::whereBetween('date', [$from, $to]);
+        $adsQuery = OnlineAd::whereBetween('date', [$from, $to]);
         if ($online_market_id) {
-            $ads = $ads->where('online_market_id', $online_market_id);
+            $adsQuery->where('online_market_id', $online_market_id);
         }
-        
-        $ads = $ads->with('shop')->paginate(10)->withQueryString();
 
-        $tokos = MarketOnline::orderBy('name', 'asc')->get();
+        $totalAd = (float) (clone $adsQuery)->sum('amount');
 
-        return view('online-ads.index', compact('ads', 'tokos'));
+        $ads = $adsQuery->with('shop')
+            ->orderBy('date', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+
+        $tokos = MarketOnline::orderBy('name', 'asc')->get(['id', 'name', 'vendor']);
+
+        return Inertia::render('IklanOnline/Index', [
+            'ads' => $ads,
+            'tokos' => $tokos,
+            'totalAd' => $totalAd,
+            'filters' => [
+                'online_market_id' => $online_market_id ?? '',
+                'from' => $from,
+                'to' => $to,
+            ],
+        ]);
     }
 
     public function store(Request $request)
     {
-        OnlineAd::create([
-            'date' => $request->date,
-            'online_market_id' => $request->online_market_id,
-            'amount' => $request->amount,
+        // Port dari App\Livewire\IklanForm::save() — mendukung banyak baris toko sekaligus.
+        $data = $request->validate([
+            'date' => 'required|date',
+            'items' => 'required|array|min:1',
+            'items.*.online_market_id' => 'required|exists:online_markets,id',
+            'items.*.amount' => 'required|numeric|gt:0',
         ]);
+
+        foreach ($data['items'] as $item) {
+            OnlineAd::create([
+                'online_market_id' => $item['online_market_id'],
+                'amount' => (float) $item['amount'],
+                'date' => $data['date'],
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Iklan berhasil disimpan.');
     }
 
     public function update(Request $request, $id)
     {
+        $data = $request->validate([
+            'date' => 'required|date',
+            'online_market_id' => 'required|exists:online_markets,id',
+            'amount' => 'required|numeric|gt:0',
+        ]);
+
         OnlineAd::where('id', $id)->update([
-            'date' => $request->date,
-            'online_market_id' => $request->online_market_id,
-            'amount' => $request->amount,
+            'date' => $data['date'],
+            'online_market_id' => $data['online_market_id'],
+            'amount' => (float) $data['amount'],
         ]);
 
         return redirect()->back()->with('success', 'Iklan berhasil disimpan.');

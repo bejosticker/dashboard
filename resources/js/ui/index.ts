@@ -16,4 +16,5 @@ export { Pagination, type PaginationProps } from './Pagination';
 export { PageHeader, type PageHeaderProps } from './PageHeader';
 export { StatCard, type StatCardProps } from './StatCard';
 export { StatusChip, type StatusChipProps } from './StatusChip';
+export { Stack, type StackProps } from './Stack';
 export * from './primitives';

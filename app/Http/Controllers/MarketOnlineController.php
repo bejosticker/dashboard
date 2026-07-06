@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Toko;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Models\MarketOnline;
 
@@ -12,7 +13,20 @@ class MarketOnlineController extends Controller
         $tokos = Toko::where('type', 'Online')->orderBy('name', 'asc')->get();
         $onlineTokos = MarketOnline::orderBy('name', 'asc')->with('toko')->get();
 
-        return view('online-toko.index', compact('tokos', 'onlineTokos'));
+        return Inertia::render('OnlineToko/Index', [
+            'onlineTokos' => $onlineTokos->map(fn ($o) => [
+                'id' => $o->id,
+                'name' => $o->name,
+                'toko_id' => $o->toko_id,
+                'toko_name' => $o->toko?->name,
+                'description' => $o->description,
+                'vendor' => $o->vendor,
+            ])->values(),
+            'tokos' => $tokos->map(fn ($t) => [
+                'id' => $t->id,
+                'name' => $t->name,
+            ])->values(),
+        ]);
     }
     public function store(Request $request)
     {

@@ -3,13 +3,18 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = User::orderBy('name')->get();
-        return view('users.index', compact('users'));
+        $users = User::orderBy('name')
+            ->get(['id', 'name', 'username', 'level']);
+
+        return Inertia::render('Pengguna/Index', [
+            'users' => $users,
+        ]);
     }
 
     public function store(Request $request)

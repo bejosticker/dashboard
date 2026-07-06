@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Toko;
 use App\Models\TokoIncome;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TokoIncomeController extends Controller
 {
@@ -35,7 +36,16 @@ class TokoIncomeController extends Controller
 
         $tokos = Toko::orderBy('name', 'asc')->get();
 
-        return view('toko-income.index', compact('incomes', 'tokos', 'totalIncome'));
+        return Inertia::render('PemasukanToko/Index', [
+            'incomes' => $incomes,
+            'tokos' => $tokos,
+            'totalIncome' => $totalIncome,
+            'filters' => [
+                'from' => $from,
+                'to' => $to,
+                'toko_id' => $toko_id ?? '',
+            ],
+        ]);
     }
 
     public function store(Request $request)

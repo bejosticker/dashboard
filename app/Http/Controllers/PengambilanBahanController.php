@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\PengambilanBahan;
+use App\Models\PengambilanBahanItem;
 use App\Models\Toko;
+use Inertia\Inertia;
 
 class PengambilanBahanController extends Controller
 {
@@ -26,27 +28,39 @@ class PengambilanBahanController extends Controller
             ]));
         }
 
-        $datas = PengambilanBahan::with(['items', 'toko']);
+        $datas = PengambilanBahan::with(['items.product', 'toko']);
         if ($toko_id) {
             $datas = $datas->where('toko_id', $toko_id);
         }
-        
+
         $datas = $datas->whereBetween('date', [$from, $to])
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->withQueryString();
 
-        $tokos = Toko::orderBy('name', 'asc')->get();
+        // Hitung laba per baris (guard produk null dipertahankan).
+        $datas->getCollection()->transform(function ($data) {
+            $laba = 0;
+            foreach ($data->items as $item) {
+                if (!$item->product) {
+                    continue;
+                }
+                if ($item->product_type == 'roll') {
+                    $laba += ($item->price - $item->product->price_kulak) * $item->quantity;
+                } else {
+                    $kulakPerMeter = $item->product->price_kulak / $item->product->per_roll_cm * 100;
+                    $laba += ($item->price - $kulakPerMeter) * $item->quantity;
+                }
+            }
+            $data->laba = $laba;
+            return $data;
+        });
 
-        $sess = Product::select('id', 'name', 'price_agent', 'price_agent as harga', 'price_grosir_meter', 'per_roll_cm')
+        $tokos = Toko::orderBy('name', 'asc')->get(['id', 'name']);
+
+        // Opsi produk untuk modal (menggantikan session('products') komponen Livewire).
+        $products = Product::select('id', 'name', 'price_agent', 'price_grosir_meter', 'per_roll_cm')
             ->where('stock_cm', '>', 0)
-            ->orderBy('name', 'asc')
-            ->get()
-            ->toArray();
-
-        session(['products' => $sess]);
-
-        $products = Product::where('stock_cm', '>', 0)
             ->orderBy('name', 'asc')
             ->get();
 
@@ -71,7 +85,7 @@ class PengambilanBahanController extends Controller
                 }
                 if ($item->product_type == 'roll') {
                     $laba += ($item->price - $item->product->price_kulak) * $item->quantity;
-                }else{
+                } else {
                     $kulakPerMeter = $item->product->price_kulak / $item->product->per_roll_cm * 100;
                     $laba += ($item->price - $kulakPerMeter) * $item->quantity;
                 }
@@ -79,36 +93,67 @@ class PengambilanBahanController extends Controller
             $labaTotal += $laba;
         }
 
-        return view('pengambilan-bahan.index', compact('datas', 'tokos', 'products', 'total', 'labaTotal'));
+        return Inertia::render('PengambilanBahan/Index', [
+            'datas' => $datas,
+            'tokos' => $tokos,
+            'products' => $products,
+            'total' => $total,
+            'labaTotal' => $labaTotal,
+            'filters' => [
+                'from' => $from,
+                'to' => $to,
+                'toko_id' => $toko_id ?? '',
+            ],
+        ]);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'toko_id' => 'nullable|exists:toko,id',
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required',
-            'date' => 'required'
+        // Port dari App\Livewire\PengambilanBahanForm::save().
+        // Jumlah pakai gt:0 agar nilai desimal seperti 0.5 diterima.
+        $validated = $request->validate([
+            'toko_id' => 'required|exists:toko,id',
+            'date' => 'required',
+            'items' => 'required|array|min:1',
+            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.product_type' => 'required|in:roll,meter',
+            'items.*.jumlah' => 'required|numeric|gt:0',
+            'items.*.harga' => 'required|numeric|min:0',
         ]);
 
-        $product = Product::where('id', $request->input('product_id'))->first();
-        if ($request->input('quantity') > ($product->stock_cm / $product->per_roll_cm)) {
-            return back()->withErrors(['Quantity melebihi stock']);
+        $total = 0;
+        foreach ($validated['items'] as $item) {
+            $total += (float) $item['jumlah'] * (float) $item['harga'];
         }
 
-        PengambilanBahan::create([
-            'toko_id' => $request->input('toko_id'),
-            'product_id' => $request->input('product_id'),
-            'price' => $product->price_agent,
-            'quantity' => $request->input('quantity'),
-            'total' => $product->price_agent * $request->input('quantity'),
-            'date' => $request->input('date')
+        $pengambilan = PengambilanBahan::create([
+            'toko_id' => $validated['toko_id'],
+            'total' => $total,
+            'date' => $validated['date'],
         ]);
 
-        $product->stock_cm = $product->stock_cm - ($request->input('quantity') * $product->per_roll_cm);
-        $product->save();
+        foreach ($validated['items'] as $item) {
+            $product = Product::where('id', $item['product_id'])->first();
+            $jumlah = (float) $item['jumlah'];
+            $harga = (float) $item['harga'];
+            $subtotal = $jumlah * $harga;
 
-        return back()->with('success', 'Pengambilan barang berhasil disimpan');
+            PengambilanBahanItem::create([
+                'pengambilan_bahan_id' => $pengambilan->id,
+                'product_id' => $item['product_id'],
+                'product_type' => $item['product_type'],
+                'price' => $harga,
+                'quantity' => $jumlah,
+                'subtotal' => $subtotal,
+            ]);
+
+            $product->stock_cm = ($product->stock_cm ?? 0) - ($item['product_type'] == 'roll'
+                ? $jumlah * $product->per_roll_cm
+                : $jumlah * 100);
+            $product->save();
+        }
+
+        return redirect()->back()->with('success', 'Data berhasil disimpan!');
     }
 
     public function destroy($id)

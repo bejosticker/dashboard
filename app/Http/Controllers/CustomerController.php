@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class CustomerController extends Controller
@@ -17,7 +18,10 @@ class CustomerController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('customers.index', compact('customers'));
+        return Inertia::render('Pelanggan/Index', [
+            'customers' => $customers,
+            'filters' => ['search' => $search],
+        ]);
     }
 
     public function store(Request $request)

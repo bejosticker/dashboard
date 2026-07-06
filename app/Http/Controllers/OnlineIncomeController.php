@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MarketOnline;
 use App\Models\OnlineIncome;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class OnlineIncomeController extends Controller
 {
@@ -37,7 +38,16 @@ class OnlineIncomeController extends Controller
 
         $tokos = MarketOnline::orderBy('name', 'asc')->get();
 
-        return view('online-incomes.index', compact('incomes', 'tokos', 'totalIncome'));
+        return Inertia::render('PemasukanOnline/Index', [
+            'incomes' => $incomes,
+            'tokos' => $tokos,
+            'totalIncome' => $totalIncome,
+            'filters' => [
+                'online_market_id' => $online_market_id ?? '',
+                'from' => $from,
+                'to' => $to,
+            ],
+        ]);
     }
 
     public function store(Request $request)

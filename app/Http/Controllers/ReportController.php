@@ -14,6 +14,7 @@ use App\Models\CetakProductSale;
 use App\Models\Toko;
 use App\Models\TokoIncome;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use DB;
 
 class ReportController extends Controller
@@ -110,7 +111,12 @@ class ReportController extends Controller
         $results = collect($reports);
         $totalKredit = $results->where('type', 'credit')->sum('amount');
         $totalDebit = $results->where('type', 'debit')->sum('amount');
-        return view('reports.index', compact('tokos', 'results', 'totalKredit', 'totalDebit'));
+        return Inertia::render('Laporan/Keuangan', [
+            'results' => $results->values()->all(),
+            'totalKredit' => $totalKredit,
+            'totalDebit' => $totalDebit,
+            'filters' => ['from' => $from, 'to' => $to],
+        ]);
     }
 
     public function tokoReport(Request $request)
@@ -160,7 +166,13 @@ class ReportController extends Controller
         $results = collect($reports);
         $totalKredit = $results->where('type', 'credit')->sum('amount');
         $totalDebit = $results->where('type', 'debit')->sum('amount');
-        return view('reports.toko', compact('tokos', 'results', 'totalKredit', 'totalDebit'));
+        return Inertia::render('Laporan/Toko', [
+            'tokos' => $tokos,
+            'results' => $results->values()->all(),
+            'totalKredit' => $totalKredit,
+            'totalDebit' => $totalDebit,
+            'filters' => ['from' => $from, 'to' => $to, 'toko_id' => $toko_id],
+        ]);
     }
 
     public function onlineReport(Request $request)
@@ -211,7 +223,9 @@ class ReportController extends Controller
         }
         
         $reports = $onlineNames;
-        // return $reports;
-        return view('reports.online', compact('reports'));
+        return Inertia::render('Laporan/Online', [
+            'reports' => $reports->values()->all(),
+            'filters' => ['from' => $from, 'to' => $to],
+        ]);
     }
 }

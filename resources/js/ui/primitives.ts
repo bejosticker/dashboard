@@ -5,7 +5,6 @@
  */
 export {
   Box,
-  Stack,
   Typography,
   Divider,
   MenuItem,

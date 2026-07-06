@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CetakProduct;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CetakProductController extends Controller
 {
@@ -14,7 +15,12 @@ class CetakProductController extends Controller
             ->orderBy('name', 'asc')
             ->get();
 
-        return view('cetak-product.index', compact('products'));
+        return Inertia::render('ProdukCetak/Index', [
+            'products' => $products,
+            'filters' => [
+                'search' => $search,
+            ],
+        ]);
     }
 
     public function store(Request $request)

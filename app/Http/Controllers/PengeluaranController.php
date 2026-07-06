@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pengeluaran;
 use App\Models\Toko;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PengeluaranController extends Controller
 {
@@ -39,7 +40,16 @@ class PengeluaranController extends Controller
 
         $tokos = Toko::orderBy('name', 'asc')->get();
 
-        return view('pengeluaran.index', compact('pengeluarans', 'tokos', 'total'));
+        return Inertia::render('Pengeluaran/Index', [
+            'pengeluarans' => $pengeluarans,
+            'tokos' => $tokos,
+            'total' => $total,
+            'filters' => [
+                'toko_id' => $toko_id ?? '',
+                'from' => $from,
+                'to' => $to,
+            ],
+        ]);
     }
 
     public function store(Request $request)

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ProductController extends Controller
 {
@@ -41,7 +42,20 @@ class ProductController extends Controller
             }
         }
 
-        return view('product.index', compact('products', 'totalKulak', 'totalAgen', 'totalGrosir', 'totalRollUmum', 'totalMeteranGrosir', 'totalMeteranUmum'));
+        return Inertia::render('Produk/Index', [
+            'products' => $products,
+            'filters' => [
+                'search' => $search,
+            ],
+            'totals' => [
+                'kulak' => $totalKulak,
+                'agen' => $totalAgen,
+                'grosir' => $totalGrosir,
+                'rollUmum' => $totalRollUmum,
+                'meteranGrosir' => $totalMeteranGrosir,
+                'meteranUmum' => $totalMeteranUmum,
+            ],
+        ]);
     }
 
     public function store(Request $request)

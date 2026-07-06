@@ -6,21 +6,21 @@ use App\Models\Gaji;
 use App\Models\GajiItem;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class GajiController extends Controller
 {
     public function index()
     {
-        $gajis = Gaji::with('items.karyawan')
-            ->withCount('items')
+        $gajis = Gaji::withCount('items')
             ->withSum('items', 'amount')
             ->orderBy('date', 'desc')
             ->paginate(10)
             ->withQueryString();
 
-        $karyawans = Karyawan::orderBy('name', 'asc')->get();
+        $karyawans = Karyawan::orderBy('name', 'asc')->get(['id', 'name', 'gaji']);
 
-        return view('gaji.index', compact('gajis', 'karyawans'));
+        return Inertia::render('Gaji/Index', compact('gajis', 'karyawans'));
     }
 
     public function history(Request $request)
@@ -44,9 +44,13 @@ class GajiController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        $karyawans = Karyawan::orderBy('name', 'asc')->get();
+        $karyawans = Karyawan::orderBy('name', 'asc')->get(['id', 'name']);
 
-        return view('gaji.history', compact('gajis', 'karyawans'));
+        return Inertia::render('Gaji/Riwayat', [
+            'gajis' => $gajis,
+            'karyawans' => $karyawans,
+            'filters' => ['karyawan_id' => (int) $karyawan_id],
+        ]);
     }
 
     public function store(Request $request)
@@ -91,7 +95,7 @@ class GajiController extends Controller
             ->withSum('items', 'amount')
             ->first();
 
-        return view('gaji.detail', compact('gaji'));
+        return Inertia::render('Gaji/Detail', compact('gaji'));
     }
 
     public function destroy(Request $request, $id)

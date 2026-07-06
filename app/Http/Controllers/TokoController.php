@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Toko;
+use Inertia\Inertia;
 
 class TokoController extends Controller
 {
     public function index()
     {
-        $tokos = Toko::all();
-        return view('toko.index', compact('tokos'));
+        $tokos = Toko::latest('id')->paginate(15);
+        return Inertia::render('Toko/Index', [
+            'tokos' => $tokos,
+        ]);
     }
 
     public function store(Request $request)
