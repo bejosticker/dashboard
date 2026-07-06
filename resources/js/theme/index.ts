@@ -33,7 +33,8 @@ export const theme = createTheme({
   components: {
     MuiButton: {
       defaultProps: { disableElevation: true },
-      styleOverrides: { root: { borderRadius: tokens.radius } },
+      // Semua tombol berbentuk pill (fully rounded) — diatur terpusat di sini.
+      styleOverrides: { root: { borderRadius: tokens.radiusPill } },
     },
     MuiTextField: {
       defaultProps: { size: 'small', fullWidth: true },
@@ -50,6 +51,20 @@ export const theme = createTheme({
     MuiTableCell: {
       styleOverrides: {
         head: { fontWeight: 600, color: tokens.color.textHeading, whiteSpace: 'nowrap' },
+      },
+    },
+    // Menu aktif (sidebar) pakai bg primary + teks/ikon putih — diatur terpusat.
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: tokens.radiusPill,
+          '&.Mui-selected': {
+            backgroundColor: tokens.color.primary,
+            color: '#fff',
+            '& .MuiListItemIcon-root': { color: '#fff' },
+            '&:hover': { backgroundColor: tokens.color.primaryDark },
+          },
+        },
       },
     },
   },

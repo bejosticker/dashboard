@@ -88,7 +88,7 @@ function MenuNode({
       href={normalize(item.url)}
       selected={active}
       onClick={onNavigate}
-      sx={{ borderRadius: 1.5, mb: 0.25 }}
+      sx={{ mb: 0.25 }}
     >
       <ListItemIcon sx={{ minWidth: 38 }}>
         <Icon size={20} />
@@ -113,7 +113,7 @@ function SubMenu({
 
   return (
     <>
-      <ListItemButton onClick={() => setOpen((o) => !o)} sx={{ borderRadius: 1.5, mb: 0.25 }}>
+      <ListItemButton onClick={() => setOpen((o) => !o)} sx={{ mb: 0.25 }}>
         <ListItemIcon sx={{ minWidth: 38 }}>
           <Icon size={20} />
         </ListItemIcon>
@@ -129,9 +129,9 @@ function SubMenu({
               href={normalize(child.url)}
               selected={isActive(child.url)}
               onClick={onNavigate}
-              sx={{ borderRadius: 1.5, mb: 0.25 }}
+              sx={{ mb: 0.25 }}
             >
-              <ListItemText inset primary={child.name} slotProps={{ primary: { sx: { fontSize: 13.5 } } }} />
+              <ListItemText primary={child.name} slotProps={{ primary: { sx: { fontSize: 13.5 } } }} />
             </ListItemButton>
           ))}
         </List>

@@ -26,6 +26,7 @@ export const tokens = {
     divider: '#e4e6e8',
   },
   radius: 8,
+  radiusPill: 999,
   spacingUnit: 8,
   shadow: {
     card: '0 0.25rem 1.125rem rgba(75, 70, 92, 0.1)',
