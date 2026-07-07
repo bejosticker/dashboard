@@ -14,6 +14,11 @@
              <label class="form-label">Nama Customer (opsional):</label>
             <input type="text" wire:model.live="customer" name="customer" class="form-control" id="">
         </div>
+        <div class="col-md-4">
+            <label class="form-label">Nomor Telepon (WA):</label>
+            <input type="text" wire:model.live="customer_phone" name="customer_phone" class="form-control" placeholder="08xxxxxxxxx">
+            @error('customer_phone') <small class="text-danger">{{ $message }}</small> @enderror
+        </div>
     </div>
 
     <hr>

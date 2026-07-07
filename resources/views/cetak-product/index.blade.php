@@ -74,17 +74,27 @@
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6">
-                            <label class="form-label">Harga Grosir (per meter)</label>
+                            <label class="form-label">Harga Grosir (per centimeter)</label>
                             <input type="number" name="price_grosir" value="{{ $product->price_grosir }}" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Harga Umum (per meter)</label>
+                            <label class="form-label">Harga Umum (per centimeter)</label>
                             <input type="number" name="price_umum" value="{{ $product->price_umum }}" class="form-control">
                         </div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6">
-                            <label class="form-label">Harga Kulak (per meter)</label>
+                            <label class="form-label">Harga Eceran Grosir (per lembar)</label>
+                            <input type="number" name="price_eceran_grosir" value="{{ $product->price_eceran_grosir }}" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Eceran Umum (per lembar)</label>
+                            <input type="number" name="price_eceran_umum" value="{{ $product->price_eceran_umum }}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Kulak</label>
                             <input type="number" name="kulak_price" value="{{ $product->kulak_price }}" class="form-control">
                         </div>
                         <div class="col-md-6">
@@ -138,17 +148,27 @@
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6">
-                            <label class="form-label">Harga Grosir (per meter)</label>
+                            <label class="form-label">Harga Grosir (per centimeter)</label>
                             <input type="number" name="price_grosir" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Harga Umum (per meter)</label>
+                            <label class="form-label">Harga Umum (per centimeter)</label>
                             <input type="number" name="price_umum" class="form-control">
                         </div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6">
-                            <label class="form-label">Harga Kulak (per meter)</label>
+                            <label class="form-label">Harga Eceran Grosir (per lembar)</label>
+                            <input type="number" name="price_eceran_grosir" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Eceran Umum (per lembar)</label>
+                            <input type="number" name="price_eceran_umum" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Harga Kulak</label>
                             <input type="number" name="kulak_price" class="form-control">
                         </div>
                         <div class="col-md-6">

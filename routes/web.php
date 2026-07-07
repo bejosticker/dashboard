@@ -21,6 +21,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TokoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MetodePembayaranController;
+use App\Http\Controllers\CustomerController;
 
 Route::middleware(['global', 'web'])->group(function () {
     Route::prefix('auth')->group(function () {
@@ -35,6 +36,12 @@ Route::middleware(['global', 'web'])->group(function () {
         Route::post('/', [SupplierController::class, 'store']);
         Route::post('/update/{id}', [SupplierController::class, 'update']);
         Route::get('/delete/{id}', [SupplierController::class, 'destroy']);
+    });
+
+    Route::prefix('customers')->group(function () {
+        Route::get('/', [CustomerController::class, 'index'])->name('customers');
+        Route::get('/export', [CustomerController::class, 'export'])->name('customers.export');
+        Route::get('/delete/{id}', [CustomerController::class, 'destroy']);
     });
 
     Route::prefix('metode-pembayaran')->group(function () {

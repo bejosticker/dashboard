@@ -30,6 +30,11 @@
           "slug": "suppliers"
         },
         {
+          "url": "customers",
+          "name": "Pelanggan",
+          "slug": "customers"
+        },
+        {
           "url": "products",
           "name": "Produk",
           "slug": "products"

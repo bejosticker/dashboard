@@ -5,6 +5,14 @@
         </div>
     @endif
 
+    {{-- Fitur search produk (pojok kanan atas) --}}
+    <div class="d-flex justify-content-end mb-3">
+        <div class="input-group" style="max-width: 320px;">
+            <input type="text" wire:model.live.debounce.300ms="search" class="form-control" placeholder="Cari produk...">
+            <button type="button" class="btn btn-primary">Cari</button>
+        </div>
+    </div>
+
     <div style="margin-bottom: 15px;display: flex; flex-direction: row; align-items: end;" class="row">
         <div class="col-md-4">
             <label for="supplierSelect" class="form-label">Pilih Supplier:</label>
@@ -26,45 +34,53 @@
 
     <hr>
 
-    <div style="display: flex; gap: 10px; margin-bottom: 8px; flex-direction: row; align-items: center; font-weight: bold;">
-        <b style="width: 30px; text-align: center;">##</b>
-        <p class="m-0" style="width: 480px;"><b>Produk</b></p>
-        <p class="m-0" style="width: 140px;"><b>Quantity (Roll)</b></p>
-        <p class="m-0" style="width: 160px;"><b>Harga</b></p>
-        <p class="m-0" style="width: 160px;"><b>Subtotal</b></p>
-        <div style="width: 40px;"></div>
-    </div>
-
-    @foreach ($items as $i => $item)
-        <div style="display: flex; gap: 10px; margin-bottom: 8px; flex-direction: row; align-items: center;" wire:key="item-{{ $i }}">
-            <!-- <b style="width: 30px; text-align: center;">{{$loop->iteration}}. </b> -->
-             <input type="checkbox" wire:model="items.{{ $i }}.include" class="form-check-input" style="width: 20px; height: 20px;">
-            
-            <select wire:model.live="items.{{ $i }}.product_id" class="form-control" name="item.{{$i}}" style="width: 480px;">
-                @if ($item['product_id'] != '')
-                    @php
-                        $selectedProduct = collect(session('kulak_products'))->firstWhere('id', $item['product_id']);
-                    @endphp
-                    @if ($selectedProduct)
-                        <option value="{{ $selectedProduct['id'] }}">{{ $selectedProduct['name'] }}</option>
-                    @endif
-                @else
-                    <option value="">-- Pilih Produk --</option>
-                    @foreach (session('kulak_products') as $product)
-                        <option value="{{ $product['id'] }}">{{ $product['name'] }}</option>
-                    @endforeach
-                @endif
-            </select>
-
-            <input type="number" style="width: 140px;" wire:loading.attr="disabled" name="jumlah.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.jumlah" placeholder="Jumlah" />
-            <input type="number" style="width: 160px;" name="harga.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.harga" placeholder="Harga" />
-            <input type="number" style="width: 160px;" name="subtotal.{{$i}}" class="form-control" value="{{ $item['subtotal'] }}" readonly />
-
-            <button type="button" class="btn btn-danger" wire:click.prevent="removeItem({{ $i }})">
-                <span class="tf-icons bx bx-trash"></span>
-            </button>
+    {{-- Daftar produk dibuat scroll internal agar pop-up sticky/fixed (header & footer tetap) --}}
+    <div style="max-height: 45vh; overflow-y: auto;">
+        <div style="display: flex; gap: 10px; margin-bottom: 8px; flex-direction: row; align-items: center; font-weight: bold; position: sticky; top: 0; background: #fff; z-index: 2; padding: 6px 0;">
+            <b style="width: 30px; text-align: center;">##</b>
+            <p class="m-0" style="width: 480px;"><b>Produk</b></p>
+            <p class="m-0" style="width: 140px;"><b>Quantity (Roll)</b></p>
+            <p class="m-0" style="width: 160px;"><b>Harga</b></p>
+            <p class="m-0" style="width: 160px;"><b>Subtotal</b></p>
+            <div style="width: 40px;"></div>
         </div>
-    @endforeach
+
+        @foreach ($items as $i => $item)
+            @php
+                $kp = collect(session('kulak_products'))->firstWhere('id', $item['product_id']);
+                $pname = $kp['name'] ?? '';
+            @endphp
+            @if ($search === '' || stripos($pname, $search) !== false)
+            <div style="display: flex; gap: 10px; margin-bottom: 8px; flex-direction: row; align-items: center;" wire:key="item-{{ $i }}">
+                 <input type="checkbox" wire:model="items.{{ $i }}.include" class="form-check-input" style="width: 20px; height: 20px;">
+
+                <select wire:model.live="items.{{ $i }}.product_id" class="form-control" name="item.{{$i}}" style="width: 480px;">
+                    @if ($item['product_id'] != '')
+                        @php
+                            $selectedProduct = collect(session('kulak_products'))->firstWhere('id', $item['product_id']);
+                        @endphp
+                        @if ($selectedProduct)
+                            <option value="{{ $selectedProduct['id'] }}">{{ $selectedProduct['name'] }}</option>
+                        @endif
+                    @else
+                        <option value="">-- Pilih Produk --</option>
+                        @foreach (session('kulak_products') as $product)
+                            <option value="{{ $product['id'] }}">{{ $product['name'] }}</option>
+                        @endforeach
+                    @endif
+                </select>
+
+                <input type="number" style="width: 140px;" wire:loading.attr="disabled" name="jumlah.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.jumlah" placeholder="Jumlah" />
+                <input type="number" style="width: 160px;" name="harga.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.harga" placeholder="Harga" />
+                <input type="number" style="width: 160px;" name="subtotal.{{$i}}" class="form-control" value="{{ $item['subtotal'] }}" readonly />
+
+                <button type="button" class="btn btn-danger" wire:click.prevent="removeItem({{ $i }})">
+                    <span class="tf-icons bx bx-trash"></span>
+                </button>
+            </div>
+            @endif
+        @endforeach
+    </div>
 
     <button type="button" class="btn btn-info" wire:click="addItem" style="margin-top: 15px;">
         <span class="menu-icon tf-icons bx bx-plus-circle"></span> Tambah Produk

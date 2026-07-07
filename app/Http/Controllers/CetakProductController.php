@@ -24,8 +24,10 @@ class CetakProductController extends Controller
                 'name' => $request->input('name'),
                 'price_grosir' => $request->input('price_grosir',0),
                 'price_umum' => $request->input('price_umum',0),
-                'kulak_price' => $request->input('kulak_price'),
-                'stock' => $request->input('stock'),
+                'price_eceran_grosir' => $request->input('price_eceran_grosir',0),
+                'price_eceran_umum' => $request->input('price_eceran_umum',0),
+                'kulak_price' => $request->input('kulak_price',0),
+                'stock' => $request->input('stock',0),
             ]);
 
             return back()->with('success', 'Produk berhasil disimpan!');
@@ -43,8 +45,10 @@ class CetakProductController extends Controller
                 'name' => $request->input('name'),
                 'price_grosir' => $request->input('price_grosir',0),
                 'price_umum' => $request->input('price_umum',0),
-                'kulak_price' => $request->input('kulak_price'),
-                'stock' => $request->input('stock')
+                'price_eceran_grosir' => $request->input('price_eceran_grosir',0),
+                'price_eceran_umum' => $request->input('price_eceran_umum',0),
+                'kulak_price' => $request->input('kulak_price',0),
+                'stock' => $request->input('stock',0)
             ]);
 
             return back()->with('success', 'Produk berhasil disimpan!');

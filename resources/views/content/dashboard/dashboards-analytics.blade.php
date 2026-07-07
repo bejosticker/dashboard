@@ -4,8 +4,9 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-8 mb-6 order-0">
-            <div class="card">
+        {{-- Kolom kiri: Selamat Datang + Keuangan Toko Bulan Ini --}}
+        <div class="col-md-8">
+            <div class="card mb-6">
                 <div class="d-flex align-items-start row">
                     <div class="col-sm-7">
                         <div class="card-body">
@@ -22,9 +23,47 @@
                     </div>
                 </div>
             </div>
+
+            <div class="card mb-6">
+                <div class="card-header d-flex align-items-center justify-content-between" style="padding-bottom: 20px;">
+                    <h5 class="card-title m-0 me-2">Keuangan Toko Bulan Ini</h5>
+                </div>
+                @if (count($tokos) == 0)
+                    <div class="card-body text-center">
+                        <p class="mb-0">Tidak ada data keuangan toko bulan ini.</p>
+                    </div>
+                @else
+                    <div class="card-body pt-0 pb-4">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table">
+                                <thead style="border-color: transparent;">
+                                    <tr>
+                                        <th>Nama Toko</th>
+                                        <th>Pengambilan Bahan</th>
+                                        <th>Pemasukan Offline</th>
+                                        <th>Pemasukan Online</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($tokos as $toko)
+                                        <tr style="border-color: transparent;">
+                                            <td>{{ $toko->name }}</td>
+                                            <td>{{ formatRupiah($toko->debit) }}</td>
+                                            <td>{{ formatRupiah($toko->credit) }}</td>
+                                            <td>{{ formatRupiah($toko->online) }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                @endif
+            </div>
         </div>
+
+        {{-- Kolom kanan: Keuangan Bulan Ini + Produk Perlu Restock (sticky sidebar) --}}
         <div class="col-md-4">
-            <div class="card">
+            <div class="card mb-6">
                 <div class="card-header d-flex align-items-center justify-content-between" style="padding-bottom: 20px;">
                     <h5 class="card-title m-0 me-2">Keuangan Bulan Ini</h5>
                 </div>
@@ -63,53 +102,14 @@
                     </ul>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-8 mb-6 order-0">
-            <div class="card">
-                <div class="card-header d-flex align-items-center justify-content-between" style="padding-bottom: 20px;">
-                    <h5 class="card-title m-0 me-2">Keuangan Toko Bulan Ini</h5>
-                </div>
-                @if (count($tokos) == 0)
-                    <div class="card-body text-center">
-                        <p class="mb-0">Tidak ada data keuangan toko bulan ini.</p>
-                    </div>
-                @else
-                    <div class="card-body pt-0 pb-4">
-                        <div class="table-responsive text-nowrap">
-                            <table class="table">
-                                <thead style="border-color: transparent;">
-                                    <tr>
-                                        <th>Nama Toko</th>
-                                        <th>Pengambilan Bahan</th>
-                                        <th>Pemasukan Offline</th>
-                                        <th>Pemasukan Online</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($tokos as $toko)
-                                        <tr style="border-color: transparent;">
-                                            <td>{{ $toko->name }}</td>
-                                            <td>{{ formatRupiah($toko->debit) }}</td>
-                                            <td>{{ formatRupiah($toko->credit) }}</td>
-                                            <td>{{ formatRupiah($toko->online) }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                @endif
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
+
+            {{-- Sticky sidebar: tetap terlihat saat scroll; daftar panjang scroll di dalam kartu --}}
+            <div class="card mb-6 position-sticky" style="top: 1.5rem;">
                 <div class="card-header d-flex align-items-center justify-content-between" style="padding-bottom: 20px;">
                     <h5 class="card-title m-0 me-2">Produk Perlu Restock</h5>
                 </div>
                 @if (count($report['products']) > 0)
-                    <div class="table-responsive text-nowrap">
+                    <div class="table-responsive text-nowrap" style="max-height: calc(100vh - 11rem); overflow-y: auto;">
                         <table class="table">
                             <thead style="border-color: transparent;">
                                 <tr>
