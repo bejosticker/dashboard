@@ -67,8 +67,7 @@
                         $labaTotal = 0;
 
                         foreach ($sale->items as $item) {
-                            $laba = ($item->panjang * $item->lebar) * ($item->price - $item->product->kulak_price);
-                            $labaTotal += $laba;
+                            $labaTotal += cetakItemLaba($item);
                         }
                     @endphp
                     <tr>
@@ -118,8 +117,7 @@
                             <th>Nama Produk</th>
                             <th>Harga</th>
                             <th>Jenis Harga</th>
-                            <th>Panjang</th>
-                            <th>Lebar</th>
+                            <th>Quantity</th>
                             <th>Subtotal</th>
                         </tr>
                     </thead>
@@ -130,13 +128,20 @@
                                 <td>{{$item->product?->name ?? '-'}}</td>
                                 <td>{{formatRupiah($item->price)}}</td>
                                 <td>{{convertPriceType($item->price_type)}}</td>
-                                <td>{{$item->panjang}} Meter</td>
-                                <td>{{$item->lebar}} Meter</td>
+                                <td>{{ cetakItemQtyLabel($item) }}</td>
                                 <td>{{formatRupiah($item->subtotal)}}</td>
                             </tr>
                         @endforeach
                         <tr style="background-color: #d8f3dc; color: white;">
-                            <td colspan="6" class="text-end"><strong>Total:</strong></td>
+                            <td colspan="5" class="text-end"><strong>Nama Customer:</strong></td>
+                            <td><strong>{{ $sale->customer ?: '-' }}</strong></td>
+                        </tr>
+                        <tr style="background-color: #d8f3dc; color: white;">
+                            <td colspan="5" class="text-end"><strong>No. WA:</strong></td>
+                            <td><strong>{{ $sale->customer_phone ?: '-' }}</strong></td>
+                        </tr>
+                        <tr style="background-color: #d8f3dc; color: white;">
+                            <td colspan="5" class="text-end"><strong>Total:</strong></td>
                             <td><strong>{{ formatRupiah($sale->items->sum('subtotal')) }}</strong></td>
                         </tr>
                     </tbody>

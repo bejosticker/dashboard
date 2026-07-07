@@ -10,6 +10,15 @@
             <label class="form-label">Tanggal Penjualan:</label>
             <input type="date" wire:model.live="date" name="date" class="form-control" id="">
         </div>
+        <div class="col-md-4">
+            <label class="form-label">Nama Customer (opsional):</label>
+            <input type="text" wire:model.live="customer" name="customer" class="form-control" id="">
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Nomor Telepon (WA):</label>
+            <input type="text" wire:model.live="customer_phone" name="customer_phone" class="form-control" placeholder="08xxxxxxxxx">
+            @error('customer_phone') <small class="text-danger">{{ $message }}</small> @enderror
+        </div>
     </div>
 
     <hr>
@@ -22,15 +31,17 @@
         <p class="w-100 m-0"><b>Jenis Harga</b></p>
         <p class="w-100 m-0"><b>Panjang</b></p>
         <p class="w-100 m-0"><b>Lebar</b></p>
+        <p class="w-100 m-0"><b>Lembaran</b></p>
         <p class="w-100 m-0"><b>Harga</b></p>
         <p class="w-100 m-0"><b>Subtotal</b></p>
         <div style="width: 40px;"></div>
     </div>
 
     @foreach ($items as $i => $item)
+        @php $isEceran = in_array($item['price_type'], ['price_eceran_grosir', 'price_eceran_umum']); @endphp
         <div style="display: flex; gap: 10px; margin-bottom: 8px; flex-direction: row; align-items: center;" wire:key="item-{{ $i }}">
             <b style="width: 30px; text-align: center;">{{$loop->iteration}}. </b>
-            
+
             <select wire:model.live="items.{{ $i }}.product_id" class="form-control" name="item.{{$i}}">
                 <option value="">-- Pilih Produk --</option>
                 @foreach ($products as $product)
@@ -46,12 +57,16 @@
             </select>
 
             <div class="input-group input-group-merge">
-                <input type="number" name="panjang.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.panjang" placeholder="Panjang" />
-                <span class="input-group-text">Meter</span>
+                <input type="number" step="any" inputmode="decimal" name="panjang.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.panjang" placeholder="Panjang" @if($isEceran) disabled @endif />
+                <span class="input-group-text">CM</span>
             </div>
             <div class="input-group input-group-merge">
-                <input type="number" name="lebar.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.lebar" placeholder="Lebar" />
-                <span class="input-group-text">Meter</span>
+                <input type="number" step="any" inputmode="decimal" name="lebar.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.lebar" placeholder="Lebar" @if($isEceran) disabled @endif />
+                <span class="input-group-text">CM</span>
+            </div>
+            <div class="input-group input-group-merge">
+                <input type="number" step="any" inputmode="decimal" name="lembar.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.lembar" placeholder="Lembar" @if(!$isEceran) disabled @endif />
+                <span class="input-group-text">Lembar</span>
             </div>
             <input type="number" name="price.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.price" placeholder="Harga" readonly />
             <input type="number" name="subtotal.{{$i}}" class="form-control" value="{{ $item['subtotal'] }}" readonly />
