@@ -70,3 +70,33 @@
         }
         return (($item->panjang ?? 0) * ($item->lebar ?? 0)) * ($item->price - $kulak);
     }
+
+    // Format stok bahan (cm) menjadi "X Roll Y Meter Z cm" sesuai panjang per roll.
+    function formatStockCm($cm, $perRollCm) {
+        $cm = (int) round((float) $cm);
+        $perRollCm = (int) round((float) $perRollCm);
+
+        if ($perRollCm > 0) {
+            $roll = intdiv($cm, $perRollCm);
+            $sisa = $cm % $perRollCm;
+            $meter = intdiv($sisa, 100);
+            $sisaCm = $sisa % 100;
+
+            $label = "{$roll} Roll";
+            if ($meter > 0) $label .= " {$meter} Meter";
+            if ($sisaCm > 0) $label .= " {$sisaCm} cm";
+            return $label;
+        }
+
+        // Tanpa panjang per roll: tampilkan dalam meter
+        $meter = $cm / 100;
+        return rtrim(rtrim(number_format($meter, 2, ',', '.'), '0'), ',') . ' Meter';
+    }
+
+    // Label stok utk riwayat penyesuaian: bahan (cm -> Roll/Meter), produk cetak (m).
+    function stockLabel($type, $value, $perRollCm = null) {
+        if ($type === 'product') {
+            return formatStockCm($value, $perRollCm);
+        }
+        return rtrim(rtrim(number_format((float) $value, 2, ',', '.'), '0'), ',') . ' m';
+    }

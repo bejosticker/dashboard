@@ -45,7 +45,7 @@
           }
         }
         else{
-          if (in_array($currentRouteName, ['products', 'cetak-products', 'toko', 'online-toko', 'suppliers', 'customers', 'metode-pembayaran', 'karyawan', 'gaji-history', 'users'])) {
+          if (in_array($currentRouteName, ['products', 'cetak-products', 'stock-adjustments', 'toko', 'online-toko', 'suppliers', 'customers', 'metode-pembayaran', 'karyawan', 'gaji-history', 'users'])) {
             $activeClass = 'active open';
           }
         }

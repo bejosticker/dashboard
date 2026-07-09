@@ -45,6 +45,11 @@
           "slug": "cetak-products"
         },
         {
+          "url": "stock-adjustments",
+          "name": "Penyesuaian Stok",
+          "slug": "stock-adjustments"
+        },
+        {
           "url": "metode-pembayaran",
           "name": "Metode Pembayaran",
           "slug": "metode-pembayaran"

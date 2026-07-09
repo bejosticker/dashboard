@@ -22,6 +22,7 @@ use App\Http\Controllers\TokoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MetodePembayaranController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\StockAdjustmentController;
 
 Route::middleware(['global', 'web'])->group(function () {
     Route::prefix('auth')->group(function () {
@@ -63,6 +64,10 @@ Route::middleware(['global', 'web'])->group(function () {
         Route::post('/', [CetakProductController::class, 'store']);
         Route::post('/update/{id}', [CetakProductController::class, 'update']);
         Route::get('/delete/{id}', [CetakProductController::class, 'destroy']);
+    });
+
+    Route::prefix('stock-adjustments')->group(function () {
+        Route::get('/', [StockAdjustmentController::class, 'index'])->name('stock-adjustments');
     });
 
     Route::prefix('toko')->group(function () {

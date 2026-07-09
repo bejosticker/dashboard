@@ -21,10 +21,6 @@ steps:
         REMOTE_CMD=$$(cat <<EOF
         set -euo pipefail
 
-        # Load nvm so npm/node are on PATH in this non-interactive shell
-        export NVM_DIR="\$$HOME/.nvm"
-        [ -s "\$$NVM_DIR/nvm.sh" ] && . "\$$NVM_DIR/nvm.sh"
-
         cd "${_DEPLOY_PATH}"
 
         echo "==> git pull origin ${_BRANCH}"
