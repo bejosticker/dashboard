@@ -1,0 +1,51 @@
+substitutions:
+  _PROJECT_ID: coral-sonar-488603-f7
+  _VM_NAME: zaintech-indonesia
+  _VM_USER: root
+  _VM_ZONE: asia-southeast2-a
+  _DEPLOY_PATH: /usr/share/nginx/html/bejosticker
+  _BRANCH: master
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+steps:
+  - id: deploy-via-ssh
+    name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        set -euo pipefail
+
+        REMOTE_CMD=$$(cat <<EOF
+        set -euo pipefail
+
+        # Load nvm so npm/node are on PATH in this non-interactive shell
+        export NVM_DIR="\$$HOME/.nvm"
+        [ -s "\$$NVM_DIR/nvm.sh" ] && . "\$$NVM_DIR/nvm.sh"
+
+        cd "${_DEPLOY_PATH}"
+
+        echo "==> git pull origin ${_BRANCH}"
+        git fetch origin "${_BRANCH}"
+        git reset --hard "origin/${_BRANCH}"
+
+        echo "==> composer update"
+        composer update --no-interaction --no-progress --optimize-autoloader
+
+        echo "==> php artisan migrate"
+        php artisan migrate --force
+
+        echo "==> php artisan optimize:clear"
+        php artisan optimize:clear
+        EOF
+        )
+
+        echo "==> SSH into ${_VM_USER}@${_VM_NAME} (${_VM_ZONE}) and run deploy"
+        gcloud compute ssh ${_VM_USER}@${_VM_NAME} \
+          --zone=${_VM_ZONE} \
+          --quiet \
+          --command="$$REMOTE_CMD"
+
+timeout: 1800s
