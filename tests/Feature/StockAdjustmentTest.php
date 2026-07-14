@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 use App\Livewire\StockAdjustmentForm;
+use App\Models\CetakProduct;
 use App\Models\Product;
+use App\Models\StockAdjustment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -16,13 +18,13 @@ class StockAdjustmentTest extends TestCase
     {
         return Product::create([
             'name' => 'Laser Putih GL',
-            'per_roll_cm' => $perRollCm,
-            'stock_cm' => $stockCm,
+            'per_roll_cm' => $perRollCm,   // 50 m per roll
+            'stock_cm' => $stockCm,        // 9 Roll 10 Meter
             'minimum_stock_cm' => 1500,
         ]);
     }
 
-    public function test_jalur_normal_set_berhasil(): void
+    public function test_set_menulis_stok_baru(): void
     {
         $p = $this->bahan();
 
@@ -31,43 +33,51 @@ class StockAdjustmentTest extends TestCase
             ->set('bahan.0.roll', '3')
             ->call('save');
 
-        $this->assertSame(15000, (int) $p->fresh()->stock_cm);
+        $this->assertSame(15000, (int) $p->fresh()->stock_cm);   // 3 x 5000
+        $this->assertDatabaseCount('stock_adjustments', 1);
     }
 
-    /** Klien pilih mode lalu klik Simpan sebelum debounce 400ms sempat mengirim nilai Roll. */
-    public function test_race_debounce_mode_terkirim_nilai_belum(): void
+    public function test_add_menambah_stok(): void
     {
         $p = $this->bahan();
 
-        $c = Livewire::test(StockAdjustmentForm::class)
-            ->set('bahan.0.mode', 'set')   // wire:model.live -> langsung terkirim
-            ->call('save');                // roll/meter masih '' di server
-
-        $this->assertSame(46000, (int) $p->fresh()->stock_cm, 'stok TIDAK berubah');
-        $this->assertDatabaseCount('stock_adjustments', 0);
-        dump('RACE set  -> flash error: ' . var_export(session('error'), true));
-
-        $c2 = Livewire::test(StockAdjustmentForm::class)
+        Livewire::test(StockAdjustmentForm::class)
             ->set('bahan.0.mode', 'add')
+            ->set('bahan.0.roll', '1')
             ->call('save');
-        dump('RACE add  -> flash error: ' . var_export(session('error'), true));
+
+        $this->assertSame(51000, (int) $p->fresh()->stock_cm);   // 46000 + 5000
     }
 
-    /** Produk dengan per_roll_cm = 0 (mis. produk cetak / data lama). */
-    public function test_per_roll_nol_membuat_set_roll_jadi_nol(): void
+    public function test_sub_mengurangi_stok_dan_tidak_minus(): void
     {
-        $p = $this->bahan(perRollCm: 0, stockCm: 46000);
+        $p = $this->bahan();
+
+        Livewire::test(StockAdjustmentForm::class)
+            ->set('bahan.0.mode', 'sub')
+            ->set('bahan.0.roll', '99')
+            ->call('save');
+
+        $this->assertSame(0, (int) $p->fresh()->stock_cm);
+    }
+
+    /** Mode dipilih tapi nilainya belum sampai ke server. Stok TIDAK boleh tersentuh. */
+    public function test_mode_tanpa_nilai_tidak_mengubah_stok_dan_memberi_pesan(): void
+    {
+        $p = $this->bahan();
 
         Livewire::test(StockAdjustmentForm::class)
             ->set('bahan.0.mode', 'set')
-            ->set('bahan.0.roll', '3')     // 3 x 0 = 0
-            ->call('save');
+            ->call('save')
+            ->assertSet('feedback.type', 'error')
+            ->assertSeeHtml('nilai belum diisi');
 
-        dump('per_roll_cm=0, set roll=3 -> stok jadi: ' . $p->fresh()->stock_cm);
+        $this->assertSame(46000, (int) $p->fresh()->stock_cm);
+        $this->assertDatabaseCount('stock_adjustments', 0);
     }
 
-    /** Nilai dikirim Livewire sebagai null, bukan string kosong. */
-    public function test_nilai_null_bukan_string_kosong(): void
+    /** Regresi: input angka kosong bisa tiba sebagai null, bukan ''. Dulu ini mengosongkan stok. */
+    public function test_nilai_null_tidak_mengosongkan_stok(): void
     {
         $p = $this->bahan();
 
@@ -77,7 +87,53 @@ class StockAdjustmentTest extends TestCase
             ->set('bahan.0.meter', null)
             ->call('save');
 
-        dump('roll=null meter=null, mode=set -> stok jadi: ' . $p->fresh()->stock_cm
-            . ' | riwayat: ' . \App\Models\StockAdjustment::count());
+        $this->assertSame(46000, (int) $p->fresh()->stock_cm, 'stok harus utuh, bukan 0');
+        $this->assertDatabaseCount('stock_adjustments', 0);
+    }
+
+    /** Regresi: produk tanpa panjang per roll. Roll x 0 = 0 cm, dulu ini mengosongkan stok. */
+    public function test_roll_pada_produk_tanpa_panjang_roll_ditolak(): void
+    {
+        $p = $this->bahan(perRollCm: 0);
+
+        Livewire::test(StockAdjustmentForm::class)
+            ->set('bahan.0.mode', 'set')
+            ->set('bahan.0.roll', '3')
+            ->call('save')
+            ->assertSet('feedback.type', 'error');
+
+        $this->assertSame(46000, (int) $p->fresh()->stock_cm, 'stok harus utuh, bukan 0');
+        $this->assertDatabaseCount('stock_adjustments', 0);
+    }
+
+    /** Produk tanpa panjang roll tetap bisa disesuaikan lewat kolom Meter. */
+    public function test_meter_tetap_jalan_pada_produk_tanpa_panjang_roll(): void
+    {
+        $p = $this->bahan(perRollCm: 0);
+
+        Livewire::test(StockAdjustmentForm::class)
+            ->set('bahan.0.mode', 'set')
+            ->set('bahan.0.meter', '12')
+            ->call('save');
+
+        $this->assertSame(1200, (int) $p->fresh()->stock_cm);   // 12 m = 1200 cm
+    }
+
+    public function test_produk_cetak_ikut_tersimpan(): void
+    {
+        $c = CetakProduct::create([
+            'name' => 'Bold UV',
+            'stock' => 100,
+            'price_grosir' => 35000,
+            'price_umum' => 37000,
+        ]);
+
+        Livewire::test(StockAdjustmentForm::class)
+            ->set('cetak.0.mode', 'add')
+            ->set('cetak.0.value', '25')
+            ->call('save');
+
+        $this->assertSame(125.0, (float) $c->fresh()->stock);
+        $this->assertSame('cetak_product', StockAdjustment::first()->product_type);
     }
 }

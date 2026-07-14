@@ -1,15 +1,4 @@
 <div>
-    @if (session()->has('success'))
-        <div style="color: green; margin-bottom: 15px; padding: 10px; border: 1px solid green; background-color: #e6ffe6; border-radius: 5px;">
-            {{ session('success') }}
-        </div>
-    @endif
-    @if (session()->has('error'))
-        <div style="color: #b02a37; margin-bottom: 15px; padding: 10px; border: 1px solid #b02a37; background-color: #ffe6e6; border-radius: 5px;">
-            {{ session('error') }}
-        </div>
-    @endif
-
     <div class="alert alert-info" role="alert" style="font-size: 13px;">
         <strong>Penyesuaian Stok</strong> mengubah stok bahan/produk cetak secara langsung untuk menyamakan dengan stok fisik.
         Tidak membuat catatan Pembelian/Pengambilan Bahan, jadi <strong>tidak mempengaruhi laporan keuangan</strong>.
@@ -64,10 +53,11 @@
                             <td>
                                 <div class="input-group input-group-sm">
                                     <input type="number" step="any" inputmode="decimal" class="form-control"
-                                        placeholder="Roll" wire:model.live.debounce.400ms="bahan.{{ $i }}.roll"
-                                        @if($item['mode'] === '') disabled @endif>
+                                        placeholder="Roll" wire:model.blur="bahan.{{ $i }}.roll"
+                                        @if($item['mode'] === '' || $item['per_roll_cm'] <= 0) disabled @endif
+                                        @if($item['per_roll_cm'] <= 0) title="Panjang per roll belum diisi — gunakan kolom Meter" @endif>
                                     <input type="number" step="any" inputmode="decimal" class="form-control"
-                                        placeholder="Meter" wire:model.live.debounce.400ms="bahan.{{ $i }}.meter"
+                                        placeholder="Meter" wire:model.blur="bahan.{{ $i }}.meter"
                                         @if($item['mode'] === '') disabled @endif>
                                 </div>
                             </td>
@@ -128,7 +118,7 @@
                             <td>
                                 <div class="input-group input-group-sm">
                                     <input type="number" step="any" inputmode="decimal" class="form-control"
-                                        placeholder="Meter" wire:model.live.debounce.400ms="cetak.{{ $i }}.value"
+                                        placeholder="Meter" wire:model.blur="cetak.{{ $i }}.value"
                                         @if($item['mode'] === '') disabled @endif>
                                     <span class="input-group-text">m</span>
                                 </div>
@@ -153,6 +143,13 @@
             </tbody>
         </table>
     </div>
+
+    @if ($feedback)
+        <div class="alert {{ $feedback['type'] === 'error' ? 'alert-danger' : 'alert-success' }} mt-4 mb-0"
+            role="alert" style="font-size: 13px;">
+            {{ $feedback['message'] }}
+        </div>
+    @endif
 
     <div class="d-flex justify-content-end mt-4">
         <button type="button" class="btn btn-primary" wire:click="save" wire:loading.attr="disabled">
