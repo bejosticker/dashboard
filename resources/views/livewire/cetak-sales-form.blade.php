@@ -56,16 +56,18 @@
                 @endforeach
             </select>
 
+            {{-- @if TIDAK boleh dipakai di dalam tag HTML pada komponen Livewire —
+                 Livewire menyisipkan <!--[if BLOCK]--> yang menutup tag lebih awal. --}}
             <div class="input-group input-group-merge">
-                <input type="number" step="any" inputmode="decimal" name="panjang.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.panjang" placeholder="Panjang" @if($isEceran) disabled @endif />
+                <input type="number" step="any" inputmode="decimal" name="panjang.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.panjang" placeholder="Panjang" {{ $isEceran ? 'disabled' : '' }} />
                 <span class="input-group-text">CM</span>
             </div>
             <div class="input-group input-group-merge">
-                <input type="number" step="any" inputmode="decimal" name="lebar.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.lebar" placeholder="Lebar" @if($isEceran) disabled @endif />
+                <input type="number" step="any" inputmode="decimal" name="lebar.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.lebar" placeholder="Lebar" {{ $isEceran ? 'disabled' : '' }} />
                 <span class="input-group-text">CM</span>
             </div>
             <div class="input-group input-group-merge">
-                <input type="number" step="any" inputmode="decimal" name="lembar.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.lembar" placeholder="Lembar" @if(!$isEceran) disabled @endif />
+                <input type="number" step="any" inputmode="decimal" name="lembar.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.lembar" placeholder="Lembar" {{ ! $isEceran ? 'disabled' : '' }} />
                 <span class="input-group-text">Lembar</span>
             </div>
             <input type="number" name="price.{{$i}}" class="form-control" wire:model.live="items.{{ $i }}.price" placeholder="Harga" readonly />

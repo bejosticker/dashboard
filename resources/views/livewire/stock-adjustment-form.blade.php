@@ -38,6 +38,13 @@
                     @php $match = $search === '' || stripos($item['name'], $search) !== false; @endphp
                     @if ($match)
                         @php $bahanShown++; @endphp
+                        @php
+                            // Catatan: @if TIDAK boleh dipakai di dalam tag HTML pada komponen Livewire —
+                            // Livewire menyisipkan <!--[if BLOCK]--> yang menutup tag lebih awal.
+                            $tanpaRoll = $item['per_roll_cm'] <= 0;
+                            $rollOff = $item['mode'] === '' || $tanpaRoll;
+                            $barisOff = $item['mode'] === '';
+                        @endphp
                         <tr wire:key="bahan-{{ $item['id'] }}">
                             <td>{{ $bahanShown }}</td>
                             <td>{{ $item['name'] }}</td>
@@ -54,11 +61,11 @@
                                 <div class="input-group input-group-sm">
                                     <input type="number" step="any" inputmode="decimal" class="form-control"
                                         placeholder="Roll" wire:model.blur="bahan.{{ $i }}.roll"
-                                        @if($item['mode'] === '' || $item['per_roll_cm'] <= 0) disabled @endif
-                                        @if($item['per_roll_cm'] <= 0) title="Panjang per roll belum diisi — gunakan kolom Meter" @endif>
+                                        title="{{ $tanpaRoll ? 'Panjang per roll belum diisi — gunakan kolom Meter' : '' }}"
+                                        {{ $rollOff ? 'disabled' : '' }}>
                                     <input type="number" step="any" inputmode="decimal" class="form-control"
                                         placeholder="Meter" wire:model.blur="bahan.{{ $i }}.meter"
-                                        @if($item['mode'] === '') disabled @endif>
+                                        {{ $barisOff ? 'disabled' : '' }}>
                                 </div>
                             </td>
                             <td>
@@ -70,7 +77,7 @@
                             </td>
                             <td>
                                 <input type="text" class="form-control form-control-sm" placeholder="mis. opname"
-                                    wire:model="bahan.{{ $i }}.note" @if($item['mode'] === '') disabled @endif>
+                                    wire:model="bahan.{{ $i }}.note" {{ $barisOff ? 'disabled' : '' }}>
                             </td>
                         </tr>
                     @endif
@@ -103,6 +110,7 @@
                     @php $match = $search === '' || stripos($item['name'], $search) !== false; @endphp
                     @if ($match)
                         @php $cetakShown++; @endphp
+                        @php $barisOff = $item['mode'] === ''; @endphp
                         <tr wire:key="cetak-{{ $item['id'] }}">
                             <td>{{ $cetakShown }}</td>
                             <td>{{ $item['name'] }}</td>
@@ -119,7 +127,7 @@
                                 <div class="input-group input-group-sm">
                                     <input type="number" step="any" inputmode="decimal" class="form-control"
                                         placeholder="Meter" wire:model.blur="cetak.{{ $i }}.value"
-                                        @if($item['mode'] === '') disabled @endif>
+                                        {{ $barisOff ? 'disabled' : '' }}>
                                     <span class="input-group-text">m</span>
                                 </div>
                             </td>
@@ -132,7 +140,7 @@
                             </td>
                             <td>
                                 <input type="text" class="form-control form-control-sm" placeholder="mis. opname"
-                                    wire:model="cetak.{{ $i }}.note" @if($item['mode'] === '') disabled @endif>
+                                    wire:model="cetak.{{ $i }}.note" {{ $barisOff ? 'disabled' : '' }}>
                             </td>
                         </tr>
                     @endif
