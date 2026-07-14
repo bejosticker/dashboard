@@ -44,20 +44,7 @@
                             </div>
                             <p>{{$product->name}}</p>
                         </td>
-                        @php
-                            $stockCm = $product->stock_cm;
-                            $rollCm = $product->per_roll_cm;
-                            $meterCm = 100;
-
-                            // Cek agar tidak terjadi division by zero
-                            $roll = ($rollCm > 0) ? intdiv($stockCm, $rollCm) : 0;
-                            $sisaCm = ($rollCm > 0) ? ($stockCm % $rollCm) : $stockCm;
-
-                            $meter = ($meterCm > 0) ? intdiv($sisaCm, $meterCm) : 0;
-
-                            $quantity = $meter > 0 ? "{$roll} Roll {$meter} Meter" : "{$roll} Roll";
-                        @endphp
-                        <td>{{$quantity}}</td>
+                        <td>{{ formatStockCm($product->stock_cm, $product->per_roll_cm) }}</td>
                         <td>
                             {{formatRupiah($product->price_kulak)}}
                             <p class="text-success fw-bold" style="font-size:11px;">

@@ -71,26 +71,29 @@
         return (($item->panjang ?? 0) * ($item->lebar ?? 0)) * ($item->price - $kulak);
     }
 
-    // Format stok bahan (cm) menjadi "X Roll Y Meter Z cm" sesuai panjang per roll.
+    // Angka meter tanpa nol berlebih: 6,02 / 6,5 / 6
+    function formatMeter($meter) {
+        return rtrim(rtrim(number_format((float) $meter, 2, ',', '.'), '0'), ',');
+    }
+
+    // Format stok bahan (cm) menjadi "X Roll Y Meter" sesuai panjang per roll.
+    // Sisa di bawah 1 meter dinyatakan sebagai desimal meter (mis. "43 Roll 6,02 Meter"),
+    // bukan satuan cm terpisah — cm bukan satuan yang dipakai di aplikasi ini.
     function formatStockCm($cm, $perRollCm) {
-        $cm = (int) round((float) $cm);
-        $perRollCm = (int) round((float) $perRollCm);
+        $cm = (float) $cm;
+        $perRollCm = (float) $perRollCm;
 
         if ($perRollCm > 0) {
-            $roll = intdiv($cm, $perRollCm);
-            $sisa = $cm % $perRollCm;
-            $meter = intdiv($sisa, 100);
-            $sisaCm = $sisa % 100;
+            $roll = (int) floor($cm / $perRollCm);
+            $meter = ($cm - ($roll * $perRollCm)) / 100;
 
-            $label = "{$roll} Roll";
-            if ($meter > 0) $label .= " {$meter} Meter";
-            if ($sisaCm > 0) $label .= " {$sisaCm} cm";
+            $label = $roll . ' Roll';
+            if ($meter > 0) $label .= ' ' . formatMeter($meter) . ' Meter';
             return $label;
         }
 
-        // Tanpa panjang per roll: tampilkan dalam meter
-        $meter = $cm / 100;
-        return rtrim(rtrim(number_format($meter, 2, ',', '.'), '0'), ',') . ' Meter';
+        // Tanpa panjang per roll: tampilkan dalam meter saja
+        return formatMeter($cm / 100) . ' Meter';
     }
 
     // Label stok utk riwayat penyesuaian: bahan (cm -> Roll/Meter), produk cetak (m).
@@ -98,5 +101,5 @@
         if ($type === 'product') {
             return formatStockCm($value, $perRollCm);
         }
-        return rtrim(rtrim(number_format((float) $value, 2, ',', '.'), '0'), ',') . ' m';
+        return formatMeter($value) . ' m';
     }
