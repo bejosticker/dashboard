@@ -131,7 +131,7 @@ class KulakForm extends Component
         $this->validate([
             'supplierId' => 'required|exists:suppliers,id',
             'date' => 'required',
-            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.product_id' => 'required|exists:products,id,deleted_at,NULL',
             'items.*.jumlah' => 'required|numeric|min:1',
             'items.*.harga' => 'required|numeric|min:0',
         ]);

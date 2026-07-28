@@ -71,6 +71,29 @@
         return (($item->panjang ?? 0) * ($item->lebar ?? 0)) * ($item->price - $kulak);
     }
 
+    // Laba per item bahan (penjualan & pengambilan bahan).
+    // $isRoll: true -> kulak dihitung per roll; false -> kulak dikonversi ke per meter.
+    // Produk yang sudah dihapus (relasi null) atau tanpa per_roll_cm dianggap kulak 0
+    // supaya halaman tetap tampil, bukan error "property on null" / division by zero.
+    function bahanItemLaba($item, $isRoll)
+    {
+        $product = $item->product;
+        $kulak = (float) ($product->price_kulak ?? 0);
+
+        if (!$isRoll) {
+            $perRollCm = (float) ($product->per_roll_cm ?? 0);
+            $kulak = $perRollCm > 0 ? $kulak / $perRollCm * 100 : 0;
+        }
+
+        return ($item->price - $kulak) * $item->quantity;
+    }
+
+    // Apakah item penjualan bahan memakai harga berbasis roll (bukan meteran/eceran)?
+    function bahanIsRollPrice($priceType)
+    {
+        return in_array($priceType, ['price_agent', 'price_grosir', 'price_umum_roll']);
+    }
+
     // Angka meter tanpa nol berlebih: 6,02 / 6,5 / 6
     function formatMeter($meter) {
         return rtrim(rtrim(number_format((float) $meter, 2, ',', '.'), '0'), ',');

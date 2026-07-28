@@ -77,12 +77,7 @@
                     @php
                         $laba = 0;
                         foreach ($sale->items as $item) {
-                            if (in_array($item->price_type, ['price_agent', 'price_grosir', 'price_umum_roll'])) {
-                                $laba += ($item->price - $item->product->price_kulak) * $item->quantity;
-                            }else{
-                                $kulakPerMeter = $item->product->price_kulak / $item->product->per_roll_cm * 100;
-                                $laba += ($item->price - $kulakPerMeter) * $item->quantity;
-                            }
+                            $laba += bahanItemLaba($item, bahanIsRollPrice($item->price_type));
                         }
                     @endphp
                     <tr>

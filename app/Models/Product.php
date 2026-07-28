@@ -3,9 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
+    // Soft delete: produk yang dihapus tetap tersimpan supaya price_kulak-nya
+    // masih bisa dibaca oleh item penjualan/pengambilan/kulak yang lama.
+    use SoftDeletes;
+
     protected $table = 'products';
     protected $primaryKey = 'id';
 

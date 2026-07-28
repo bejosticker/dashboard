@@ -13,8 +13,10 @@ class SaleItems extends Model
         'product_id', 'sale_id', 'price', 'price_type', 'quantity', 'subtotal', 'created_at', 'updated_at'
     ];
 
+    // withTrashed: riwayat penjualan tetap butuh data produk (harga kulak, nama)
+    // meski produknya sudah dihapus.
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_id', 'id');
+        return $this->belongsTo(Product::class, 'product_id', 'id')->withTrashed();
     }
 }

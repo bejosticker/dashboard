@@ -78,12 +78,7 @@ use Carbon\Carbon;
                         @php
                             $laba = 0;
                             foreach ($data->items as $item) {
-                                if ($item->product_type == 'roll') {
-                                    $laba += ($item->price - $item->product->price_kulak) * $item->quantity;
-                                }else{
-                                    $kulakPerMeter = $item->product->price_kulak / $item->product->per_roll_cm * 100;
-                                    $laba += ($item->price - $kulakPerMeter) * $item->quantity;
-                                }
+                                $laba += bahanItemLaba($item, $item->product_type == 'roll');
                             }
                             $data->laba = $laba;
                         @endphp

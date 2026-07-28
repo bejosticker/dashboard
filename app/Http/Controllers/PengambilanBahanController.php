@@ -66,12 +66,7 @@ class PengambilanBahanController extends Controller
         foreach ($allPengambilanBahan as $data) {
             $laba = 0;
             foreach ($data->items as $item) {
-                if ($item->product_type == 'roll') {
-                    $laba += ($item->price - $item->product->price_kulak) * $item->quantity;
-                }else{
-                    $kulakPerMeter = $item->product->price_kulak / $item->product->per_roll_cm * 100;
-                    $laba += ($item->price - $kulakPerMeter) * $item->quantity;
-                }
+                $laba += bahanItemLaba($item, $item->product_type == 'roll');
             }
             $labaTotal += $laba;
         }
@@ -83,7 +78,7 @@ class PengambilanBahanController extends Controller
     {
         $request->validate([
             'toko_id' => 'nullable|exists:toko,id',
-            'product_id' => 'required|exists:products,id',
+            'product_id' => 'required|exists:products,id,deleted_at,NULL',
             'quantity' => 'required',
             'date' => 'required'
         ]);
@@ -110,13 +105,17 @@ class PengambilanBahanController extends Controller
 
     public function destroy($id)
     {
-        $data = PengambilanBahan::where('id', $id)->with('items')->first();
+        $data = PengambilanBahan::where('id', $id)->with('items.product')->first();
         if ($data->items) {
             foreach ($data->items as $item) {
-                Product::where('id', $item->product_id)
-                    ->update([
-                        'stock_cm' => $item->product->stock_cm + ($item->quantity * ($item->product_type == 'roll' ? $item->product->per_roll_cm : 100))
-                    ]);
+                // Produk bisa sudah dihapus; stok tak perlu (dan tak bisa) dikembalikan.
+                if (!$item->product) {
+                    continue;
+                }
+
+                $perUnitCm = $item->product_type == 'roll' ? $item->product->per_roll_cm : 100;
+                $item->product->stock_cm = $item->product->stock_cm + ($item->quantity * $perUnitCm);
+                $item->product->save();
             }
         }
 

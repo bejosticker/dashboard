@@ -104,7 +104,7 @@ class SalesForm extends Component
             'customer_phone' => 'nullable|regex:/^08[0-9]{7,13}$/',
             'date' => 'required',
             'payment_method_id' => 'required|exists:payment_methods,id',
-            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.product_id' => 'required|exists:products,id,deleted_at,NULL',
             'items.*.jumlah' => 'required|numeric|min:1',
             'items.*.price' => 'required|numeric|min:1',
             'items.*.price_type' => 'required',

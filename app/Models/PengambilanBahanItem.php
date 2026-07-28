@@ -18,8 +18,10 @@ class PengambilanBahanItem extends Model
         return $this->belongsTo(PengambilanBahan::class, 'pengambilan_bahan_id', 'id');
     }
 
+    // withTrashed: riwayat pengambilan tetap butuh data produk (harga kulak, nama)
+    // meski produknya sudah dihapus.
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_id', 'id');
+        return $this->belongsTo(Product::class, 'product_id', 'id')->withTrashed();
     }
 }

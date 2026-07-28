@@ -133,7 +133,14 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::where('id', $id)->first();
-        Product::where('id', $id)->delete();
+        if (!$product) {
+            return back()->with('error', 'Produk tidak ditemukan atau sudah dihapus.');
+        }
+
+        // Soft delete: produk hilang dari daftar & total stok, tapi datanya tetap ada
+        // supaya laba di riwayat penjualan/pengambilan lama tetap benar.
+        $product->delete();
+
         return back()->with('success', 'Produk '.$product->name.' berhasil dihapus!');
     }
 
